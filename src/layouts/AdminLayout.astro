@@ -1,0 +1,221 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  activeTab?: string;
+}
+
+const { title = "Admin Dashboard", activeTab = "dashboard" } = Astro.props;
+
+const navMain = [
+  { id: "dashboard", label: "Overview", href: "/admin", icon: "fas fa-chart-pie" },
+  { id: "profile", label: "Profil", href: "/admin/profile", icon: "fas fa-user-edit" },
+  { id: "education", label: "Pendidikan", href: "/admin/education", icon: "fas fa-graduation-cap" },
+  { id: "skills", label: "Keterampilan", href: "/admin/skills", icon: "fas fa-laptop-code" },
+];
+
+const navDashboard = [
+  { id: "projects", label: "Proyek", href: "/admin/projects", icon: "fas fa-folder-open" },
+  { id: "publications", label: "Publikasi", href: "/admin/publications", icon: "fas fa-book-open" },
+  { id: "certificates", label: "Sertifikat", href: "/admin/certificates", icon: "fas fa-award" },
+  { id: "blogs", label: "Blog", href: "/admin/blogs", icon: "fas fa-pen-nib" }
+];
+---
+
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title} - Admin Panel</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+      body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    </style>
+    <!-- Sync theme initialization to prevent flash -->
+    <script is:inline>
+      const theme = (() => {
+        if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+          return localStorage.getItem('theme');
+        }
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          return 'dark';
+        }
+        return 'light';
+      })();
+      
+      if (theme === 'dark') {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+      window.localStorage.setItem('theme', theme);
+    </script>
+  </head>
+  <body class="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-200 antialiased min-h-screen flex flex-col md:flex-row transition-colors duration-300">
+    
+    <!-- Sidebar -->
+    <aside class="w-full md:w-64 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col shrink-0 transition-colors">
+      <div class="h-16 flex items-center px-6 border-b border-slate-200 dark:border-slate-800 justify-between">
+        <span class="text-lg font-bold bg-gradient-to-r from-indigo-600 to-violet-600 dark:from-indigo-400 dark:to-violet-400 text-transparent bg-clip-text">Putra Admin</span>
+        <a href="/" target="_blank" class="text-xs text-indigo-600 dark:text-indigo-400 hover:underline font-bold">
+          <i class="fas fa-external-link-alt mr-1"></i>Lihat Site
+        </a>
+      </div>
+      
+      <nav class="flex-1 px-4 py-6 space-y-6 overflow-y-auto">
+        <!-- TENTANG SAYA -->
+        <div>
+          <h3 class="px-4 text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-3">Tentang Saya</h3>
+          <div class="space-y-1">
+            {navMain.map((item) => (
+              <a
+                href={item.href}
+                class={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${
+                  activeTab === item.id 
+                    ? "bg-indigo-600 text-white shadow-lg shadow-indigo-600/20" 
+                    : "text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/40"
+                }`}
+              >
+                <i class={`${item.icon} w-5 text-center text-base`}></i>
+                {item.label}
+              </a>
+            ))}
+          </div>
+        </div>
+
+        <!-- DASHBOARD -->
+        <div>
+          <h3 class="px-4 text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-3">Dashboard</h3>
+          <div class="space-y-1">
+            {navDashboard.map((item) => (
+              <a
+                href={item.href}
+                class={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${
+                  activeTab === item.id 
+                    ? "bg-indigo-600 text-white shadow-lg shadow-indigo-600/20" 
+                    : "text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/40"
+                }`}
+              >
+                <i class={`${item.icon} w-5 text-center text-base`}></i>
+                {item.label}
+              </a>
+            ))}
+          </div>
+        </div>
+      </nav>
+      
+      <div class="p-4 border-t border-slate-200 dark:border-slate-800">
+        <button
+          id="logout-btn"
+          class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-red-600 dark:text-red-400 hover:text-red-500 hover:bg-red-500/10 transition-all cursor-pointer"
+        >
+          <i class="fas fa-sign-out-alt w-5 text-center text-base"></i>
+          Keluar (Logout)
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="flex-1 flex flex-col min-w-0 min-h-screen">
+      <!-- Header -->
+      <header class="h-16 border-b border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md flex items-center justify-between px-8 z-10 sticky top-0 transition-colors">
+        <h1 class="text-lg font-extrabold text-slate-900 dark:text-white tracking-tight">{title}</h1>
+        <div class="flex items-center gap-4">
+          <!-- Light/Dark Toggler -->
+          <button id="theme-toggle" class="p-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all cursor-pointer shadow-sm" aria-label="Toggle Theme">
+            <i class="fas fa-sun hidden dark:inline-block"></i>
+            <i class="fas fa-moon inline-block dark:hidden"></i>
+          </button>
+          
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span class="text-xs text-slate-600 dark:text-slate-400 font-bold bg-slate-100 dark:bg-slate-900 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-800">Administrator</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- Content -->
+      <main class="flex-1 p-8 overflow-y-auto">
+        <slot />
+      </main>
+
+      <!-- Admin Footer -->
+      <footer class="py-4 border-t border-slate-200 dark:border-slate-800 text-center">
+        <p class="text-[11px] text-slate-500 font-medium">
+          &copy; {new Date().getFullYear()} <span class="font-bold">Putra Admin Panel</span> — Built with <span class="text-red-500">♥</span> using Astro.
+        </p>
+      </footer>
+    </div>
+
+    <!-- Reusable Toast Component Container -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2"></div>
+
+    <script>
+      // Logout Handler
+      document.getElementById('logout-btn')?.addEventListener('click', async () => {
+        if (confirm('Apakah Anda yakin ingin keluar?')) {
+          try {
+            const res = await fetch('/api/auth', { method: 'DELETE' });
+            if (res.ok) {
+              window.location.href = '/admin/login';
+            } else {
+              alert('Gagal logout.');
+            }
+          } catch (e) {
+            console.error(e);
+            alert('Terjadi kesalahan.');
+          }
+        }
+      });
+
+      // Global Toast Notification Helper
+      (window as any).showToast = (message: string, type: 'success' | 'error' = 'success') => {
+        const container = document.getElementById('toast-container');
+        if (!container) return;
+
+        const toast = document.createElement('div');
+        toast.className = `flex items-center gap-3 px-4 py-3.5 rounded-xl border text-sm shadow-xl transition-all duration-300 transform translate-y-2 opacity-0 ${
+          type === 'success' 
+            ? 'bg-white dark:bg-slate-900 border-emerald-500/30 text-emerald-600 dark:text-emerald-400 shadow-emerald-500/5' 
+            : 'bg-white dark:bg-slate-900 border-red-500/30 text-red-600 dark:text-red-400 shadow-red-500/5'
+        }`;
+
+        const icon = document.createElement('i');
+        icon.className = type === 'success' ? 'fas fa-check-circle text-emerald-500 dark:text-emerald-400' : 'fas fa-exclamation-circle text-red-500 dark:text-red-400';
+        
+        const text = document.createElement('span');
+        text.innerText = message;
+        text.className = 'font-bold';
+
+        toast.appendChild(icon);
+        toast.appendChild(text);
+        container.appendChild(toast);
+
+        // Animate in
+        setTimeout(() => {
+          toast.classList.remove('translate-y-2', 'opacity-0');
+        }, 10);
+
+        // Animate out
+        setTimeout(() => {
+          toast.classList.add('opacity-0', 'translate-y-[-10px]');
+          setTimeout(() => {
+            toast.remove();
+          }, 300);
+        }, 4000);
+      };
+
+      // Theme toggle functionality
+      const themeToggleBtn = document.getElementById('theme-toggle');
+      themeToggleBtn?.addEventListener('click', () => {
+        const isDark = document.documentElement.classList.toggle('dark');
+        const nextTheme = isDark ? 'dark' : 'light';
+        localStorage.setItem('theme', nextTheme);
+      });
+    </script>
+  </body>
+</html>

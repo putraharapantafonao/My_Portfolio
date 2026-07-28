@@ -1,0 +1,209 @@
+---
+import fs from 'node:fs';
+import path from 'node:path';
+import Layout from '../layouts/Layout.astro';
+
+const certificates = JSON.parse(fs.readFileSync(path.resolve('src/data/certificates.json'), 'utf-8'));
+const lang = Astro.cookies.get('lang')?.value === 'en' ? 'en' : 'id';
+
+function getField(item: any, field: string) {
+  if (lang === 'en') {
+    return item[`${field}_en`] || item[field] || '';
+  }
+  return item[field] || '';
+}
+
+const t = {
+  id: {
+    certTitle: "Sertifikasi & Kredensial",
+    certSub: "Kumpulan sertifikasi profesional, lisensi kompetensi, dan penghargaan yang saya miliki.",
+    verified: "Terverifikasi",
+    viewCred: "Lihat Kredensial",
+  },
+  en: {
+    certTitle: "Certifications & Credentials",
+    certSub: "A collection of professional certifications, competency licenses, and awards I have acquired.",
+    verified: "Verified",
+    viewCred: "View Credentials",
+  }
+}[lang];
+---
+
+<Layout title={t.certTitle} activePage="certificates">
+    <section id="certificates" class="py-20 md:py-28 bg-slate-50/40 dark:bg-slate-900/20 transition-colors">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="mb-10">
+          <h1 class="text-3xl md:text-4xl font-extrabold mb-4 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-transparent bg-clip-text inline-block">
+            {t.certTitle}
+          </h1>
+          <p class="text-slate-500 dark:text-slate-400 text-sm max-w-xl leading-relaxed">
+            {t.certSub}
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {certificates.map((cert: any) => (
+            <article class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl overflow-hidden shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group">
+
+              <!-- Area foto landscape (rasio 4:3 seperti sertifikat) -->
+              <div
+                class="relative w-full overflow-hidden border-b border-slate-100 dark:border-slate-800 cursor-pointer"
+                style="aspect-ratio: 4/3;"
+                data-cert-img={cert.image || ''}
+                data-cert-title={getField(cert, 'title')}
+                onclick="openCertLightbox(this)"
+              >
+                {cert.image ? (
+                  <img
+                    src={cert.image}
+                    alt={getField(cert, 'title')}
+                    loading="lazy"
+                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    onerror="this.onerror=null;this.src='https://placehold.co/800x600/020617/818cf8?text=Sertifikat';"
+                  />
+                ) : (
+                  <div class="w-full h-full bg-gradient-to-br from-indigo-950 via-slate-900 to-violet-950 flex flex-col items-center justify-center gap-3">
+                    <div class="w-16 h-16 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400 text-3xl">
+                      <i class={cert.icon || "fas fa-award"}></i>
+                    </div>
+                    <span class="text-slate-500 dark:text-slate-600 text-xs font-bold tracking-widest uppercase">Certificate</span>
+                  </div>
+                )}
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-950/20 to-transparent"></div>
+                {cert.image && (
+                  <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-slate-950/30">
+                    <div class="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center text-white text-lg">
+                      <i class="fas fa-search-plus"></i>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <!-- Konten card -->
+              <div class="p-5 flex-1 flex flex-col justify-between">
+                <div>
+                  <span class="inline-block px-2 py-0.5 text-[9px] font-bold rounded bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 border border-indigo-100 dark:border-indigo-900 mb-2">
+                    {cert.issuer}
+                  </span>
+
+                  <h3 class="text-sm font-bold text-slate-950 dark:text-white mb-2 leading-snug line-clamp-2" title={getField(cert, 'title')}>
+                    {getField(cert, 'title')}
+                  </h3>
+
+                  {cert.credentialId && (
+                    <div class="flex flex-wrap gap-x-3 gap-y-1 text-[10px] text-slate-400 dark:text-slate-500">
+                      <span class="font-mono truncate">ID: {cert.credentialId}</span>
+                    </div>
+                  )}
+                  <p class="text-[10px] text-slate-400 dark:text-slate-500 mt-1">
+                    {lang === 'en' ? 'Issued' : 'Terbit'}: {cert.issueDate} &nbsp;•&nbsp; {lang === 'en' ? 'Expires' : 'Kedaluwarsa'}: {getField(cert, 'expirationDate')}
+                  </p>
+                </div>
+
+                <div class="pt-4 mt-4 border-t border-slate-100 dark:border-slate-850 flex items-center justify-between gap-3">
+                  <span class="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 text-[10px] font-bold border border-emerald-100/50 dark:border-emerald-900/30 shrink-0">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                    {t.verified}
+                  </span>
+
+                  {cert.verifyUrl && cert.verifyUrl !== '#' && cert.verifyUrl !== '' ? (
+                    <a
+                      href={cert.verifyUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="flex-1 inline-flex items-center justify-center gap-1.5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition-all shadow-md shadow-indigo-600/10 hover:shadow-indigo-600/20 active:scale-[0.98]"
+                    >
+                      {t.viewCred}
+                      <i class="fas fa-external-link-alt text-[9px]"></i>
+                    </a>
+                  ) : (
+                    <span class="flex-1 inline-flex items-center justify-center gap-1.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-400 dark:text-slate-500 text-xs font-bold cursor-not-allowed">
+                      <i class="fas fa-link-slash text-[9px]"></i>
+                      {lang === 'en' ? 'No Credential Link' : 'Tidak Ada Tautan'}
+                    </span>
+                  )}
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Lightbox Sertifikat -->
+    <div
+      id="cert-lightbox"
+      class="fixed inset-0 z-[9999] hidden items-center justify-center p-4"
+      onclick="closeCertLightbox(event)"
+    >
+      <!-- Backdrop blur -->
+      <div class="absolute inset-0 bg-slate-950/90 backdrop-blur-md"></div>
+
+      <!-- Container gambar -->
+      <div class="relative z-10 w-full max-w-4xl animate-[zoomIn_0.25s_ease-out]">
+        <!-- Tombol tutup -->
+        <button
+          onclick="document.getElementById('cert-lightbox').classList.replace('flex','hidden')"
+          class="absolute -top-12 right-0 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-white flex items-center justify-center text-lg transition-all cursor-pointer"
+        >
+          <i class="fas fa-times"></i>
+        </button>
+
+        <!-- Gambar -->
+        <img
+          id="cert-lightbox-img"
+          src=""
+          alt=""
+          class="w-full max-h-[80vh] object-contain rounded-2xl shadow-2xl shadow-black/50 border border-white/10"
+        />
+
+        <!-- Caption -->
+        <p id="cert-lightbox-title" class="mt-4 text-center text-sm font-semibold text-slate-300"></p>
+      </div>
+    </div>
+
+    <style>
+      @keyframes zoomIn {
+        from { opacity: 0; transform: scale(0.85); }
+        to   { opacity: 1; transform: scale(1); }
+      }
+    </style>
+
+    <script is:inline>
+      function openCertLightbox(el) {
+        const imgSrc = el.getAttribute('data-cert-img');
+        if (!imgSrc) return;
+        const title = el.getAttribute('data-cert-title') || '';
+        const lightbox = document.getElementById('cert-lightbox');
+        const img = document.getElementById('cert-lightbox-img');
+        const caption = document.getElementById('cert-lightbox-title');
+        img.src = imgSrc;
+        img.alt = title;
+        caption.textContent = title;
+        lightbox.classList.remove('hidden');
+        lightbox.classList.add('flex');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeCertLightbox(e) {
+        const target = e.target;
+        if (target.closest('#cert-lightbox > div:last-of-type')) return;
+        const lightbox = document.getElementById('cert-lightbox');
+        lightbox.classList.replace('flex', 'hidden');
+        document.body.style.overflow = '';
+      }
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          const lightbox = document.getElementById('cert-lightbox');
+          if (!lightbox.classList.contains('hidden')) {
+            lightbox.classList.replace('flex', 'hidden');
+            document.body.style.overflow = '';
+          }
+        }
+      });
+
+      window.openCertLightbox = openCertLightbox;
+      window.closeCertLightbox = closeCertLightbox;
+    </script>
+</Layout>

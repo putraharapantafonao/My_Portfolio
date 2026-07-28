@@ -1,0 +1,428 @@
+---
+import { isAuthenticated } from '../../utils/auth';
+
+if (!isAuthenticated(Astro.cookies)) {
+  return Astro.redirect('/admin/login');
+}
+
+import fs from 'node:fs';
+import path from 'node:path';
+import AdminLayout from '../../layouts/AdminLayout.astro';
+
+// Load certificates server-side
+const certificates = JSON.parse(fs.readFileSync(path.resolve('src/data/certificates.json'), 'utf-8'));
+---
+
+<AdminLayout title="Kelola Sertifikasi & Kredensial" activeTab="certificates">
+  <div class="mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+    <p class="text-slate-500 dark:text-slate-400 text-sm max-w-xl">
+      Kelola sertifikat kompetensi, lisensi, atau riwayat kelulusan kursus teknologi Anda. Data ini mendukung dwi-bahasa untuk verifikasi rekrutmen internasional.
+    </p>
+    <button
+      id="add-cert-btn"
+      class="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs transition-all shadow-lg shadow-indigo-600/30 cursor-pointer shrink-0"
+    >
+      <i class="fas fa-plus"></i> Tambah Sertifikat Baru
+    </button>
+  </div>
+
+  <!-- Grid Sertifikat -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="certs-grid">
+    {certificates.map((cert: any) => (
+      <div 
+        class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl flex flex-col justify-between shadow-sm dark:shadow-xl"
+        data-id={cert.id}
+      >
+        <div class="flex items-start gap-4 mb-5">
+          <div class="w-12 h-12 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-850 flex items-center justify-center text-indigo-600 dark:text-indigo-400 shrink-0 text-lg">
+            <i class={cert.icon || "fas fa-award"}></i>
+          </div>
+
+          <div class="flex-1 min-w-0">
+            <span class="inline-block px-2.5 py-0.5 mb-2 rounded bg-indigo-50 dark:bg-indigo-950 border border-indigo-150 dark:border-indigo-900 text-[10px] font-bold text-indigo-600 dark:text-indigo-400">
+              {cert.issuer}
+            </span>
+            <h4 class="text-sm font-bold text-slate-900 dark:text-white mb-1 truncate cert-title">{cert.title}</h4>
+            <p class="text-[10px] text-slate-400 dark:text-slate-500 font-mono truncate">ID: {cert.credentialId}</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 pt-4 border-t border-slate-200 dark:border-slate-850">
+          <button
+            class="edit-btn flex-1 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-indigo-500/30 bg-slate-50 dark:bg-slate-950 hover:bg-slate-100 dark:hover:bg-slate-900 text-slate-700 dark:text-slate-300 hover:text-indigo-650 dark:hover:text-indigo-400 text-xs font-bold transition-all cursor-pointer"
+            data-id={cert.id}
+          >
+            <i class="fas fa-edit mr-1"></i> Edit Sertifikat
+          </button>
+          <button
+            class="delete-btn py-2.5 px-3.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-red-500/30 bg-slate-50 dark:bg-slate-950 hover:bg-red-550/5 text-slate-400 dark:text-slate-500 hover:text-red-650 dark:hover:text-red-400 text-xs font-bold transition-all cursor-pointer"
+            data-id={cert.id}
+          >
+            <i class="fas fa-trash-alt"></i>
+          </button>
+        </div>
+      </div>
+    ))}
+  </div>
+
+  <!-- Modal Dialog (Hidden by Default) -->
+  <div 
+    id="cert-modal" 
+    class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden opacity-0 transition-opacity duration-300"
+  >
+    <div class="w-full max-w-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+      <h3 id="modal-title" class="text-md font-bold text-slate-900 dark:text-white mb-6 pb-2 border-b border-slate-200 dark:border-slate-800 flex items-center gap-2">
+        <i class="fas fa-edit text-indigo-600 dark:text-indigo-400"></i>
+        Edit Rincian Sertifikat
+      </h3>
+
+      <form id="modal-form" class="space-y-5">
+        <input type="hidden" id="modal-cert-id" />
+        
+        <div>
+          <label for="modal-cert-title" class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-2">Nama Sertifikat (ID)</label>
+          <input
+            id="modal-cert-title"
+            type="text"
+            required
+            placeholder="Contoh: Belajar Dasar Pemrograman Web"
+            class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors shadow-sm"
+          />
+        </div>
+
+        <div>
+          <label for="modal-cert-title-en" class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-2">Nama Sertifikat (EN)</label>
+          <input
+            id="modal-cert-title-en"
+            type="text"
+            required
+            placeholder="Contoh: Learning Web Programming Basics"
+            class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors shadow-sm"
+          />
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label for="modal-cert-issuer" class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-2">Penerbit Sertifikat</label>
+            <input
+              id="modal-cert-issuer"
+              type="text"
+              required
+              placeholder="Contoh: Dicoding Indonesia"
+              class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors shadow-sm"
+            />
+          </div>
+          <div>
+            <label for="modal-cert-icon" class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-2">Ikon Sertifikat (Font Awesome Class)</label>
+            <select
+              id="modal-cert-icon"
+              required
+              class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors shadow-sm"
+            >
+              <option value="fas fa-code">⌨ Kode / Pemrograman (fa-code)</option>
+              <option value="fas fa-robot">🤖 AI & Robotika (fa-robot)</option>
+              <option value="fas fa-mobile-alt">📱 Mobile Development (fa-mobile-alt)</option>
+              <option value="fas fa-chart-line">📈 Keuangan & Finansial (fa-chart-line)</option>
+              <option value="fas fa-award">🏆 Penghargaan Umum (fa-award)</option>
+              <option value="fas fa-database">🗄 Basis Data / Cloud (fa-database)</option>
+              <option value="fas fa-shield-alt">🛡 Keamanan Siber (fa-shield-alt)</option>
+              <option value="fas fa-laptop-code">💻 Proyek Koding (fa-laptop-code)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div>
+            <label for="modal-cert-issue-date" class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-2">Tahun Terbit</label>
+            <input
+              id="modal-cert-issue-date"
+              type="text"
+              required
+              placeholder="Contoh: 2026"
+              class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors shadow-sm"
+            />
+          </div>
+          <div>
+            <label for="modal-cert-expiration" class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-2">Tanggal Kedaluwarsa (ID)</label>
+            <input
+              id="modal-cert-expiration"
+              type="text"
+              required
+              placeholder="Tidak Ada Kedaluwarsa"
+              class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors shadow-sm"
+            />
+          </div>
+          <div>
+            <label for="modal-cert-expiration-en" class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-2">Tanggal Kedaluwarsa (EN)</label>
+            <input
+              id="modal-cert-expiration-en"
+              type="text"
+              required
+              placeholder="No Expiration Date"
+              class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors shadow-sm"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label for="modal-cert-credential-id" class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-2">ID Kredensial (Credential ID)</label>
+          <input
+            id="modal-cert-credential-id"
+            type="text"
+            required
+            placeholder="Masukkan nomor kredensial"
+            class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors shadow-sm"
+          />
+        </div>
+
+        <div>
+          <label for="modal-cert-verify-url" class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-2">Tautan Verifikasi Sertifikat <span class="text-slate-400 font-normal">(Opsional)</span></label>
+          <input
+            id="modal-cert-verify-url"
+            type="url"
+            placeholder="Contoh: https://www.dicoding.com/certificates/... (kosongkan jika tidak ada)"
+            class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors shadow-sm"
+          />
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-2">Foto / Gambar Sertifikat (Opsional)</label>
+          <div class="flex items-center gap-3">
+            <input
+              id="modal-cert-image"
+              type="text"
+              placeholder="/assets/img/nama-sertifikat.png atau URL"
+              class="flex-1 px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors shadow-sm"
+            />
+            <input type="file" id="cert-image-file-input" accept="image/*" class="hidden" />
+            <button type="button" id="upload-cert-image-btn" class="shrink-0 inline-flex items-center gap-1.5 px-3 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition-all cursor-pointer">
+              <i class="fas fa-upload"></i> Upload
+            </button>
+            <img id="cert-image-preview" src="" alt="" class="w-12 h-12 object-cover rounded-xl border border-slate-200 dark:border-slate-850 hidden" />
+          </div>
+        </div>
+
+        <div class="flex justify-end gap-3 pt-4 border-t border-slate-200 dark:border-slate-800">
+          <button
+            type="button"
+            id="modal-cancel-btn"
+            class="px-5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-bold transition-all cursor-pointer"
+          >
+            Batal
+          </button>
+          <button
+            type="submit"
+            class="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition-all cursor-pointer"
+          >
+            Simpan Sertifikat
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    let certificatesList = [] as any[];
+
+    async function loadCertificates() {
+      try {
+        const res = await fetch('/api/certificates');
+        if (res.ok) {
+          certificatesList = await res.json();
+        }
+      } catch (e) {
+        console.error('Error loading certificates list', e);
+      }
+    }
+
+    loadCertificates();
+
+    const grid = document.getElementById('certs-grid');
+    const modal = document.getElementById('cert-modal');
+    const modalForm = document.getElementById('modal-form') as HTMLFormElement;
+    const modalTitle = document.getElementById('modal-title');
+    const modalCertId = document.getElementById('modal-cert-id') as HTMLInputElement;
+    const modalCertTitle = document.getElementById('modal-cert-title') as HTMLInputElement;
+    const modalCertTitleEn = document.getElementById('modal-cert-title-en') as HTMLInputElement;
+    const modalCertIssuer = document.getElementById('modal-cert-issuer') as HTMLInputElement;
+    const modalCertIcon = document.getElementById('modal-cert-icon') as HTMLSelectElement;
+    const modalCertIssueDate = document.getElementById('modal-cert-issue-date') as HTMLInputElement;
+    const modalCertExpiration = document.getElementById('modal-cert-expiration') as HTMLInputElement;
+    const modalCertExpirationEn = document.getElementById('modal-cert-expiration-en') as HTMLInputElement;
+    const modalCertCredentialId = document.getElementById('modal-cert-credential-id') as HTMLInputElement;
+    const modalCertVerifyUrl = document.getElementById('modal-cert-verify-url') as HTMLInputElement;
+    const modalCertImage = document.getElementById('modal-cert-image') as HTMLInputElement;
+
+    function showModal(isEdit = false, cert: any = null) {
+      if (!modal) return;
+      
+      if (isEdit && cert) {
+        if (modalTitle) modalTitle.innerHTML = '<i class="fas fa-edit text-indigo-500"></i> Edit Rincian Sertifikat';
+        modalCertId.value = cert.id;
+        modalCertTitle.value = cert.title || '';
+        modalCertTitleEn.value = cert.title_en || '';
+        modalCertIssuer.value = cert.issuer || '';
+        modalCertIcon.value = cert.icon || 'fas fa-award';
+        modalCertIssueDate.value = cert.issueDate || '';
+        modalCertExpiration.value = cert.expiration || cert.expirationDate || 'Tidak Ada Kedaluwarsa';
+        modalCertExpirationEn.value = cert.expirationDate_en || 'No Expiration Date';
+        modalCertCredentialId.value = cert.credentialId || '';
+        modalCertVerifyUrl.value = cert.verifyUrl || '';
+        modalCertImage.value = (cert as any).image || '';
+        const prevImg = document.getElementById('cert-image-preview') as HTMLImageElement;
+        if ((cert as any).image) { prevImg.src = (cert as any).image; prevImg.classList.remove('hidden'); } else { prevImg.classList.add('hidden'); }
+      } else {
+        if (modalTitle) modalTitle.innerHTML = '<i class="fas fa-plus text-indigo-500"></i> Tambah Sertifikat Baru';
+        modalCertId.value = '';
+        modalCertTitle.value = '';
+        modalCertTitleEn.value = '';
+        modalCertIssuer.value = '';
+        modalCertIcon.value = 'fas fa-code';
+        modalCertIssueDate.value = '';
+        modalCertExpiration.value = 'Tidak Ada Kedaluwarsa';
+        modalCertExpirationEn.value = 'No Expiration Date';
+        modalCertCredentialId.value = '';
+        modalCertVerifyUrl.value = '';
+        modalCertImage.value = '';
+        const prevImg2 = document.getElementById('cert-image-preview') as HTMLImageElement;
+        prevImg2.classList.add('hidden');
+      }
+
+      modal.classList.remove('hidden');
+      setTimeout(() => {
+        modal.classList.add('opacity-100');
+      }, 10);
+    }
+
+    function hideModal() {
+      if (!modal) return;
+      modal.classList.remove('opacity-100');
+      setTimeout(() => {
+        modal.classList.add('hidden');
+      }, 300);
+    }
+
+    document.getElementById('add-cert-btn')?.addEventListener('click', () => {
+      showModal(false);
+    });
+
+    document.getElementById('modal-cancel-btn')?.addEventListener('click', () => {
+      hideModal();
+    });
+
+    grid?.addEventListener('click', async (e) => {
+      const target = e.target as HTMLElement;
+      
+      const editBtn = target.closest('.edit-btn');
+      if (editBtn) {
+        const id = editBtn.getAttribute('data-id');
+        const cert = certificatesList.find(c => c.id === id);
+        if (cert) {
+          showModal(true, cert);
+        }
+        return;
+      }
+
+      const deleteBtn = target.closest('.delete-btn');
+      if (deleteBtn) {
+        const id = deleteBtn.getAttribute('data-id');
+        if (confirm('Apakah Anda yakin ingin menghapus sertifikat ini?')) {
+          await deleteCertificate(id);
+        }
+        return;
+      }
+    });
+
+    modalForm?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const id = modalCertId.value;
+      const title = modalCertTitle.value.trim();
+      const title_en = modalCertTitleEn.value.trim();
+      const issuer = modalCertIssuer.value.trim();
+      const icon = modalCertIcon.value;
+      const issueDate = modalCertIssueDate.value.trim();
+      const expirationDate = modalCertExpiration.value.trim();
+      const expirationDate_en = modalCertExpirationEn.value.trim();
+      const credentialId = modalCertCredentialId.value.trim();
+      const verifyUrl = modalCertVerifyUrl.value.trim();
+
+      const payload = { id, title, title_en, issuer, icon, issueDate, expirationDate, expirationDate_en, credentialId, verifyUrl };
+
+      try {
+        const method = id ? 'PUT' : 'POST';
+        const res = await fetch('/api/certificates', {
+          method: method,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        if (res.ok) {
+          (window as any).showToast(id ? 'Sertifikat diperbarui!' : 'Sertifikat baru ditambahkan!', 'success');
+          hideModal();
+          setTimeout(() => {
+            window.location.reload();
+          }, 800);
+        } else {
+          (window as any).showToast('Gagal memproses data sertifikat!', 'error');
+        }
+      } catch (err) {
+        console.error(err);
+        (window as any).showToast('Terjadi kesalahan koneksi!', 'error');
+      }
+    });
+
+    async function deleteCertificate(id: string | null) {
+      if (!id) return;
+      try {
+        const res = await fetch(`/api/certificates?id=${id}`, {
+          method: 'DELETE'
+        });
+
+        if (res.ok) {
+          (window as any).showToast('Sertifikat berhasil dihapus!', 'success');
+          setTimeout(() => {
+            window.location.reload();
+          }, 800);
+        } else {
+          (window as any).showToast('Gagal menghapus sertifikat!', 'error');
+        }
+      } catch (err) {
+        console.error(err);
+        (window as any).showToast('Terjadi kesalahan koneksi!', 'error');
+      }
+    }
+
+    // ── Upload foto sertifikat ──
+    const uploadCertImageBtn = document.getElementById('upload-cert-image-btn');
+    const certImageFileInput = document.getElementById('cert-image-file-input') as HTMLInputElement;
+    uploadCertImageBtn?.addEventListener('click', () => certImageFileInput?.click());
+    certImageFileInput?.addEventListener('change', async () => {
+      const file = certImageFileInput.files?.[0];
+      if (!file) return;
+      const id = modalCertId.value;
+      if (!id) {
+        (window as any).showToast('Simpan sertifikat terlebih dahulu sebelum mengunggah gambar!', 'error');
+        return;
+      }
+      const form = new FormData();
+      form.append('certificateImage', file);
+      form.append('certificateId', id);
+      try {
+        const res = await fetch('/api/upload-assets', { method: 'POST', body: form });
+        const data = await res.json();
+        if (data.certificateImageUrl) {
+          modalCertImage.value = data.certificateImageUrl;
+          const preview = document.getElementById('cert-image-preview') as HTMLImageElement;
+          preview.src = data.certificateImageUrl;
+          preview.classList.remove('hidden');
+          (window as any).showToast('Foto sertifikat berhasil diunggah!', 'success');
+        } else {
+          (window as any).showToast(data.error || 'Gagal mengunggah foto!', 'error');
+        }
+      } catch (err) {
+        (window as any).showToast('Terjadi kesalahan koneksi!', 'error');
+      }
+    });
+  </script>
+</AdminLayout>

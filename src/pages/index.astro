@@ -1,17 +1,548 @@
 ---
+import fs from 'node:fs';
+import path from 'node:path';
+import Layout from '../layouts/Layout.astro';
 
+// Read all data dynamically server-side
+const profile = JSON.parse(fs.readFileSync(path.resolve('src/data/profile.json'), 'utf-8'));
+const skills = JSON.parse(fs.readFileSync(path.resolve('src/data/skills.json'), 'utf-8'));
+const projects = JSON.parse(fs.readFileSync(path.resolve('src/data/projects.json'), 'utf-8'));
+const publications = JSON.parse(fs.readFileSync(path.resolve('src/data/publications.json'), 'utf-8'));
+const certificates = JSON.parse(fs.readFileSync(path.resolve('src/data/certificates.json'), 'utf-8'));
+const blogs = JSON.parse(fs.readFileSync(path.resolve('src/data/blogs.json'), 'utf-8'));
+let education = [];
+try { education = JSON.parse(fs.readFileSync(path.resolve('src/data/education.json'), 'utf-8')); } catch(e) {}
+
+// Get language setting from cookie (default 'id')
+const lang = Astro.cookies.get('lang')?.value === 'en' ? 'en' : 'id';
+
+// Static text translations dictionary
+const t = {
+  id: {
+    statusOpen: "Terbuka untuk Peluang Magang & Kerja",
+    contactMe: "Hubungi Saya",
+    aboutTitle: "Tentang Saya",
+    skillsTitle: "Keterampilan & Alat",
+    collabTitle: "Ayo Berkolaborasi!",
+    collabSub: "Saya selalu terbuka untuk berdiskusi mengenai peluang magang, pekerjaan, maupun proyek kolaborasi dalam bidang pengembangan website, aplikasi, dan teknologi informasi.",
+    sendEmail: "Kirim Email",
+    whatsapp: "WhatsApp",
+    formName: "Nama Lengkap",
+    formNamePlaceholder: "Masukkan nama Anda",
+    formEmail: "Email",
+    formEmailPlaceholder: "nama@email.com",
+    formSubject: "Subjek",
+    formSubjectPlaceholder: "Contoh: Tawaran magang atau kolaborasi",
+    formMessage: "Pesan",
+    formMessagePlaceholder: "Tuliskan pesan, tawaran kerja, atau rencana kolaborasi...",
+    formSubmit: "Kirim Pesan",
+    formSuccessInfo: "Pesan akan diteruskan langsung ke email saya.",
+    detailRole: "Fokus Peran",
+    detailLoc: "Domisili",
+    detailUniv: "Universitas",
+    statEducation: "Pendidikan",
+    statProjects: "Karya Proyek",
+    statCerts: "Sertifikat",
+    statPubs: "Karya Ilmiah",
+    techFocus: "Teknologi Utama"
+  },
+  en: {
+    statusOpen: "Open for Internship & Job Opportunities",
+    contactMe: "Contact Me",
+    aboutTitle: "About Me",
+    skillsTitle: "Skills & Tools",
+    collabTitle: "Let's Collaborate!",
+    collabSub: "I am always open to discussing internship, job, or project collaboration opportunities in web development, applications, and information technology.",
+    sendEmail: "Send Email",
+    whatsapp: "WhatsApp",
+    formName: "Full Name",
+    formNamePlaceholder: "Enter your name",
+    formEmail: "Email",
+    formEmailPlaceholder: "name@email.com",
+    formSubject: "Subject",
+    formSubjectPlaceholder: "Example: Internship or collaboration offer",
+    formMessage: "Message",
+    formMessagePlaceholder: "Write your message, job offer, or collaboration plan...",
+    formSubmit: "Send Message",
+    formSuccessInfo: "Messages will be forwarded directly to my email.",
+    detailRole: "Role Focus",
+    detailLoc: "Location",
+    detailUniv: "University",
+    statEducation: "Education",
+    statProjects: "Projects Built",
+    statCerts: "Certificates",
+    statPubs: "Publications",
+    techFocus: "Core Tech Stack"
+  }
+}[lang];
+
+// Helper function to resolve dynamic bilingual fields with Indonesian fallback
+function getField(item: any, field: string) {
+  if (lang === 'en') {
+    return item[`${field}_en`] || item[field] || '';
+  }
+  return item[field] || '';
+}
+
+function getSkillIcon(name: string) {
+  const map: Record<string, string> = {
+    'php': 'devicon-php-plain',
+    'javascript': 'devicon-javascript-plain',
+    'dart': 'devicon-dart-plain',
+    'python': 'devicon-python-plain',
+    'sql': 'devicon-sqldeveloper-plain',
+    'c++': 'devicon-cplusplus-plain',
+    'java': 'devicon-java-plain',
+    'html': 'devicon-html5-plain',
+    'css': 'devicon-css3-plain',
+    'laravel': 'devicon-laravel-plain',
+    'flutter': 'devicon-flutter-plain',
+    'tailwind css': 'devicon-tailwindcss-plain',
+    'astro': 'devicon-astro-plain',
+    'node.js': 'devicon-nodejs-plain',
+    'git & github': 'devicon-github-original',
+    'postman': 'devicon-postman-plain',
+    'android studio': 'devicon-androidstudio-plain',
+    'vercel': 'devicon-vercel-original',
+    'mysql': 'devicon-mysql-plain',
+    'visual studio code': 'devicon-vscode-plain',
+    'problem solving': 'fas fa-puzzle-piece',
+    'communication': 'fas fa-comments',
+    'teamwork': 'fas fa-users',
+    'time management': 'fas fa-clock',
+    'adaptability': 'fas fa-exchange-alt',
+  };
+  return map[name.toLowerCase()] || 'fas fa-check-circle';
+}
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout activePage="home">
+    <!-- 2. HERO SECTION -->
+    <section id="home" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-20 md:pt-20 md:pb-28 flex flex-col-reverse md:flex-row items-center justify-between gap-12 relative overflow-hidden">
+      <!-- Glow background -->
+      <div class="absolute -top-40 -left-40 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute bottom-0 right-0 w-96 h-96 bg-violet-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+      <!-- Teks & CTA (Kiri) -->
+      <div class="flex-1 flex flex-col items-start z-10">
+        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-100 dark:border-indigo-900/40 text-indigo-600 dark:text-indigo-400 text-xs font-bold mb-6">
+          <span class="w-2 h-2 rounded-full bg-indigo-600 dark:bg-indigo-400 animate-pulse"></span>
+          {t.statusOpen}
+        </div>
+        
+        <h1 class="text-4xl md:text-5xl lg:text-7xl font-extrabold text-slate-950 dark:text-white leading-tight tracking-tight mb-4 flex flex-col items-start">
+          <span class="mb-2">{lang === 'en' ? "Hello, I'm" : "Halo, Saya"}</span>
+          <span class="inline-block min-h-[2.2em] leading-[1.1]">
+            <span id="typing-name" class="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 dark:from-indigo-400 dark:via-purple-400 dark:to-pink-400 text-transparent bg-clip-text inline [box-decoration-break:clone]" data-name={profile.name}></span><span class="inline-block w-[4px] h-[36px] md:h-[48px] lg:h-[64px] bg-indigo-500 animate-[blink_0.8s_step-end_infinite] ml-1 rounded-full align-bottom relative -bottom-1 md:-bottom-2"></span>
+          </span>
+        </h1>
+        
+        <p class="text-lg md:text-xl font-bold text-indigo-600 dark:text-indigo-400 mb-4">
+          {getField(profile, 'role')}
+        </p>
+        
+        <p class="text-slate-600 dark:text-slate-350 text-base md:text-lg mb-8 max-w-lg leading-relaxed">
+          {getField(profile, 'short_bio')}
+        </p>
+
+        <div class="flex flex-wrap items-center gap-4">
+          <a href="/projects" class="px-7 py-3.5 rounded-xl border border-indigo-200 dark:border-indigo-500/30 hover:border-indigo-500 bg-indigo-50/50 dark:bg-indigo-500/10 hover:bg-indigo-50 dark:hover:bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 font-bold text-sm transition-all shadow-sm flex items-center gap-2">
+            <i class="fas fa-layer-group"></i>
+            {lang === 'en' ? 'View Projects' : 'Lihat Proyek'}
+          </a>
+          <a href="#contact" class="px-7 py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-550 text-white font-bold text-sm transition-all shadow-lg shadow-indigo-600/25 active:scale-[0.98] flex items-center gap-2">
+            <i class="fas fa-envelope"></i>
+            {t.contactMe}
+          </a>
+        </div>
+      </div>
+
+      <!-- Gambar Profil & Sosial Media (Kanan) -->
+      <div class="flex-1 w-full flex flex-col items-center md:items-end z-10 relative">
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[280px] h-[280px] md:w-[420px] md:h-[420px] bg-gradient-to-tr from-indigo-500/20 to-purple-500/20 rounded-full blur-3xl -z-10"></div>
+        
+        <div class="relative mb-6">
+          <div class="relative w-64 h-64 md:w-96 md:h-96 rounded-3xl overflow-hidden border-4 border-white/80 dark:border-slate-800/80 shadow-2xl rotate-3 hover:rotate-0 transition-all duration-700 [animation:float_6s_ease-in-out_infinite]">
+            <img 
+              src={profile.profileImage || "/assets/img/foto-putra.jpeg"} 
+              alt={profile.name} 
+              class="w-full h-full object-cover"
+              loading="lazy"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-950/40 to-transparent"></div>
+          </div>
+          
+          <!-- Floating Badge: Keahlian Full-Stack -->
+          <div class="absolute bottom-4 -left-6 md:-left-8 bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm border border-slate-200 dark:border-slate-700 p-3 rounded-2xl shadow-xl transform -rotate-6 [animation:float_4s_ease-in-out_infinite_alternate] z-20">
+            <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1 text-center italic">{lang === 'en' ? 'EXPERTISE' : 'KEAHLIAN'}</p>
+            <p class="text-xs md:text-sm font-black text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-500/10 px-2.5 py-1 rounded-lg border border-indigo-100 dark:border-indigo-500/20">&lt;&gt; Full-Stack</p>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap justify-center gap-2 md:w-96">
+          {Object.entries(profile.socialLinks || {}).filter(([_, url]) => url).map(([platform, url]) => {
+            const iconMap: Record<string, string> = {
+              'linkedin': 'fab fa-linkedin-in group-hover:text-[#0077b5]',
+              'github': 'fab fa-github group-hover:text-slate-900 dark:group-hover:text-white',
+              'dicoding': 'fab fa-goodreads-g group-hover:text-indigo-600',
+              'instagram': 'fab fa-instagram group-hover:text-[#E1306C]',
+              'threads': 'fab fa-threads group-hover:text-slate-900 dark:group-hover:text-white',
+              'twitter': 'fab fa-x-twitter group-hover:text-slate-900 dark:group-hover:text-white',
+              'youtube': 'fab fa-youtube group-hover:text-[#FF0000]',
+              'tiktok': 'fab fa-tiktok group-hover:text-slate-900 dark:group-hover:text-white'
+            };
+            return (
+              <a 
+                href={url as string} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                class="group w-10 h-10 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-center hover:-translate-y-1 hover:border-indigo-500 hover:shadow-lg transition-all duration-300"
+                aria-label={platform}
+              >
+                <i class={`${iconMap[platform.toLowerCase()] || 'fas fa-link group-hover:text-indigo-500'} text-slate-400 dark:text-slate-500 transition-colors duration-300 text-lg`}></i>
+              </a>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. TENTANG SAYA -->
+    <section id="about" class="py-20 md:py-28 bg-slate-50/40 dark:bg-slate-900/20 border-t border-slate-200/80 dark:border-slate-800/80 transition-colors">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl md:text-4xl font-extrabold mb-10 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-transparent bg-clip-text inline-block">
+          {t.aboutTitle}
+        </h2>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+          <!-- Teks Deskripsi Panjang -->
+          <div class="lg:col-span-7">
+            <div class="prose prose-slate dark:prose-invert max-w-none text-slate-700 dark:text-slate-300 leading-loose text-base md:text-lg mb-10">
+              {getField(profile, 'description').split('\\n').map((paragraph: string) => (
+                <p class="mb-4">{paragraph}</p>
+              ))}
+            </div>
+
+            <!-- Pendidikan Timeline -->
+            {education.length > 0 && (
+              <div>
+                <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
+                  <i class="fas fa-graduation-cap text-indigo-500"></i>
+                  {lang === 'en' ? 'Education' : 'Pendidikan'}
+                </h3>
+                <div class="space-y-6">
+                  {education.map((edu: any) => (
+                    <div class="flex items-start gap-4 p-5 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition-all">
+                      <div class="w-14 h-14 shrink-0 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden flex items-center justify-center p-1.5">
+                        <img 
+                          src={edu.logo || 'https://placehold.co/100x100/ffffff/818cf8?text=Edu'} 
+                          alt={edu.institution}
+                          class="w-full h-full object-contain"
+                        />
+                      </div>
+                      <div>
+                        <h4 class="text-base font-bold text-slate-900 dark:text-white leading-tight mb-1">{getField(edu, 'institution')}</h4>
+                        <p class="text-sm font-semibold text-indigo-600 dark:text-indigo-400 mb-2">{getField(edu, 'degree')}</p>
+                        <p class="text-[11px] font-bold text-slate-500 mb-2 bg-slate-100 dark:bg-slate-800 inline-block px-2 py-1 rounded">
+                          {edu.startYear} - {edu.endYear || (lang === 'en' ? 'Present' : 'Sekarang')}
+                        </p>
+                        {edu.description && (
+                          <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                            {getField(edu, 'description')}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+          <!-- Info & Statistik Detail -->
+          <div class="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4">
+            
+            <!-- Stats (2 kolom di mobile) -->
+            <div class="grid grid-cols-2 gap-4 sm:col-span-2 lg:col-span-1">
+              
+              <!-- Card 1: Projects -->
+              <a href="/projects" class="group relative overflow-hidden bg-white/40 dark:bg-slate-900/40 backdrop-blur-md p-6 rounded-3xl border border-slate-200/60 dark:border-slate-700/50 flex flex-col items-center justify-center text-center shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.1)] hover:shadow-indigo-500/20 dark:hover:shadow-indigo-500/20 hover:-translate-y-2 hover:border-indigo-400/80 dark:hover:border-indigo-500/80 transition-all duration-500">
+                <div class="absolute inset-0 bg-gradient-to-br from-indigo-500/0 via-indigo-500/0 to-indigo-500/10 dark:from-indigo-500/0 dark:via-indigo-500/0 dark:to-indigo-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div class="w-12 h-12 rounded-2xl bg-indigo-50 dark:bg-indigo-500/10 flex items-center justify-center mb-4 text-indigo-600 dark:text-indigo-400 group-hover:scale-110 group-hover:bg-indigo-100 dark:group-hover:bg-indigo-500/20 transition-all duration-300 shadow-inner">
+                  <i class="fas fa-layer-group text-xl"></i>
+                </div>
+                <span class="relative z-10 text-4xl font-black text-slate-900 dark:text-white mb-1 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">{projects.length}</span>
+                <span class="relative z-10 text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-3">{t.statProjects}</span>
+                <span class="relative z-10 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800/80 text-[10px] text-slate-600 dark:text-slate-300 font-bold group-hover:bg-indigo-500 group-hover:text-white transition-colors duration-300">
+                  {lang === 'en' ? 'View More' : 'Lihat Selengkapnya'} <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                </span>
+              </a>
+
+              <!-- Card 2: Certificates -->
+              <a href="/certificates" class="group relative overflow-hidden bg-white/40 dark:bg-slate-900/40 backdrop-blur-md p-6 rounded-3xl border border-slate-200/60 dark:border-slate-700/50 flex flex-col items-center justify-center text-center shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.1)] hover:shadow-yellow-500/20 dark:hover:shadow-yellow-500/20 hover:-translate-y-2 hover:border-yellow-400/80 dark:hover:border-yellow-500/80 transition-all duration-500">
+                <div class="absolute inset-0 bg-gradient-to-br from-yellow-500/0 via-yellow-500/0 to-yellow-500/10 dark:from-yellow-500/0 dark:via-yellow-500/0 dark:to-yellow-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div class="w-12 h-12 rounded-2xl bg-yellow-50 dark:bg-yellow-500/10 flex items-center justify-center mb-4 text-yellow-600 dark:text-yellow-400 group-hover:scale-110 group-hover:bg-yellow-100 dark:group-hover:bg-yellow-500/20 transition-all duration-300 shadow-inner">
+                  <i class="fas fa-certificate text-xl"></i>
+                </div>
+                <span class="relative z-10 text-4xl font-black text-slate-900 dark:text-white mb-1 group-hover:text-yellow-500 transition-colors">{certificates.length}</span>
+                <span class="relative z-10 text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-3">{t.statCerts}</span>
+                <span class="relative z-10 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800/80 text-[10px] text-slate-600 dark:text-slate-300 font-bold group-hover:bg-yellow-500 group-hover:text-white transition-colors duration-300">
+                  {lang === 'en' ? 'View More' : 'Lihat Selengkapnya'} <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                </span>
+              </a>
+
+              <!-- Card 3: Publications -->
+              <a href="/publications" class="group relative overflow-hidden bg-white/40 dark:bg-slate-900/40 backdrop-blur-md p-6 rounded-3xl border border-slate-200/60 dark:border-slate-700/50 flex flex-col items-center justify-center text-center shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.1)] hover:shadow-emerald-500/20 dark:hover:shadow-emerald-500/20 hover:-translate-y-2 hover:border-emerald-400/80 dark:hover:border-emerald-500/80 transition-all duration-500">
+                <div class="absolute inset-0 bg-gradient-to-br from-emerald-500/0 via-emerald-500/0 to-emerald-500/10 dark:from-emerald-500/0 dark:via-emerald-500/0 dark:to-emerald-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div class="w-12 h-12 rounded-2xl bg-emerald-50 dark:bg-emerald-500/10 flex items-center justify-center mb-4 text-emerald-600 dark:text-emerald-400 group-hover:scale-110 group-hover:bg-emerald-100 dark:group-hover:bg-emerald-500/20 transition-all duration-300 shadow-inner">
+                  <i class="fas fa-book-open text-xl"></i>
+                </div>
+                <span class="relative z-10 text-4xl font-black text-slate-900 dark:text-white mb-1 group-hover:text-emerald-500 transition-colors">{publications.length}</span>
+                <span class="relative z-10 text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-3">{t.statPubs}</span>
+                <span class="relative z-10 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800/80 text-[10px] text-slate-600 dark:text-slate-300 font-bold group-hover:bg-emerald-500 group-hover:text-white transition-colors duration-300">
+                  {lang === 'en' ? 'View More' : 'Lihat Selengkapnya'} <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                </span>
+              </a>
+
+              <!-- Card 4: Blogs -->
+              <a href="/blog" class="group relative overflow-hidden bg-white/40 dark:bg-slate-900/40 backdrop-blur-md p-6 rounded-3xl border border-slate-200/60 dark:border-slate-700/50 flex flex-col items-center justify-center text-center shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.1)] hover:shadow-orange-500/20 dark:hover:shadow-orange-500/20 hover:-translate-y-2 hover:border-orange-400/80 dark:hover:border-orange-500/80 transition-all duration-500">
+                <div class="absolute inset-0 bg-gradient-to-br from-orange-500/0 via-orange-500/0 to-orange-500/10 dark:from-orange-500/0 dark:via-orange-500/0 dark:to-orange-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div class="w-12 h-12 rounded-2xl bg-orange-50 dark:bg-orange-500/10 flex items-center justify-center mb-4 text-orange-600 dark:text-orange-400 group-hover:scale-110 group-hover:bg-orange-100 dark:group-hover:bg-orange-500/20 transition-all duration-300 shadow-inner">
+                  <i class="fas fa-pen-nib text-xl"></i>
+                </div>
+                <span class="relative z-10 text-4xl font-black text-slate-900 dark:text-white mb-1 group-hover:text-orange-500 transition-colors">{blogs.length}</span>
+                <span class="relative z-10 text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-3">{lang === 'en' ? 'Blog / Articles' : 'Artikel / Tulisan'}</span>
+                <span class="relative z-10 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800/80 text-[10px] text-slate-600 dark:text-slate-300 font-bold group-hover:bg-orange-500 group-hover:text-white transition-colors duration-300">
+                  {lang === 'en' ? 'View More' : 'Lihat Selengkapnya'} <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                </span>
+              </a>
+
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. KETERAMPILAN & ALAT (Infinite Marquee) -->
+    <section id="skills" class="py-20 md:py-28 border-t border-slate-200/80 dark:border-slate-800/80 transition-colors overflow-hidden">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
+        <div class="flex justify-center text-center">
+          <h2 class="text-3xl md:text-4xl font-extrabold bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-transparent bg-clip-text inline-block">
+            {t.skillsTitle}
+          </h2>
+        </div>
+      </div>
+      
+      <div class="relative flex overflow-x-hidden group">
+        <!-- Marquee Track 1 -->
+        <div class="py-4 animate-marquee whitespace-nowrap flex items-center gap-12 px-6">
+          {skills.flatMap((c: any) => c.items).map((item: string) => (
+            <div class="flex flex-col items-center justify-center min-w-[80px] gap-3 opacity-60 hover:opacity-100 hover:-translate-y-2 transition-all cursor-default group/icon">
+              <i class={`${getSkillIcon(item)} text-5xl text-slate-700 dark:text-slate-300 group-hover/icon:text-indigo-500 transition-colors drop-shadow-sm`}></i>
+              <span class="text-xs font-bold text-slate-500">{item}</span>
+            </div>
+          ))}
+        </div>
+        <!-- Marquee Track 2 (Duplicate for infinite scroll) -->
+        <div class="absolute top-0 py-4 animate-marquee2 whitespace-nowrap flex items-center gap-12 px-6">
+          {skills.flatMap((c: any) => c.items).map((item: string) => (
+            <div class="flex flex-col items-center justify-center min-w-[80px] gap-3 opacity-60 hover:opacity-100 hover:-translate-y-2 transition-all cursor-default group/icon">
+              <i class={`${getSkillIcon(item)} text-5xl text-slate-700 dark:text-slate-300 group-hover/icon:text-indigo-500 transition-colors drop-shadow-sm`}></i>
+              <span class="text-xs font-bold text-slate-500">{item}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- 9. KONTAK & FOOTER -->
+    <section id="contact" class="py-20 md:py-28 bg-white dark:bg-slate-950 border-t border-slate-200/80 dark:border-slate-800/80 transition-colors">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-3xl mx-auto mb-16 relative">
+          <!-- Glow effect behind form -->
+          <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full max-w-2xl bg-gradient-to-tr from-indigo-500/10 via-purple-500/10 to-pink-500/10 rounded-full blur-3xl -z-10 pointer-events-none"></div>
+
+          <!-- Informasi Kontak -->
+          <div class="flex flex-col items-center justify-center text-center mb-10 relative z-10">
+            <h2 class="text-3xl md:text-4xl font-extrabold mb-4 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-transparent bg-clip-text inline-block">
+              {t.collabTitle}
+            </h2>
+
+            <p class="text-slate-600 dark:text-slate-400 text-sm md:text-base leading-relaxed mb-4 max-w-2xl">
+              {t.collabSub}
+            </p>
+          </div>
+
+          <!-- Form Kontak -->
+          <form 
+            action="https://formspree.io/f/mqazwrjj" 
+            method="POST"
+            class="relative z-10 overflow-hidden backdrop-blur-2xl bg-white/80 dark:bg-slate-900/80 p-6 md:p-8 rounded-3xl border border-slate-200/50 dark:border-slate-700/50 shadow-2xl shadow-indigo-500/5"
+          >
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
+              <div>
+                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-2 pl-1">{t.formName} *</label>
+                <input 
+                  type="text" 
+                  name="name"
+                  required
+                  placeholder={t.formNamePlaceholder}
+                  class="w-full px-5 py-4 rounded-xl bg-slate-50/50 dark:bg-slate-950/50 border border-slate-200 dark:border-slate-800/80 text-slate-900 dark:text-white text-sm placeholder:text-slate-400 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30 transition-all shadow-sm"
+                />
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-2 pl-1">{t.formEmail} *</label>
+                <input 
+                  type="email" 
+                  name="email"
+                  required
+                  placeholder={t.formEmailPlaceholder}
+                  class="w-full px-5 py-4 rounded-xl bg-slate-50/50 dark:bg-slate-950/50 border border-slate-200 dark:border-slate-800/80 text-slate-900 dark:text-white text-sm placeholder:text-slate-400 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30 transition-all shadow-sm"
+                />
+              </div>
+            </div>
+
+            <div class="mb-5">
+              <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-2 pl-1">{t.formSubject} *</label>
+              <input 
+                type="text" 
+                name="subject"
+                required
+                placeholder={t.formSubjectPlaceholder}
+                class="w-full px-5 py-4 rounded-xl bg-slate-50/50 dark:bg-slate-950/50 border border-slate-200 dark:border-slate-800/80 text-slate-900 dark:text-white text-sm placeholder:text-slate-400 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30 transition-all shadow-sm"
+              />
+            </div>
+
+            <div class="mb-6">
+              <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-2 pl-1">{t.formMessage} *</label>
+              <textarea 
+                name="message"
+                rows="5"
+                required
+                placeholder={t.formMessagePlaceholder}
+                class="w-full px-5 py-4 rounded-xl bg-slate-50/50 dark:bg-slate-950/50 border border-slate-200 dark:border-slate-800/80 text-slate-900 dark:text-white text-sm placeholder:text-slate-400 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30 resize-none transition-all shadow-sm"
+              ></textarea>
+            </div>
+
+            <button type="submit" class="w-full relative overflow-hidden group inline-flex items-center justify-center py-4 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold text-sm transition-all shadow-lg shadow-indigo-500/25 active:scale-[0.98]">
+              <div class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out"></div>
+              <span class="relative z-10 flex items-center gap-2">
+                <i class="fas fa-paper-plane group-hover:-translate-y-1 group-hover:translate-x-1 transition-transform"></i>
+                {t.formSubmit}
+              </span>
+            </button>
+
+            <p class="text-[10px] text-slate-400 dark:text-slate-500 text-center mt-1">
+              {t.formSuccessInfo}
+            </p>
+          </form>
+        </div>
+      </div>
+    </section>
+
+<style>
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+  @keyframes float {
+    0% { transform: translateY(0px) rotate(3deg); }
+    50% { transform: translateY(-10px) rotate(0deg); }
+    100% { transform: translateY(0px) rotate(3deg); }
+  }
+  @keyframes marquee {
+    0% { transform: translateX(0%); }
+    100% { transform: translateX(-100%); }
+  }
+  @keyframes marquee2 {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(0%); }
+  }
+  .animate-marquee {
+    animation: marquee 30s linear infinite;
+  }
+  .animate-marquee2 {
+    animation: marquee2 30s linear infinite;
+  }
+  /* Pause on hover to allow user to see the icons */
+  .group:hover .animate-marquee,
+  .group:hover .animate-marquee2 {
+    animation-play-state: paused;
+  }
+</style>
+
+<script>
+  // Sequential multi-line typing effect for the name
+  const typingElement = document.getElementById('typing-name');
+  if (typingElement) {
+    const fullName = typingElement.getAttribute('data-name') || '';
+    const nameParts = fullName.split(' ');
+    // Handle single-word names gracefully as well
+    const firstName = nameParts.length > 1 ? nameParts.slice(0, -1).join(' ') : fullName;
+    const lastName = nameParts.length > 1 ? nameParts.slice(-1).join('') : '';
+    
+    let isDeleting = false;
+    let charIndex = 0;
+    let isLine2 = false;
+
+    function type() {
+      if (!lastName) {
+        // Single line fallback
+        typingElement.innerHTML = isDeleting 
+          ? firstName.substring(0, charIndex - 1) 
+          : firstName.substring(0, charIndex + 1);
+        charIndex += isDeleting ? -1 : 1;
+        
+        if (!isDeleting && charIndex === firstName.length) {
+          isDeleting = true;
+          setTimeout(type, 3000);
+          return;
+        } else if (isDeleting && charIndex === 0) {
+          isDeleting = false;
+        }
+      } else {
+        // Multi-line typing
+        if (!isDeleting) {
+          if (!isLine2) {
+            typingElement.innerHTML = firstName.substring(0, charIndex + 1);
+          } else {
+            typingElement.innerHTML = firstName + '<br/>' + lastName.substring(0, charIndex + 1);
+          }
+          charIndex++;
+          
+          if (!isLine2 && charIndex === firstName.length) {
+            isLine2 = true;
+            charIndex = 0;
+            setTimeout(type, 400); // pause before typing second line
+            return;
+          } else if (isLine2 && charIndex === lastName.length) {
+            isDeleting = true;
+            setTimeout(type, 3000); // pause before deleting
+            return;
+          }
+        } else {
+          if (isLine2) {
+            typingElement.innerHTML = firstName + '<br/>' + lastName.substring(0, charIndex - 1);
+          } else {
+            typingElement.innerHTML = firstName.substring(0, charIndex - 1);
+          }
+          charIndex--;
+          
+          if (isLine2 && charIndex === 0) {
+            isLine2 = false;
+            charIndex = firstName.length;
+          } else if (!isLine2 && charIndex === 0) {
+            isDeleting = false;
+          }
+        }
+      }
+      
+      const speed = isDeleting ? 40 : 120;
+      setTimeout(type, speed + (Math.random() * 30));
+    }
+    
+    setTimeout(type, 500);
+  }
+</script>
+</Layout>

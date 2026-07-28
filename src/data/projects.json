@@ -1,0 +1,37 @@
+[
+  {
+    "id": "2",
+    "title": "DLSB-TI FIFO",
+    "title_en": "DLSB-TI FIFO",
+    "description": "Aplikasi berbasis web untuk mendigitalisasi sistem peminjaman dan sirkulasi inventaris barang di Jurusan Teknik Informatika Universitas Malikussaleh. Sistem ini menerapkan logika FIFO (First In, First Out) untuk memastikan keakuratan data dan manajemen stok yang efisien.",
+    "description_en": "Web-based application to digitalize the loan and circulation system of inventory items in the Informatics Engineering Department of Malikussaleh University. The system applies FIFO (First In, First Out) logic to ensure data accuracy and efficient stock management.",
+    "image": "/project-image-1785175692148.png",
+    "fallbackImg": "https://placehold.co/600x400/020617/818cf8?text=Sistem+FIFO+Inventaris",
+    "tags": [
+      "PHP",
+      "MySQL",
+      "HTML",
+      "CSS",
+      "JavaScript"
+    ],
+    "link": "https://github.com/putraharapantafonao/dlsb_ti_fifo",
+    "demoUrl": "#"
+  },
+  {
+    "id": "3",
+    "title": "DevMate AI",
+    "title_en": "DevMate AI",
+    "description": "Asisten chatbot virtual berbasis kecerdasan buatan (AI) yang diintegrasikan dengan Gemini API untuk membantu meningkatkan produktivitas developer, memberikan solusi kode, serta mengoptimalkan alur kerja pemrograman.",
+    "description_en": "Virtual chatbot assistant based on artificial intelligence (AI) integrated with the Gemini API to help increase developer productivity, provide code solutions, and optimize programming workflows.",
+    "image": "/project-image-1785175706173.png",
+    "fallbackImg": "https://placehold.co/600x400/0a1628/00f5d4?text=DevMate+AI",
+    "tags": [
+      "AI & ML",
+      "Python",
+      "Gemini API",
+      "Streamlit"
+    ],
+    "link": "https://github.com/putraharapantafonao/devmate-ai-chatbot",
+    "demoUrl": "https://devmate-ai-chatbot.streamlit.app/"
+  }
+]

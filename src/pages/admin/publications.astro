@@ -1,0 +1,435 @@
+---
+import { isAuthenticated } from '../../utils/auth';
+
+if (!isAuthenticated(Astro.cookies)) {
+  return Astro.redirect('/admin/login');
+}
+
+import fs from 'node:fs';
+import path from 'node:path';
+import AdminLayout from '../../layouts/AdminLayout.astro';
+
+// Load publications server-side
+const publications = JSON.parse(fs.readFileSync(path.resolve('src/data/publications.json'), 'utf-8'));
+---
+
+<AdminLayout title="Kelola Publikasi Ilmiah" activeTab="publications">
+  <div class="mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+    <p class="text-slate-500 dark:text-slate-400 text-sm max-w-xl">
+      Kelola karya tulis ilmiah, jurnal, atau prosiding yang pernah Anda terbitkan. Publikasi di bawah ini mendukung versi dwi-bahasa (Indonesia & Inggris).
+    </p>
+    <button
+      id="add-pub-btn"
+      class="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs transition-all shadow-lg shadow-indigo-600/30 cursor-pointer shrink-0"
+    >
+      <i class="fas fa-plus"></i> Tambah Publikasi Baru
+    </button>
+  </div>
+
+  <!-- Daftar Publikasi -->
+  <div class="space-y-6" id="publications-list">
+    {publications.map((pub: any) => (
+      <div 
+        class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl flex flex-col justify-between shadow-sm dark:shadow-xl relative overflow-hidden"
+        data-id={pub.id}
+      >
+        <div>
+          <div class="flex items-center gap-2 mb-3">
+            <span class="px-2.5 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-100 dark:border-emerald-900/30 text-[10px] font-bold text-emerald-600 dark:text-emerald-450 pub-status">
+              ✓ {pub.status}
+            </span>
+            <span class="text-xs text-slate-450 dark:text-slate-500 font-semibold">{pub.details}</span>
+          </div>
+
+          <h4 class="text-md font-bold text-slate-900 dark:text-white mb-2 pub-title leading-snug">{pub.title}</h4>
+          <p class="text-xs font-bold text-indigo-650 dark:text-indigo-400 mb-3 pub-journal">{pub.journal}</p>
+          <p class="text-slate-550 dark:text-slate-400 text-xs italic leading-relaxed mb-5 line-clamp-3 pub-abstract">"{pub.abstract}"</p>
+        </div>
+
+        <div class="flex items-center gap-2 pt-4 border-t border-slate-200 dark:border-slate-850">
+          <button
+            class="edit-btn flex-1 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-indigo-500/30 bg-slate-50 dark:bg-slate-950 hover:bg-slate-100 dark:hover:bg-slate-900 text-slate-700 dark:text-slate-300 hover:text-indigo-650 dark:hover:text-indigo-400 text-xs font-bold transition-all cursor-pointer"
+            data-id={pub.id}
+          >
+            <i class="fas fa-edit mr-1"></i> Edit Publikasi
+          </button>
+          <button
+            class="delete-btn py-2.5 px-3.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-red-500/30 bg-slate-50 dark:bg-slate-950 hover:bg-red-550/5 text-slate-400 dark:text-slate-500 hover:text-red-650 dark:hover:text-red-400 text-xs font-bold transition-all cursor-pointer"
+            data-id={pub.id}
+          >
+            <i class="fas fa-trash-alt"></i>
+          </button>
+        </div>
+      </div>
+    ))}
+  </div>
+
+  <!-- Modal Dialog (Hidden by Default) -->
+  <div 
+    id="pub-modal" 
+    class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden opacity-0 transition-opacity duration-300"
+  >
+    <div class="w-full max-w-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+      <h3 id="modal-title" class="text-md font-bold text-slate-900 dark:text-white mb-6 pb-2 border-b border-slate-200 dark:border-slate-800 flex items-center gap-2">
+        <i class="fas fa-edit text-indigo-600 dark:text-indigo-400"></i>
+        Edit Rincian Publikasi
+      </h3>
+
+      <form id="modal-form" class="space-y-5">
+        <input type="hidden" id="modal-pub-id" />
+        
+        <div>
+          <label for="modal-pub-title" class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-2">Judul Artikel Ilmiah (ID)</label>
+          <input
+            id="modal-pub-title"
+            type="text"
+            required
+            placeholder="Masukkan judul publikasi dalam Bahasa Indonesia"
+            class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors shadow-sm"
+          />
+        </div>
+
+        <div>
+          <label for="modal-pub-title-en" class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-2">Judul Artikel Ilmiah (EN)</label>
+          <input
+            id="modal-pub-title-en"
+            type="text"
+            required
+            placeholder="Enter scientific article title in English"
+            class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors shadow-sm"
+          />
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label for="modal-pub-journal" class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-2">Nama Jurnal / Penerbit (ID)</label>
+            <input
+              id="modal-pub-journal"
+              type="text"
+              required
+              placeholder="Ex: Jurnal Ilmu Komputer"
+              class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors shadow-sm"
+            />
+          </div>
+          <div>
+            <label for="modal-pub-journal-en" class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-2">Nama Jurnal / Penerbit (EN)</label>
+            <input
+              id="modal-pub-journal-en"
+              type="text"
+              required
+              placeholder="Ex: Journal of Computer Science"
+              class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors shadow-sm"
+            />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div class="sm:col-span-1">
+            <label for="modal-pub-details" class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-2">Vol / Ed / Tahun</label>
+            <input
+              id="modal-pub-details"
+              type="text"
+              required
+              placeholder="Vol. 4, No. 1, 2026"
+              class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors shadow-sm"
+            />
+          </div>
+          <div>
+            <label for="modal-pub-status" class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-2">Status Akreditasi (ID)</label>
+            <input
+              id="modal-pub-status"
+              type="text"
+              required
+              placeholder="Terindeks Google Scholar"
+              class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors shadow-sm"
+            />
+          </div>
+          <div>
+            <label for="modal-pub-status-en" class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-2">Status Akreditasi (EN)</label>
+            <input
+              id="modal-pub-status-en"
+              type="text"
+              required
+              placeholder="Indexed in Google Scholar"
+              class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors shadow-sm"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label for="modal-pub-abstract" class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-2">Intisari / Abstrak (ID)</label>
+          <textarea
+            id="modal-pub-abstract"
+            required
+            rows="3"
+            placeholder="Tuliskan abstrak artikel ilmiah dalam Bahasa Indonesia..."
+            class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-sm resize-none focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors shadow-sm"
+          ></textarea>
+        </div>
+
+        <div>
+          <label for="modal-pub-abstract-en" class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-2">Intisari / Abstrak (EN)</label>
+          <textarea
+            id="modal-pub-abstract-en"
+            required
+            rows="3"
+            placeholder="Write the abstract of the article in English..."
+            class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-sm resize-none focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors shadow-sm"
+          ></textarea>
+        </div>
+
+        <div>
+          <label for="modal-pub-link" class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-2">Tautan Publikasi (Google Scholar atau DOI)</label>
+          <input
+            id="modal-pub-link"
+            type="text"
+            placeholder="Contoh: https://scholar.google.com/..."
+            class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors shadow-sm"
+          />
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-2">Foto / Gambar Sampul Publikasi (Opsional)</label>
+          <div class="flex items-center gap-3">
+            <input
+              id="modal-pub-image"
+              type="text"
+              placeholder="/assets/img/nama-publikasi.png atau URL"
+              class="flex-1 px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors shadow-sm"
+            />
+            <input type="file" id="pub-image-file-input" accept="image/*" class="hidden" />
+            <button type="button" id="upload-pub-image-btn" class="shrink-0 inline-flex items-center gap-1.5 px-3 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition-all cursor-pointer">
+              <i class="fas fa-upload"></i> Upload
+            </button>
+            <img id="pub-image-preview" src="" alt="" class="w-12 h-12 object-cover rounded-xl border border-slate-200 dark:border-slate-850 hidden" />
+          </div>
+        </div>
+
+        <div class="flex justify-end gap-3 pt-4 border-t border-slate-200 dark:border-slate-800">
+          <button
+            type="button"
+            id="modal-cancel-btn"
+            class="px-5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-bold transition-all cursor-pointer"
+          >
+            Batal
+          </button>
+          <button
+            type="submit"
+            class="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition-all cursor-pointer"
+          >
+            Simpan Publikasi
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    let publicationsList = [] as any[];
+
+    async function loadPublications() {
+      try {
+        const res = await fetch('/api/publications');
+        if (res.ok) {
+          publicationsList = await res.json();
+        }
+      } catch (e) {
+        console.error('Error loading publications list', e);
+      }
+    }
+
+    loadPublications();
+
+    const list = document.getElementById('publications-list');
+    const modal = document.getElementById('pub-modal');
+    const modalForm = document.getElementById('modal-form') as HTMLFormElement;
+    const modalTitle = document.getElementById('modal-title');
+    const modalPubId = document.getElementById('modal-pub-id') as HTMLInputElement;
+    const modalPubTitle = document.getElementById('modal-pub-title') as HTMLInputElement;
+    const modalPubTitleEn = document.getElementById('modal-pub-title-en') as HTMLInputElement;
+    const modalPubJournal = document.getElementById('modal-pub-journal') as HTMLInputElement;
+    const modalPubJournalEn = document.getElementById('modal-pub-journal-en') as HTMLInputElement;
+    const modalPubDetails = document.getElementById('modal-pub-details') as HTMLInputElement;
+    const modalPubStatus = document.getElementById('modal-pub-status') as HTMLInputElement;
+    const modalPubStatusEn = document.getElementById('modal-pub-status-en') as HTMLInputElement;
+    const modalPubAbstract = document.getElementById('modal-pub-abstract') as HTMLTextAreaElement;
+    const modalPubAbstractEn = document.getElementById('modal-pub-abstract-en') as HTMLTextAreaElement;
+    const modalPubLink = document.getElementById('modal-pub-link') as HTMLInputElement;
+    const modalPubImage = document.getElementById('modal-pub-image') as HTMLInputElement;
+
+    function showModal(isEdit = false, pub: any = null) {
+      if (!modal) return;
+      
+      if (isEdit && pub) {
+        if (modalTitle) modalTitle.innerHTML = '<i class="fas fa-edit text-indigo-500"></i> Edit Rincian Publikasi';
+        modalPubId.value = pub.id;
+        modalPubTitle.value = pub.title || '';
+        modalPubTitleEn.value = pub.title_en || '';
+        modalPubJournal.value = pub.journal || '';
+        modalPubJournalEn.value = pub.journal_en || '';
+        modalPubDetails.value = pub.details || '';
+        modalPubStatus.value = pub.status || 'Terbit';
+        modalPubStatusEn.value = pub.status_en || '';
+        modalPubAbstract.value = pub.abstract || '';
+        modalPubAbstractEn.value = pub.abstract_en || '';
+        modalPubLink.value = pub.link || '#';
+        modalPubImage.value = (pub as any).image || '';
+        const prevImg = document.getElementById('pub-image-preview') as HTMLImageElement;
+        if ((pub as any).image) { prevImg.src = (pub as any).image; prevImg.classList.remove('hidden'); } else { prevImg.classList.add('hidden'); }
+      } else {
+        if (modalTitle) modalTitle.innerHTML = '<i class="fas fa-plus text-indigo-500"></i> Tambah Publikasi Baru';
+        modalPubId.value = '';
+        modalPubTitle.value = '';
+        modalPubTitleEn.value = '';
+        modalPubJournal.value = '';
+        modalPubJournalEn.value = '';
+        modalPubDetails.value = '';
+        modalPubStatus.value = 'Terindeks Google Scholar';
+        modalPubStatusEn.value = '';
+        modalPubAbstract.value = '';
+        modalPubAbstractEn.value = '';
+        modalPubLink.value = '#';
+        modalPubImage.value = '';
+        const prevImg2 = document.getElementById('pub-image-preview') as HTMLImageElement;
+        prevImg2.classList.add('hidden');
+      }
+
+      modal.classList.remove('hidden');
+      setTimeout(() => {
+        modal.classList.add('opacity-100');
+      }, 10);
+    }
+
+    function hideModal() {
+      if (!modal) return;
+      modal.classList.remove('opacity-100');
+      setTimeout(() => {
+        modal.classList.add('hidden');
+      }, 300);
+    }
+
+    document.getElementById('add-pub-btn')?.addEventListener('click', () => {
+      showModal(false);
+    });
+
+    document.getElementById('modal-cancel-btn')?.addEventListener('click', () => {
+      hideModal();
+    });
+
+    list?.addEventListener('click', async (e) => {
+      const target = e.target as HTMLElement;
+      
+      const editBtn = target.closest('.edit-btn');
+      if (editBtn) {
+        const id = editBtn.getAttribute('data-id');
+        const pub = publicationsList.find(p => p.id === id);
+        if (pub) {
+          showModal(true, pub);
+        }
+        return;
+      }
+
+      const deleteBtn = target.closest('.delete-btn');
+      if (deleteBtn) {
+        const id = deleteBtn.getAttribute('data-id');
+        if (confirm('Apakah Anda yakin ingin menghapus publikasi ini secara permanen?')) {
+          await deletePublication(id);
+        }
+        return;
+      }
+    });
+
+    modalForm?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const id = modalPubId.value;
+      const title = modalPubTitle.value.trim();
+      const title_en = modalPubTitleEn.value.trim();
+      const journal = modalPubJournal.value.trim();
+      const journal_en = modalPubJournalEn.value.trim();
+      const details = modalPubDetails.value.trim();
+      const status = modalPubStatus.value.trim();
+      const status_en = modalPubStatusEn.value.trim();
+      const abstract = modalPubAbstract.value.trim();
+      const abstract_en = modalPubAbstractEn.value.trim();
+      const link = modalPubLink.value.trim();
+
+      const payload = { id, title, title_en, journal, journal_en, details, status, status_en, abstract, abstract_en, link };
+
+      try {
+        const method = id ? 'PUT' : 'POST';
+        const res = await fetch('/api/publications', {
+          method: method,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        if (res.ok) {
+          (window as any).showToast(id ? 'Publikasi berhasil diperbarui!' : 'Publikasi baru ditambahkan!', 'success');
+          hideModal();
+          setTimeout(() => {
+            window.location.reload();
+          }, 800);
+        } else {
+          (window as any).showToast('Gagal memproses data publikasi!', 'error');
+        }
+      } catch (err) {
+        console.error(err);
+        (window as any).showToast('Terjadi kesalahan koneksi!', 'error');
+      }
+    });
+
+    async function deletePublication(id: string | null) {
+      if (!id) return;
+      try {
+        const res = await fetch(`/api/publications?id=${id}`, {
+          method: 'DELETE'
+        });
+
+        if (res.ok) {
+          (window as any).showToast('Publikasi berhasil dihapus!', 'success');
+          setTimeout(() => {
+            window.location.reload();
+          }, 800);
+        } else {
+          (window as any).showToast('Gagal menghapus publikasi!', 'error');
+        }
+      } catch (err) {
+        console.error(err);
+        (window as any).showToast('Terjadi kesalahan koneksi!', 'error');
+      }
+    }
+
+    // ── Upload foto sampul publikasi ──
+    const uploadPubImageBtn = document.getElementById('upload-pub-image-btn');
+    const pubImageFileInput = document.getElementById('pub-image-file-input') as HTMLInputElement;
+    uploadPubImageBtn?.addEventListener('click', () => pubImageFileInput?.click());
+    pubImageFileInput?.addEventListener('change', async () => {
+      const file = pubImageFileInput.files?.[0];
+      if (!file) return;
+      const id = modalPubId.value;
+      if (!id) {
+        (window as any).showToast('Simpan publikasi terlebih dahulu sebelum mengunggah gambar!', 'error');
+        return;
+      }
+      const form = new FormData();
+      form.append('publicationImage', file);
+      form.append('publicationId', id);
+      try {
+        const res = await fetch('/api/upload-assets', { method: 'POST', body: form });
+        const data = await res.json();
+        if (data.publicationImageUrl) {
+          modalPubImage.value = data.publicationImageUrl;
+          const preview = document.getElementById('pub-image-preview') as HTMLImageElement;
+          preview.src = data.publicationImageUrl;
+          preview.classList.remove('hidden');
+          (window as any).showToast('Foto publikasi berhasil diunggah!', 'success');
+        } else {
+          (window as any).showToast(data.error || 'Gagal mengunggah foto!', 'error');
+        }
+      } catch (err) {
+        (window as any).showToast('Terjadi kesalahan koneksi!', 'error');
+      }
+    });
+  </script>
+</AdminLayout>

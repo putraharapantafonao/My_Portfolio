@@ -1,0 +1,418 @@
+---
+import { isAuthenticated } from '../../utils/auth';
+
+if (!isAuthenticated(Astro.cookies)) {
+  return Astro.redirect('/admin/login');
+}
+
+import fs from 'node:fs';
+import path from 'node:path';
+import AdminLayout from '../../layouts/AdminLayout.astro';
+
+// Load blogs server-side
+const blogs = JSON.parse(fs.readFileSync(path.resolve('src/data/blogs.json'), 'utf-8'));
+---
+
+<AdminLayout title="Kelola Artikel & Blog" activeTab="blog">
+  <div class="mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+    <p class="text-slate-500 dark:text-slate-400 text-sm max-w-xl">
+      Kelola tulisan teknis, catatan rekayasa, atau pemikiran industri Anda. Anda dapat menulis versi Indonesia dan Inggris untuk dipublikasikan secara bersamaan.
+    </p>
+    <button
+      id="add-blog-btn"
+      class="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs transition-all shadow-lg shadow-indigo-600/30 cursor-pointer shrink-0"
+    >
+      <i class="fas fa-plus"></i> Tulis Artikel Baru
+    </button>
+  </div>
+
+  <!-- Daftar Blog -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="blogs-list">
+    {blogs.map((b: any) => (
+      <div 
+        class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden flex flex-col justify-between shadow-sm dark:shadow-xl group"
+        data-id={b.id}
+      >
+        {b.image && (
+          <div class="relative h-36 bg-slate-100 dark:bg-slate-950 overflow-hidden border-b border-slate-200 dark:border-slate-850">
+            <img 
+              src={b.image} 
+              alt={b.title}
+              class="w-full h-full object-cover opacity-90"
+              onerror="this.style.display='none'"
+            />
+          </div>
+        )}
+        <div class="p-5 flex-1 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between text-[10px] text-slate-400 mb-3 font-semibold">
+              <span class="px-2 py-0.5 rounded bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-100/50 dark:border-indigo-900/30 text-indigo-600 dark:text-indigo-400">{b.category}</span>
+              <time>{b.date}</time>
+            </div>
+            <h4 class="text-sm font-bold text-slate-900 dark:text-white mb-2 leading-snug line-clamp-2">{b.title}</h4>
+            <p class="text-slate-500 dark:text-slate-400 text-xs leading-relaxed mb-4 line-clamp-2">{b.summary}</p>
+          </div>
+
+          <div class="flex items-center gap-2 pt-4 border-t border-slate-200 dark:border-slate-850">
+            <button
+              class="edit-btn flex-1 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-indigo-500/30 bg-slate-50 dark:bg-slate-950 hover:bg-slate-100 dark:hover:bg-slate-900 text-slate-700 dark:text-slate-300 hover:text-indigo-650 dark:hover:text-indigo-400 text-xs font-bold transition-all cursor-pointer"
+              data-id={b.id}
+            >
+              <i class="fas fa-edit mr-1"></i> Edit
+            </button>
+            <button
+              class="delete-btn py-2.5 px-3.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-red-500/30 bg-slate-50 dark:bg-slate-950 hover:bg-red-550/5 text-slate-400 dark:text-slate-500 hover:text-red-650 dark:hover:text-red-400 text-xs font-bold transition-all cursor-pointer"
+              data-id={b.id}
+            >
+              <i class="fas fa-trash-alt"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+
+  <!-- Modal Dialog (Hidden by Default) -->
+  <div 
+    id="blog-modal" 
+    class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden opacity-0 transition-opacity duration-300"
+  >
+    <div class="w-full max-w-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+      <h3 id="modal-title" class="text-md font-bold text-slate-900 dark:text-white mb-6 pb-2 border-b border-slate-200 dark:border-slate-800 flex items-center gap-2">
+        <i class="fas fa-pen-nib text-indigo-600 dark:text-indigo-400"></i>
+        Tulis Artikel Blog Baru
+      </h3>
+
+      <form id="modal-form" class="space-y-5">
+        <input type="hidden" id="modal-blog-id" />
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label for="modal-blog-title" class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-2">Judul Artikel (ID)</label>
+            <input
+              id="modal-blog-title"
+              type="text"
+              required
+              placeholder="Masukkan judul artikel"
+              class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors shadow-sm"
+            />
+          </div>
+          <div>
+            <label for="modal-blog-title-en" class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-2">Judul Artikel (EN)</label>
+            <input
+              id="modal-blog-title-en"
+              type="text"
+              required
+              placeholder="Enter English blog title"
+              class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors shadow-sm"
+            />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div>
+            <label for="modal-blog-category" class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-2">Kategori</label>
+            <select
+              id="modal-blog-category"
+              required
+              class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors shadow-sm"
+            >
+              <option value="Backend">Backend</option>
+              <option value="Frontend">Frontend</option>
+              <option value="Mobile Dev">Mobile Dev</option>
+              <option value="UI/UX">UI/UX</option>
+              <option value="AI & ML">AI & ML</option>
+              <option value="Keamanan Siber">Keamanan Siber</option>
+              <option value="Umum">Umum</option>
+            </select>
+          </div>
+          <div class="sm:col-span-2">
+            <label for="modal-blog-date" class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-2">Tanggal Terbit (Kosongkan untuk Hari Ini)</label>
+            <input
+              id="modal-blog-date"
+              type="text"
+              placeholder="Contoh: 12 April 2026"
+              class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors shadow-sm"
+            />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label for="modal-blog-summary" class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-2">Ringkasan (ID)</label>
+            <input
+              id="modal-blog-summary"
+              type="text"
+              required
+              placeholder="Satu kalimat ringkasan artikel..."
+              class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors shadow-sm"
+            />
+          </div>
+          <div>
+            <label for="modal-blog-summary-en" class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-2">Ringkasan (EN)</label>
+            <input
+              id="modal-blog-summary-en"
+              type="text"
+              required
+              placeholder="One sentence summary of the article..."
+              class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors shadow-sm"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-2">Foto Sampul (Cover Image)</label>
+          <div class="flex items-center gap-3">
+            <input
+              id="modal-blog-image"
+              type="text"
+              placeholder="/assets/img/nama-file.png atau URL"
+              class="flex-1 px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors shadow-sm"
+            />
+            <input type="file" id="blog-image-file-input" accept="image/*" class="hidden" />
+            <button type="button" id="upload-blog-image-btn" class="shrink-0 inline-flex items-center gap-1.5 px-3 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition-all cursor-pointer">
+              <i class="fas fa-upload"></i> Upload
+            </button>
+            <img id="blog-image-preview" src="" alt="" class="w-12 h-12 object-cover rounded-xl border border-slate-200 dark:border-slate-850 hidden" />
+          </div>
+        </div>
+
+        <div>
+          <label for="modal-blog-content" class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-2">Konten Artikel (ID)</label>
+          <textarea
+            id="modal-blog-content"
+            required
+            rows="6"
+            placeholder="Tulis artikel dalam Bahasa Indonesia. Pisahkan paragraf dengan baris kosong..."
+            class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-sm resize-none focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors shadow-sm"
+          ></textarea>
+        </div>
+
+        <div>
+          <label for="modal-blog-content-en" class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-2">Konten Artikel (EN)</label>
+          <textarea
+            id="modal-blog-content-en"
+            required
+            rows="6"
+            placeholder="Write the article in English. Separate paragraphs with an empty line..."
+            class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-sm resize-none focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors shadow-sm"
+          ></textarea>
+        </div>
+
+        <div class="flex justify-end gap-3 pt-4 border-t border-slate-200 dark:border-slate-800">
+          <button
+            type="button"
+            id="modal-cancel-btn"
+            class="px-5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-bold transition-all cursor-pointer"
+          >
+            Batal
+          </button>
+          <button
+            type="submit"
+            class="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition-all cursor-pointer"
+          >
+            Simpan & Publikasikan
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    let blogsList = [] as any[];
+
+    async function loadBlogs() {
+      try {
+        const res = await fetch('/api/blogs');
+        if (res.ok) {
+          blogsList = await res.json();
+        }
+      } catch (e) {
+        console.error('Error loading blogs list', e);
+      }
+    }
+
+    loadBlogs();
+
+    const list = document.getElementById('blogs-list');
+    const modal = document.getElementById('blog-modal');
+    const modalForm = document.getElementById('modal-form') as HTMLFormElement;
+    const modalTitle = document.getElementById('modal-title');
+    const modalBlogId = document.getElementById('modal-blog-id') as HTMLInputElement;
+    const modalBlogTitle = document.getElementById('modal-blog-title') as HTMLInputElement;
+    const modalBlogTitleEn = document.getElementById('modal-blog-title-en') as HTMLInputElement;
+    const modalBlogCategory = document.getElementById('modal-blog-category') as HTMLSelectElement;
+    const modalBlogDate = document.getElementById('modal-blog-date') as HTMLInputElement;
+    const modalBlogSummary = document.getElementById('modal-blog-summary') as HTMLInputElement;
+    const modalBlogSummaryEn = document.getElementById('modal-blog-summary-en') as HTMLInputElement;
+    const modalBlogImage = document.getElementById('modal-blog-image') as HTMLInputElement;
+    const modalBlogContent = document.getElementById('modal-blog-content') as HTMLTextAreaElement;
+    const modalBlogContentEn = document.getElementById('modal-blog-content-en') as HTMLTextAreaElement;
+
+    function showModal(isEdit = false, blog: any = null) {
+      if (!modal) return;
+      
+      if (isEdit && blog) {
+        if (modalTitle) modalTitle.innerHTML = '<i class="fas fa-edit text-indigo-500"></i> Edit Naskah Artikel';
+        modalBlogId.value = blog.id;
+        modalBlogTitle.value = blog.title || '';
+        modalBlogTitleEn.value = blog.title_en || '';
+        modalBlogCategory.value = blog.category || 'Backend';
+        modalBlogDate.value = blog.date || '';
+        modalBlogSummary.value = blog.summary || '';
+        modalBlogSummaryEn.value = blog.summary_en || '';
+        modalBlogImage.value = blog.image || '';
+        modalBlogContent.value = blog.content || '';
+        modalBlogContentEn.value = blog.content_en || '';
+      } else {
+        if (modalTitle) modalTitle.innerHTML = '<i class="fas fa-plus text-indigo-500"></i> Tulis Artikel Baru';
+        modalBlogId.value = '';
+        modalBlogTitle.value = '';
+        modalBlogTitleEn.value = '';
+        modalBlogCategory.value = 'Backend';
+        modalBlogDate.value = '';
+        modalBlogSummary.value = '';
+        modalBlogSummaryEn.value = '';
+        modalBlogImage.value = '';
+        modalBlogContent.value = '';
+        modalBlogContentEn.value = '';
+      }
+
+      modal.classList.remove('hidden');
+      setTimeout(() => {
+        modal.classList.add('opacity-100');
+      }, 10);
+    }
+
+    function hideModal() {
+      if (!modal) return;
+      modal.classList.remove('opacity-100');
+      setTimeout(() => {
+        modal.classList.add('hidden');
+      }, 300);
+    }
+
+    document.getElementById('add-blog-btn')?.addEventListener('click', () => {
+      showModal(false);
+    });
+
+    document.getElementById('modal-cancel-btn')?.addEventListener('click', () => {
+      hideModal();
+    });
+
+    list?.addEventListener('click', async (e) => {
+      const target = e.target as HTMLElement;
+      
+      const editBtn = target.closest('.edit-btn');
+      if (editBtn) {
+        const id = editBtn.getAttribute('data-id');
+        const blog = blogsList.find(b => b.id === id);
+        if (blog) {
+          showModal(true, blog);
+        }
+        return;
+      }
+
+      const deleteBtn = target.closest('.delete-btn');
+      if (deleteBtn) {
+        const id = deleteBtn.getAttribute('data-id');
+        if (confirm('Apakah Anda yakin ingin menghapus artikel blog ini?')) {
+          await deleteBlog(id);
+        }
+        return;
+      }
+    });
+
+    modalForm?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const id = modalBlogId.value;
+      const title = modalBlogTitle.value.trim();
+      const title_en = modalBlogTitleEn.value.trim();
+      const category = modalBlogCategory.value;
+      const date = modalBlogDate.value.trim();
+      const summary = modalBlogSummary.value.trim();
+      const summary_en = modalBlogSummaryEn.value.trim();
+      const image = modalBlogImage.value.trim();
+      const content = modalBlogContent.value;
+      const content_en = modalBlogContentEn.value;
+
+      const payload = { id, title, title_en, category, date, summary, summary_en, image, content, content_en };
+
+      try {
+        const method = id ? 'PUT' : 'POST';
+        const res = await fetch('/api/blogs', {
+          method: method,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        if (res.ok) {
+          (window as any).showToast(id ? 'Artikel berhasil diperbarui!' : 'Artikel baru ditambahkan!', 'success');
+          hideModal();
+          setTimeout(() => {
+            window.location.reload();
+          }, 800);
+        } else {
+          (window as any).showToast('Gagal memproses data artikel!', 'error');
+        }
+      } catch (err) {
+        console.error(err);
+        (window as any).showToast('Terjadi kesalahan koneksi!', 'error');
+      }
+    });
+
+    async function deleteBlog(id: string | null) {
+      if (!id) return;
+      try {
+        const res = await fetch(`/api/blogs?id=${id}`, {
+          method: 'DELETE'
+        });
+
+        if (res.ok) {
+          (window as any).showToast('Artikel berhasil dihapus!', 'success');
+          setTimeout(() => {
+            window.location.reload();
+          }, 800);
+        } else {
+          (window as any).showToast('Gagal menghapus artikel!', 'error');
+        }
+      } catch (err) {
+        console.error(err);
+        (window as any).showToast('Terjadi kesalahan koneksi!', 'error');
+      }
+    }
+
+    // ── Upload foto sampul blog ──
+    const uploadBlogImageBtn = document.getElementById('upload-blog-image-btn');
+    const blogImageFileInput = document.getElementById('blog-image-file-input') as HTMLInputElement;
+    uploadBlogImageBtn?.addEventListener('click', () => blogImageFileInput?.click());
+    blogImageFileInput?.addEventListener('change', async () => {
+      const file = blogImageFileInput.files?.[0];
+      if (!file) return;
+      const id = modalBlogId.value;
+      if (!id) {
+        (window as any).showToast('Simpan artikel terlebih dahulu sebelum mengunggah gambar!', 'error');
+        return;
+      }
+      const form = new FormData();
+      form.append('blogImage', file);
+      form.append('blogId', id);
+      try {
+        const res = await fetch('/api/upload-assets', { method: 'POST', body: form });
+        const data = await res.json();
+        if (data.blogImageUrl) {
+          modalBlogImage.value = data.blogImageUrl;
+          const preview = document.getElementById('blog-image-preview') as HTMLImageElement;
+          preview.src = data.blogImageUrl;
+          preview.classList.remove('hidden');
+          (window as any).showToast('Foto sampul berhasil diunggah!', 'success');
+        } else {
+          (window as any).showToast(data.error || 'Gagal mengunggah foto!', 'error');
+        }
+      } catch (err) {
+        (window as any).showToast('Terjadi kesalahan koneksi!', 'error');
+      }
+    });
+  </script>
+</AdminLayout>
