@@ -29,8 +29,8 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     const destPath = path.join(publicDir, 'resume.pdf');
     
     try {
-      fs.mkdirSync(publicDir, { recursive: true });
-      fs.writeFileSync(destPath, buffer);
+      try { fs.mkdirSync(publicDir, { recursive: true }); } catch (e) {}
+      try { fs.writeFileSync(destPath, buffer); } catch (e) {}
     } catch (e) {}
     await uploadToGithub('public/resume.pdf', buffer.toString('base64'), 'Upload resume', true);
 
