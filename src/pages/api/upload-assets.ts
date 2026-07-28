@@ -2,6 +2,7 @@ import type { APIRoute } from 'astro';
 import fs from 'node:fs';
 import path from 'node:path';
 import { isAuthenticated } from '../../utils/auth';
+import { uploadToGithub } from '../../utils/github';
 
 /**
  * Helper to save an uploaded file to the public directory.
@@ -16,7 +17,10 @@ async function saveFile(file: File, allowedExts: string[], prefix: string): Prom
   const publicDir = path.resolve('public');
   const destPath = path.join(publicDir, fileName);
   const buffer = Buffer.from(await file.arrayBuffer());
-  fs.writeFileSync(destPath, buffer);
+  
+  try { fs.writeFileSync(destPath, buffer); } catch (e) {}
+  await uploadToGithub(`public/${fileName}`, buffer.toString('base64'), `Upload ${fileName}`, true);
+  
   return `/${fileName}`;
 }
 

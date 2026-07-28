@@ -1,6 +1,7 @@
 import type { APIRoute } from 'astro';
 import fs from 'node:fs';
 import path from 'node:path';
+import { uploadToGithub } from '../../utils/github';
 import { isAuthenticated } from '../../utils/auth';
 
 const filePath = path.resolve('src/data/skills.json');
