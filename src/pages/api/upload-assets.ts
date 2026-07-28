@@ -103,7 +103,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 
     // --- New entities ------------------------------------------------------
     // Helper to update JSON array files
-    const updateJsonArray = (
+    const updateJsonArray = async (
       filePath: string,
       id: string | null,
       imageUrl: string,
@@ -117,38 +117,39 @@ export const POST: APIRoute = async ({ request, cookies }) => {
       const oldImg = data[idx].image as string | undefined;
       data[idx].image = imageUrl;
       deleteOldImage(oldImg, prefix);
-      fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf-8');
+      try { fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf-8'); } catch (e) {}
+      await uploadToGithub(`src/data/${path.basename(filePath)}`, JSON.stringify(data, null, 2), `Update ${path.basename(filePath)} with new image`);
       responseData[responseKey] = imageUrl;
     };
 
     if (projectImageFile && projectId) {
       const projectsPath = path.resolve('src/data/projects.json');
       const url = await saveFile(projectImageFile, ['.png', '.jpg', '.jpeg', '.webp', '.gif'], 'project-image');
-      updateJsonArray(projectsPath, projectId, url, 'project-image', 'projectImageUrl');
+      await updateJsonArray(projectsPath, projectId, url, 'project-image', 'projectImageUrl');
     }
 
     if (blogImageFile && blogId) {
       const blogsPath = path.resolve('src/data/blogs.json');
       const url = await saveFile(blogImageFile, ['.png', '.jpg', '.jpeg', '.webp', '.gif'], 'blog-image');
-      updateJsonArray(blogsPath, blogId, url, 'blog-image', 'blogImageUrl');
+      await updateJsonArray(blogsPath, blogId, url, 'blog-image', 'blogImageUrl');
     }
 
     if (certificateImageFile && certificateId) {
       const certsPath = path.resolve('src/data/certificates.json');
       const url = await saveFile(certificateImageFile, ['.png', '.jpg', '.jpeg', '.webp', '.gif'], 'certificate-image');
-      updateJsonArray(certsPath, certificateId, url, 'certificate-image', 'certificateImageUrl');
+      await updateJsonArray(certsPath, certificateId, url, 'certificate-image', 'certificateImageUrl');
     }
 
     if (publicationImageFile && publicationId) {
       const pubsPath = path.resolve('src/data/publications.json');
       const url = await saveFile(publicationImageFile, ['.png', '.jpg', '.jpeg', '.webp', '.gif'], 'publication-image');
-      updateJsonArray(pubsPath, publicationId, url, 'publication-image', 'publicationImageUrl');
+      await updateJsonArray(pubsPath, publicationId, url, 'publication-image', 'publicationImageUrl');
     }
 
     if (skillImageFile && skillId) {
       const skillsPath = path.resolve('src/data/skills.json');
       const url = await saveFile(skillImageFile, ['.png', '.jpg', '.jpeg', '.webp', '.gif'], 'skill-image');
-      updateJsonArray(skillsPath, skillId, url, 'skill-image', 'skillImageUrl');
+      await updateJsonArray(skillsPath, skillId, url, 'skill-image', 'skillImageUrl');
     }
 
     if (educationImageFile && educationId) {
@@ -161,14 +162,17 @@ export const POST: APIRoute = async ({ request, cookies }) => {
         const oldImg = data[idx].logo as string | undefined;
         data[idx].logo = url;
         deleteOldImage(oldImg, 'education-logo');
-        fs.writeFileSync(educationPath, JSON.stringify(data, null, 2), 'utf-8');
+        try { fs.writeFileSync(educationPath, JSON.stringify(data, null, 2), 'utf-8'); } catch (e) {}
+        await uploadToGithub('src/data/education.json', JSON.stringify(data, null, 2), 'Update education logo');
         responseData.educationImageUrl = url;
       }
     }
 
     // Persist profile changes
-    fs.writeFileSync(profilePath, JSON.stringify(profile, null, 2), 'utf-8');
-
+    try { fs.writeFileSync(profilePath, JSON.stringify(profile, null, 2), 'utf-8'); } catch (e) {}
+    if (faviconFile || ogImageFile || profileImageFile) {
+        await uploadToGithub('src/data/profile.json', JSON.stringify(profile, null, 2), 'Update profile images');
+    }
     return new Response(JSON.stringify(responseData), {
       status: 200,
       headers: { 'Content-Type': 'application/json' },
