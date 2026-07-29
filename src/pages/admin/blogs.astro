@@ -13,10 +13,10 @@ import AdminLayout from '../../layouts/AdminLayout.astro';
 const blogs = JSON.parse(fs.readFileSync(path.resolve('src/data/blogs.json'), 'utf-8'));
 ---
 
-<link rel="stylesheet" href="https://unpkg.com/easymde/dist/easymde.min.css">
-<script is:inline src="https://unpkg.com/easymde/dist/easymde.min.js"></script>
-
 <AdminLayout title="Kelola Artikel & Blog" activeTab="blog">
+  <link rel="stylesheet" href="https://unpkg.com/easymde/dist/easymde.min.css">
+  <script is:inline src="https://unpkg.com/easymde/dist/easymde.min.js"></script>
+
   <div class="mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
     <p class="text-slate-500 dark:text-slate-400 text-sm max-w-xl">
       Kelola tulisan teknis, catatan rekayasa, atau pemikiran industri Anda. Anda dapat menulis versi Indonesia dan Inggris untuk dipublikasikan secara bersamaan.
