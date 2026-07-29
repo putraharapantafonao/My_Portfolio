@@ -131,7 +131,7 @@ const certificates = JSON.parse(fs.readFileSync(path.resolve('src/data/certifica
           </div>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label for="modal-cert-issue-date" class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-2">Tanggal Terbit</label>
             <input
@@ -142,22 +142,10 @@ const certificates = JSON.parse(fs.readFileSync(path.resolve('src/data/certifica
             />
           </div>
           <div>
-            <label for="modal-cert-expiration" class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-2">Tanggal Kedaluwarsa (ID)</label>
+            <label for="modal-cert-expiration" class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-2">Tanggal Kedaluwarsa <span class="font-normal">(Opsional)</span></label>
             <input
               id="modal-cert-expiration"
-              type="text"
-              required
-              placeholder="Tidak Ada Kedaluwarsa"
-              class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors shadow-sm"
-            />
-          </div>
-          <div>
-            <label for="modal-cert-expiration-en" class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-2">Tanggal Kedaluwarsa (EN)</label>
-            <input
-              id="modal-cert-expiration-en"
-              type="text"
-              required
-              placeholder="No Expiration Date"
+              type="date"
               class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors shadow-sm"
             />
           </div>
@@ -247,7 +235,6 @@ const certificates = JSON.parse(fs.readFileSync(path.resolve('src/data/certifica
     const modalCertIcon = document.getElementById('modal-cert-icon') as HTMLSelectElement;
     const modalCertIssueDate = document.getElementById('modal-cert-issue-date') as HTMLInputElement;
     const modalCertExpiration = document.getElementById('modal-cert-expiration') as HTMLInputElement;
-    const modalCertExpirationEn = document.getElementById('modal-cert-expiration-en') as HTMLInputElement;
     const modalCertCredentialId = document.getElementById('modal-cert-credential-id') as HTMLInputElement;
     const modalCertVerifyUrl = document.getElementById('modal-cert-verify-url') as HTMLInputElement;
     const modalCertImage = document.getElementById('modal-cert-image') as HTMLInputElement;
@@ -263,8 +250,7 @@ const certificates = JSON.parse(fs.readFileSync(path.resolve('src/data/certifica
         modalCertIssuer.value = cert.issuer || '';
         modalCertIcon.value = cert.icon || 'fas fa-award';
         modalCertIssueDate.value = cert.issueDate || '';
-        modalCertExpiration.value = cert.expiration || cert.expirationDate || 'Tidak Ada Kedaluwarsa';
-        modalCertExpirationEn.value = cert.expirationDate_en || 'No Expiration Date';
+        modalCertExpiration.value = cert.expirationDate || '';
         modalCertCredentialId.value = cert.credentialId || '';
         modalCertVerifyUrl.value = cert.verifyUrl || '';
         modalCertImage.value = (cert as any).image || '';
@@ -278,8 +264,7 @@ const certificates = JSON.parse(fs.readFileSync(path.resolve('src/data/certifica
         modalCertIssuer.value = '';
         modalCertIcon.value = 'fas fa-code';
         modalCertIssueDate.value = '';
-        modalCertExpiration.value = 'Tidak Ada Kedaluwarsa';
-        modalCertExpirationEn.value = 'No Expiration Date';
+        modalCertExpiration.value = '';
         modalCertCredentialId.value = '';
         modalCertVerifyUrl.value = '';
         modalCertImage.value = '';
@@ -342,7 +327,7 @@ const certificates = JSON.parse(fs.readFileSync(path.resolve('src/data/certifica
       const icon = modalCertIcon.value;
       const issueDate = modalCertIssueDate.value.trim();
       const expirationDate = modalCertExpiration.value.trim();
-      const expirationDate_en = modalCertExpirationEn.value.trim();
+      const expirationDate_en = modalCertExpiration.value.trim();
       const credentialId = modalCertCredentialId.value.trim();
       const verifyUrl = modalCertVerifyUrl.value.trim();
 
