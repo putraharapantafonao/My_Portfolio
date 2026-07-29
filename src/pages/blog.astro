@@ -2,6 +2,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import Layout from '../layouts/Layout.astro';
+import { parseSummary } from '../utils/markdown';
 
 const blogs = JSON.parse(fs.readFileSync(path.resolve('src/data/blogs.json'), 'utf-8'));
 const lang = Astro.cookies.get('lang')?.value === 'en' ? 'en' : 'id';
@@ -61,7 +62,7 @@ const t = {
                   <a href={`/blog/${b.id}`}>
                     <h3 class="text-base font-bold text-slate-950 dark:text-white leading-snug group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">{getField(b, 'title')}</h3>
                   </a>
-                  <p class="text-slate-500 dark:text-slate-350 text-xs mt-3 leading-relaxed line-clamp-2">{getField(b, 'summary')}</p>
+                  <p class="text-slate-500 dark:text-slate-350 text-xs mt-3 leading-relaxed line-clamp-2" set:html={parseSummary(getField(b, 'summary'))}></p>
                 </div>
               </div>
               <div class="px-6 pb-6 pt-2">
