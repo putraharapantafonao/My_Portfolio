@@ -254,6 +254,25 @@ const blogs = JSON.parse(fs.readFileSync(path.resolve('src/data/blogs.json'), 'u
     const modalBlogImage = document.getElementById('modal-blog-image') as HTMLInputElement;
     const blogImagePreview = document.getElementById('blog-image-preview') as HTMLImageElement;
 
+    let easyMdeId: any = null;
+    let easyMdeEn: any = null;
+
+    function initEditors() {
+      if (!easyMdeId) {
+        easyMdeId = new (window as any).EasyMDE({ 
+          element: document.getElementById('modal-blog-content'),
+          spellChecker: false,
+          maxHeight: "300px"
+        });
+      }
+      if (!easyMdeEn) {
+        easyMdeEn = new (window as any).EasyMDE({ 
+          element: document.getElementById('modal-blog-content-en'),
+          spellChecker: false,
+          maxHeight: "300px"
+        });
+      }
+    }
     function showModal(isEdit = false, blog: any = null) {
       if (!modal) return;
       initEditors();
