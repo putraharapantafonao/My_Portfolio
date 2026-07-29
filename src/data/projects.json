@@ -15,7 +15,8 @@
       "JavaScript"
     ],
     "link": "https://github.com/putraharapantafonao/dlsb_ti_fifo",
-    "demoUrl": "#"
+    "demoUrl": "#",
+    "date": "2025-11-26"
   },
   {
     "id": "3",
@@ -23,7 +24,7 @@
     "title_en": "DevMate AI",
     "description": "Asisten chatbot virtual berbasis kecerdasan buatan (AI) yang diintegrasikan dengan Gemini API untuk membantu meningkatkan produktivitas developer, memberikan solusi kode, serta mengoptimalkan alur kerja pemrograman.",
     "description_en": "Virtual chatbot assistant based on artificial intelligence (AI) integrated with the Gemini API to help increase developer productivity, provide code solutions, and optimize programming workflows.",
-    "image": "/project-image-1785175706173.png",
+    "image": "/project-image-1785301624367.png",
     "fallbackImg": "https://placehold.co/600x400/0a1628/00f5d4?text=DevMate+AI",
     "tags": [
       "AI & ML",
@@ -32,6 +33,44 @@
       "Streamlit"
     ],
     "link": "https://github.com/putraharapantafonao/devmate-ai-chatbot",
-    "demoUrl": "https://devmate-ai-chatbot.streamlit.app/"
+    "demoUrl": "https://devmate-ai-chatbot.streamlit.app/",
+    "date": "2026-05-01"
+  },
+  {
+    "id": "1785301355671",
+    "title": "SupermarketKu",
+    "title_en": "SupermarketKu",
+    "description": "SupermarketKu adalah aplikasi web Point of Sale (POS) dan manajemen toko retail berbasis Laravel. Aplikasi ini dirancang untuk membantu pemilik toko, admin, kasir, dan staf gudang dalam mengelola penjualan, stok barang, pembelian, pelanggan, serta laporan usaha secara terintegrasi.",
+    "description_en": "SupermarketKu is a Laravel-based Point of Sale (POS) and retail store management web application. It is designed to assist store owners, administrators, cashiers, and warehouse staff in managing sales, inventory, purchasing, customers, and business reports in an integrated manner.",
+    "image": "/project-image-1785301374436.png",
+    "fallbackImg": "https://placehold.co/600x400/020617/818cf8?text=Project",
+    "tags": [
+      "Laravel",
+      "PHP",
+      "MySQL",
+      "Talwind CSS",
+      "Vite",
+      "DomPDF",
+      "Maatwebsite"
+    ],
+    "link": "https://github.com/putraharapantafonao/SupermarketKu",
+    "demoUrl": "https://supermarketku.wuaze.com/",
+    "date": "2026-06-18"
+  },
+  {
+    "id": "1785303694040",
+    "title": "Gunungsitoli",
+    "title_en": "Gunungsitoli",
+    "description": "Sebuah website statis informatif yang dirancang untuk menyajikan pesona dan potensi Kota Gunungsitoli, Pulau Nias, Sumatera Utara. Website ini memuat informasi komprehensif mulai dari profil singkat kota, sejarah, kondisi geografis, hingga rekomendasi destinasi wisata unggulan.",
+    "description_en": "An informative static website designed to showcase the charm and potential of Gunungsitoli City, Nias Island, North Sumatra. The site features comprehensive information, ranging from a brief city profile, history, and geographical details to recommendations for top tourist destinations.",
+    "image": "/project-image-1785303778573.png",
+    "fallbackImg": "https://placehold.co/600x400/020617/818cf8?text=Project",
+    "tags": [
+      "HTML5",
+      "CSS"
+    ],
+    "link": "https://github.com/putraharapantafonao/Gunungsitoli",
+    "demoUrl": "https://putraharapantafonao.github.io/Gunungsitoli/",
+    "date": "2026-03-13"
   }
 ]
