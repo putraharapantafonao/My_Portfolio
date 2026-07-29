@@ -123,6 +123,17 @@ const publications = JSON.parse(fs.readFileSync(path.resolve('src/data/publicati
           </div>
         </div>
 
+        </div>
+        
+        <div>
+          <label for="modal-pub-date" class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-2">Tanggal Publikasi <span class="font-normal">(Opsional - Untuk Pengurutan)</span></label>
+          <input
+            id="modal-pub-date"
+            type="date"
+            class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors shadow-sm"
+          />
+        </div>
+
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div class="sm:col-span-1">
             <label for="modal-pub-details" class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-2">Vol / Ed / Tahun</label>
@@ -249,6 +260,7 @@ const publications = JSON.parse(fs.readFileSync(path.resolve('src/data/publicati
     const modalPubTitleEn = document.getElementById('modal-pub-title-en') as HTMLInputElement;
     const modalPubJournal = document.getElementById('modal-pub-journal') as HTMLInputElement;
     const modalPubJournalEn = document.getElementById('modal-pub-journal-en') as HTMLInputElement;
+    const modalPubDate = document.getElementById('modal-pub-date') as HTMLInputElement;
     const modalPubDetails = document.getElementById('modal-pub-details') as HTMLInputElement;
     const modalPubStatus = document.getElementById('modal-pub-status') as HTMLInputElement;
     const modalPubStatusEn = document.getElementById('modal-pub-status-en') as HTMLInputElement;
@@ -267,6 +279,7 @@ const publications = JSON.parse(fs.readFileSync(path.resolve('src/data/publicati
         modalPubTitleEn.value = pub.title_en || '';
         modalPubJournal.value = pub.journal || '';
         modalPubJournalEn.value = pub.journal_en || '';
+        modalPubDate.value = pub.date || '';
         modalPubDetails.value = pub.details || '';
         modalPubStatus.value = pub.status || 'Terbit';
         modalPubStatusEn.value = pub.status_en || '';
@@ -283,6 +296,7 @@ const publications = JSON.parse(fs.readFileSync(path.resolve('src/data/publicati
         modalPubTitleEn.value = '';
         modalPubJournal.value = '';
         modalPubJournalEn.value = '';
+        modalPubDate.value = '';
         modalPubDetails.value = '';
         modalPubStatus.value = 'Terindeks Google Scholar';
         modalPubStatusEn.value = '';
@@ -347,6 +361,7 @@ const publications = JSON.parse(fs.readFileSync(path.resolve('src/data/publicati
       const title_en = modalPubTitleEn.value.trim();
       const journal = modalPubJournal.value.trim();
       const journal_en = modalPubJournalEn.value.trim();
+      const date = modalPubDate.value.trim();
       const details = modalPubDetails.value.trim();
       const status = modalPubStatus.value.trim();
       const status_en = modalPubStatusEn.value.trim();
@@ -354,7 +369,7 @@ const publications = JSON.parse(fs.readFileSync(path.resolve('src/data/publicati
       const abstract_en = modalPubAbstractEn.value.trim();
       const link = modalPubLink.value.trim();
 
-      const payload = { id, title, title_en, journal, journal_en, details, status, status_en, abstract, abstract_en, link };
+      const payload = { id, title, title_en, journal, journal_en, date, details, status, status_en, abstract, abstract_en, link };
 
       try {
         const method = id ? 'PUT' : 'POST';
