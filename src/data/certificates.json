@@ -284,5 +284,31 @@
     "verifyUrl": "https://verifikasi.me/verifikasi/1748843295671794",
     "icon": "fas fa-code",
     "image": "/certificate-image-1785309047633.jpg"
+  },
+  {
+    "id": "1785940292417",
+    "title": "Belajar Dasar Pemrograman JavaScript",
+    "title_en": "Belajar Dasar Pemrograman JavaScript",
+    "issuer": "Dicoding Indonesia",
+    "issueDate": "2026-08-05",
+    "expirationDate": "2029-08-05",
+    "expirationDate_en": "2029-08-05",
+    "credentialId": "07Z6721DRPQR",
+    "verifyUrl": "https://www.dicoding.com/certificates/07Z6721DRPQR",
+    "icon": "fas fa-code",
+    "image": "/certificate-image-1785940335025.png"
+  },
+  {
+    "id": "1785940521183",
+    "title": "Belajar Membuat Front-End Web untuk Pemula",
+    "title_en": "Belajar Membuat Front-End Web untuk Pemula",
+    "issuer": "Dicoding Indonesia",
+    "issueDate": "2026-08-05",
+    "expirationDate": "2029-08-05",
+    "expirationDate_en": "2029-08-05",
+    "credentialId": "GRX5W56MRZ0M",
+    "verifyUrl": "https://www.dicoding.com/certificates/GRX5W56MRZ0M",
+    "icon": "fas fa-code",
+    "image": "/certificate-image-1785940602343.png"
   }
 ]
