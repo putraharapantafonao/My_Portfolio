@@ -91,5 +91,23 @@
     "link": "https://github.com/putraharapantafonao/expense-tracker-app",
     "demoUrl": "https://dompet-expense-tracker.netlify.app/",
     "date": "2026-08-05"
+  },
+  {
+    "id": "1785949892610",
+    "title": "Website Undangan Pernikahan Tema Anime \"Your Name\"",
+    "title_en": "\"Your Name\" Anime Themed Digital Wedding Invitation",
+    "description": "Sebuah website undangan pernikahan digital interaktif yang dirancang secara khusus dengan mengusung tema estetika dan visual dari film anime mahakarya Makoto Shinkai, \"Kimi no Na wa (Your Name)\". Proyek ini dilengkapi dengan berbagai fitur fungsional modern seperti sistem hitung mundur (countdown), galeri foto interaktif (lightbox), pemutar musik latar yang memutar lagu tema secara otomatis, dan integrasi fitur pengiriman kado (amplop digital & alamat fisik). Desainnya dibuat sepenuhnya responsif dari awal (from scratch) tanpa menggunakan framework, demi menjaga performa yang ringan dan cepat.",
+    "description_en": "An interactive digital wedding invitation website exclusively designed with the aesthetic and visual theme of Makoto Shinkai's masterpiece anime film, \"Kimi no Na wa (Your Name)\". This project is equipped with various modern functional features such as a real-time countdown system, an interactive photo gallery (lightbox), an automatic background music player, and integrated gift-sending features (digital wallet & physical address). The design is fully responsive and built entirely from scratch without using heavy frameworks to maintain optimal and fast performance.",
+    "image": "/project-image-1785949977358.png",
+    "fallbackImg": "https://placehold.co/600x400/020617/818cf8?text=Project",
+    "tags": [
+      "HTML5",
+      "CSS3",
+      "Vanilla JavaScript",
+      "Responsive Web Design"
+    ],
+    "link": "https://github.com/putraharapantafonao/undangan-taki-mitsuha",
+    "demoUrl": "https://wedding-taki-mitsuha.netlify.app/",
+    "date": "2026-05-19"
   }
 ]
