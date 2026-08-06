@@ -1,0 +1,54 @@
+[
+  {
+    "id": "1",
+    "category": "Bahasa Pemrograman",
+    "category_en": "Programming Languages",
+    "items": [
+      "PHP",
+      "JavaScript",
+      "Dart",
+      "Python",
+      "SQL",
+      "C++",
+      "Java",
+      "HTML",
+      "CSS"
+    ]
+  },
+  {
+    "id": "2",
+    "category": "Framework & Library",
+    "category_en": "Frameworks & Libraries",
+    "items": [
+      "Laravel",
+      "Flutter",
+      "Tailwind CSS",
+      "Astro",
+      "Node.js"
+    ]
+  },
+  {
+    "id": "3",
+    "category": "Tools & Platform",
+    "category_en": "Tools & Platforms",
+    "items": [
+      "Git & GitHub",
+      "Postman",
+      "Android Studio",
+      "MySQL",
+      "Visual Studio Code"
+    ]
+  },
+  {
+    "id": "4",
+    "category": "Soft Skills",
+    "category_en": "Soft Skills",
+    "items": [
+      "Problem Solving",
+      "Communication",
+      "Teamwork",
+      "Time Management",
+      "Adaptability"
+    ]
+  }
+]

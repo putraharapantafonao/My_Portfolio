@@ -170,6 +170,11 @@ export const POST: APIRoute = async ({ request, cookies }) => {
       }
     }
 
+    if (editorImageFile) {
+      const url = await saveFile(editorImageFile, ['.png', '.jpg', '.jpeg', '.webp', '.gif'], 'blog-content-image');
+      responseData.editorImageUrl = url;
+    }
+
     // Persist profile changes
     try { fs.writeFileSync(profilePath, JSON.stringify(profile, null, 2), 'utf-8'); } catch (e) {}
     if (faviconFile || ogImageFile || profileImageFile) {

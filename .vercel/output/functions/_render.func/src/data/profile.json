@@ -1,0 +1,33 @@
+{
+  "name": "Putra Harapan Tafonao",
+  "faviconUrl": "/favicon-1785945866365.png",
+  "ogImageUrl": "/og-image-1785945882185.png",
+  "role": "Web Developer",
+  "role_en": "Web Developer",
+  "description": "Saya adalah mahasiswa Teknik Informatika dengan fokus kuat pada pengembangan Web dan Mobile. Berpengalaman dalam merancang dan membangun aplikasi full-stack menggunakan Laravel, JavaScript, dan Flutter. Saya tidak hanya menulis kode, tetapi juga fokus pada arsitektur sistem yang rapi (OOP), keamanan, dan integrasi teknologi terkini seperti AI (LLM). Saya selalu antusias memecahkan masalah kompleks menjadi solusi digital yang fungsional dan user-friendly.",
+  "description_en": "I am an Informatics Engineering student with a strong focus on Web and Mobile development. Experienced in designing and building full-stack applications using Laravel, JavaScript, and Flutter. I don't just write code; I focus on clean system architecture (OOP), security, and integrating cutting-edge technologies like AI (LLM). I am always eager to solve complex problems and turn them into functional, user-friendly digital solutions.",
+  "bio": "Saya adalah mahasiswa Teknik Informatika dengan fokus kuat pada pengembangan Web dan Mobile. Berpengalaman dalam merancang dan membangun aplikasi full-stack menggunakan Laravel, JavaScript, dan Flutter. Saya tidak hanya menulis kode, tetapi juga fokus pada arsitektur sistem yang rapi (OOP), keamanan, dan integrasi teknologi terkini seperti AI (LLM). Saya selalu antusias memecahkan masalah kompleks menjadi solusi digital yang fungsional dan user-friendly.",
+  "bio_en": "I am an Informatics Engineering student with a strong focus on Web and Mobile development. Experienced in designing and building full-stack applications using Laravel, JavaScript, and Flutter. I don't just write code; I focus on clean system architecture (OOP), security, and integrating cutting-edge technologies like AI (LLM). I am always eager to solve complex problems and turn them into functional, user-friendly digital solutions.",
+  "university": "Universitas Malikussaleh",
+  "university_en": "Malikussaleh University",
+  "major": "Teknik Informatika",
+  "major_en": "Informatics Engineering",
+  "focus": "Web & Mobile Engineer",
+  "focus_en": "Web & Mobile Development",
+  "profileImage": "/profile-photo-1785945921096.jpeg",
+  "resumeUrl": "/resume.pdf",
+  "email": "putraharapantafonao199@gmail.com",
+  "phone": "6281270857189",
+  "location": "Lhokseumawe, Aceh, Indonesia",
+  "location_en": "Lhokseumawe, Aceh, Indonesia",
+  "socialLinks": {
+    "linkedin": "https://www.linkedin.com/in/putra-harapan-tafonao-83b3b332b",
+    "github": "https://github.com/putraharapantafonao",
+    "dicoding": "https://www.dicoding.com/users/putraharapantafonao/academies",
+    "instagram": "https://www.instagram.com/putraharapantafonao714/profilecard/",
+    "threads": "",
+    "twitter": "",
+    "youtube": "https://www.youtube.com/@putraharapantafonao",
+    "tiktok": ""
+  }
+}

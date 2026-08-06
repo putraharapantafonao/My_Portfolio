@@ -1,0 +1,56 @@
+import { t as __exportAll } from "./rolldown-runtime_D7D4PA-g.mjs";
+import { S as unescapeHTML, g as addAttribute, h as renderHead, u as renderTemplate, w as createAstro } from "./server_B_hu0jgv.mjs";
+import { t as createComponent } from "./compiler_uT6rBWMH.mjs";
+import { t as renderScript } from "./global_ct45DYur.mjs";
+import { t as parseContent } from "./markdown_Cw6nFbiA.mjs";
+import fs from "node:fs";
+import nodePath from "node:path";
+//#region src/pages/blog/[id].astro
+var _id__exports = /* @__PURE__ */ __exportAll({
+	default: () => $$Id,
+	file: () => $$file,
+	url: () => $$url
+});
+createAstro("https://astro.build");
+var $$Id = createComponent(($$result, $$props, $$slots) => {
+	const Astro = $$result.createAstro($$props, $$slots);
+	Astro.self = $$Id;
+	const { id } = Astro.params;
+	const blog = JSON.parse(fs.readFileSync(nodePath.resolve("src/data/blogs.json"), "utf-8")).find((b) => b.id === id);
+	if (!blog) return Astro.redirect("/404");
+	const profile = JSON.parse(fs.readFileSync(nodePath.resolve("src/data/profile.json"), "utf-8"));
+	const lang = Astro.cookies.get("lang")?.value === "en" ? "en" : "id";
+	function getField(item, field) {
+		if (lang === "en") return item[`${field}_en`] || item[field] || "";
+		return item[field] || "";
+	}
+	const contentBody = getField(blog, "content");
+	const words = contentBody.split(/\s+/).length;
+	const readTime = Math.ceil(words / 200);
+	const parsedHtml = parseContent(contentBody);
+	return renderTemplate`<html${addAttribute(lang, "lang")} data-astro-cid-ymihodss><head><meta charset="utf-8"><link rel="icon"${addAttribute(profile.faviconUrl || "/favicon.ico", "href")}><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>${getField(blog, "title")} - Blog ${profile.name}</title><!-- SEO & Open Graph Meta Tags for Rich Social Previews (WhatsApp, Facebook, LinkedIn, etc.) --><meta name="description"${addAttribute(getField(blog, "summary"), "content")}><meta property="og:title"${addAttribute(getField(blog, "title"), "content")}><meta property="og:description"${addAttribute(getField(blog, "summary"), "content")}><meta property="og:image"${addAttribute(new URL(blog.image || profile.ogImageUrl || "/assets/img/foto-putra.jpeg", Astro.url).href, "content")}><meta property="og:url"${addAttribute(Astro.url.href, "content")}><meta property="og:type" content="article"><meta property="og:site_name"${addAttribute(`Blog ${profile.name}`, "content")}><!-- Twitter Card Meta Tags --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title"${addAttribute(getField(blog, "title"), "content")}><meta name="twitter:description"${addAttribute(getField(blog, "summary"), "content")}><meta name="twitter:image"${addAttribute(new URL(blog.image || profile.ogImageUrl || "/assets/img/foto-putra.jpeg", Astro.url).href, "content")}><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"><!-- Sync theme initialization to prevent flash --><script>
+      const theme = (() => {
+        if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+          return localStorage.getItem('theme');
+        }
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          return 'dark';
+        }
+        return 'light';
+      })();
+      
+      if (theme === 'dark') {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+      window.localStorage.setItem('theme', theme);
+    <\/script>${renderHead($$result)}</head><body class="bg-white dark:bg-slate-950 text-slate-800 dark:text-slate-200 antialiased min-h-screen flex flex-col transition-colors duration-300" data-astro-cid-ymihodss><!-- Top Nav --><nav class="fixed top-0 left-0 w-full h-16 z-50 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800/80 flex items-center transition-colors" data-astro-cid-ymihodss><div class="max-w-3xl mx-auto px-4 w-full flex items-center justify-between" data-astro-cid-ymihodss><a href="/" class="text-sm font-semibold text-slate-500 hover:text-indigo-600 flex items-center gap-2" data-astro-cid-ymihodss><i class="fas fa-arrow-left" data-astro-cid-ymihodss></i> <span data-astro-cid-ymihodss>${lang === "en" ? "Back to Portfolio" : "Kembali ke Portofolio"}</span></a><div class="flex items-center gap-3" data-astro-cid-ymihodss><!-- Light/Dark Toggler --><button id="theme-toggle" class="w-10 h-10 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-500 flex items-center justify-center cursor-pointer" aria-label="Toggle Theme" data-astro-cid-ymihodss><i class="fas fa-sun hidden dark:inline-block" data-astro-cid-ymihodss></i><i class="fas fa-moon inline-block dark:hidden" data-astro-cid-ymihodss></i></button><!-- Language Toggler --><button id="lang-toggle" class="flex items-center gap-1 px-3 h-10 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-550 text-xs font-bold cursor-pointer" aria-label="Switch Language" data-astro-cid-ymihodss><i class="fas fa-globe text-[10px] text-slate-400" data-astro-cid-ymihodss></i><span data-astro-cid-ymihodss>${lang === "en" ? "EN" : "ID"}</span></button><a href="/" class="text-base font-extrabold tracking-tight" data-astro-cid-ymihodss><span class="bg-gradient-to-r from-indigo-600 to-violet-600 dark:from-indigo-400 dark:to-violet-400 text-transparent bg-clip-text" data-astro-cid-ymihodss>Putra</span></a></div></div></nav><!-- Reading Container --><main class="pt-28 pb-20 px-4 max-w-3xl mx-auto w-full flex-1" data-astro-cid-ymihodss><article data-astro-cid-ymihodss><!-- Header Info --><header class="mb-10 pb-8 border-b border-slate-200 dark:border-slate-800" data-astro-cid-ymihodss><div class="flex items-center gap-3 text-xs text-slate-500 font-semibold mb-4" data-astro-cid-ymihodss><span class="px-3 py-1 rounded-full bg-indigo-50 dark:bg-indigo-950/40 text-indigo-650 dark:text-indigo-400 border border-indigo-100 dark:border-indigo-900/20 font-bold" data-astro-cid-ymihodss>${blog.category}</span><time${addAttribute(blog.date, "datetime")} data-astro-cid-ymihodss>${blog.date}</time><span class="text-slate-300 dark:text-slate-700" data-astro-cid-ymihodss>•</span><span data-astro-cid-ymihodss><i class="far fa-clock" data-astro-cid-ymihodss></i> ${readTime} ${lang === "en" ? "min read" : "menit baca"}</span><span class="text-slate-300 dark:text-slate-700" data-astro-cid-ymihodss>•</span><span data-astro-cid-ymihodss><i class="far fa-eye" data-astro-cid-ymihodss></i> <span id="view-count" data-astro-cid-ymihodss>...</span> ${lang === "en" ? "views" : "tayangan"}</span></div><h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white leading-tight tracking-tight mb-4" data-astro-cid-ymihodss>${getField(blog, "title")}</h1><p class="text-base text-slate-500 dark:text-slate-400 italic border-l-2 border-indigo-500 pl-4" data-astro-cid-ymihodss>${getField(blog, "summary")}</p></header>${blog.image && renderTemplate`<div class="mb-10 w-full rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-lg max-h-96" data-astro-cid-ymihodss><img${addAttribute(blog.image, "src")}${addAttribute(getField(blog, "title"), "alt")} class="w-full h-full object-cover" data-astro-cid-ymihodss></div>`}<!-- Article Body --><div class="text-slate-600 dark:text-slate-300 text-base leading-relaxed" data-astro-cid-ymihodss>${unescapeHTML(parsedHtml)}</div></article><!-- Social Share Buttons --><div class="mt-12 pt-8 border-t border-slate-200 dark:border-slate-800" data-astro-cid-ymihodss><h3 class="text-sm font-bold text-slate-700 dark:text-slate-300 mb-4" data-astro-cid-ymihodss>${lang === "en" ? "Share this article:" : "Bagikan artikel ini:"}</h3><div class="flex gap-3" data-astro-cid-ymihodss><a${addAttribute(`https://wa.me/?text=${encodeURIComponent(getField(blog, "title") + " " + Astro.url.href)}`, "href")} target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-[#25D366] text-white flex items-center justify-center hover:-translate-y-1 transition-transform shadow-md" aria-label="Share on WhatsApp" data-astro-cid-ymihodss><i class="fab fa-whatsapp text-lg" data-astro-cid-ymihodss></i></a><a${addAttribute(`https://twitter.com/intent/tweet?url=${encodeURIComponent(Astro.url.href)}&text=${encodeURIComponent(getField(blog, "title"))}`, "href")} target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-slate-900 dark:bg-slate-700 text-white flex items-center justify-center hover:-translate-y-1 transition-transform shadow-md" aria-label="Share on X (Twitter)" data-astro-cid-ymihodss><i class="fab fa-x-twitter text-lg" data-astro-cid-ymihodss></i></a><a${addAttribute(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(Astro.url.href)}`, "href")} target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-[#0a66c2] text-white flex items-center justify-center hover:-translate-y-1 transition-transform shadow-md" aria-label="Share on LinkedIn" data-astro-cid-ymihodss><i class="fab fa-linkedin-in text-lg" data-astro-cid-ymihodss></i></a><a${addAttribute(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(Astro.url.href)}`, "href")} target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-[#1877F2] text-white flex items-center justify-center hover:-translate-y-1 transition-transform shadow-md" aria-label="Share on Facebook" data-astro-cid-ymihodss><i class="fab fa-facebook-f text-lg" data-astro-cid-ymihodss></i></a></div></div><!-- Back Footer link --><div class="mt-16 pt-8 border-t border-slate-200 dark:border-slate-800" data-astro-cid-ymihodss><a href="/" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-350 hover:bg-slate-50 dark:hover:bg-slate-850 text-xs font-bold transition-all shadow-sm" data-astro-cid-ymihodss><i class="fas fa-arrow-left" data-astro-cid-ymihodss></i> ${lang === "en" ? "Portfolio Home" : "Beranda Portofolio"}</a></div></main><!-- Footer --><footer class="py-8 px-4 border-t border-slate-200 dark:border-slate-800 text-center bg-slate-50 dark:bg-slate-950 text-xs text-slate-400 dark:text-slate-500" data-astro-cid-ymihodss><p data-astro-cid-ymihodss>&copy; ${(/* @__PURE__ */ new Date()).getFullYear()} Putra Harapan Tafonao. Built with Astro & Tailwind.</p></footer><!-- Scripts -->${renderScript($$result, "D:/my-portfolio/src/pages/blog/[id].astro?astro&type=script&index=0&lang.ts")}</body></html>`;
+}, "D:/my-portfolio/src/pages/blog/[id].astro", void 0);
+var $$file = "D:/my-portfolio/src/pages/blog/[id].astro";
+var $$url = "/blog/[id]";
+//#endregion
+//#region \0virtual:astro:page:src/pages/blog/[id]@_@astro
+var page = () => _id__exports;
+//#endregion
+export { page };
