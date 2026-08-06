@@ -257,18 +257,43 @@ const blogs = JSON.parse(fs.readFileSync(path.resolve('src/data/blogs.json'), 'u
     let easyMdeSummaryEn: any = null;
 
     function initEditors() {
+      const imageUploadConfig = {
+        uploadImage: true,
+        imageUploadFunction: async (file: any, onSuccess: (url: string) => void, onError: (err: string) => void) => {
+          const formData = new FormData();
+          formData.append('editorImage', file);
+          try {
+            const res = await fetch('/api/upload-assets', {
+              method: 'POST',
+              body: formData
+            });
+            if (res.ok) {
+              const data = await res.json();
+              if (data.editorImageUrl) onSuccess(data.editorImageUrl);
+              else onError('Upload gagal.');
+            } else {
+              onError('Gagal mengunggah gambar.');
+            }
+          } catch (e) {
+            onError('Terjadi kesalahan.');
+          }
+        }
+      };
+
       if (!easyMdeId) {
         easyMdeId = new (window as any).EasyMDE({ 
           element: document.getElementById('modal-blog-content'),
           spellChecker: false,
-          maxHeight: "300px"
+          maxHeight: "300px",
+          ...imageUploadConfig
         });
       }
       if (!easyMdeEn) {
         easyMdeEn = new (window as any).EasyMDE({ 
           element: document.getElementById('modal-blog-content-en'),
           spellChecker: false,
-          maxHeight: "300px"
+          maxHeight: "300px",
+          ...imageUploadConfig
         });
       }
       if (!easyMdeSummaryId) {
