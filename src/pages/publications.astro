@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import Layout from '../layouts/Layout.astro';
 
-const publications = JSON.parse(fs.readFileSync(path.resolve('src/data/publications.json'), 'utf-8'));
+import publications from '../data/publications.json';
 const lang = Astro.cookies.get('lang')?.value === 'en' ? 'en' : 'id';
 
 function getField(item: any, field: string) {

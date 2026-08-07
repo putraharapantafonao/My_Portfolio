@@ -6,7 +6,7 @@ import '../../styles/global.css';
 const { id } = Astro.params;
 
 // Fetch blog data server-side
-const blogs = JSON.parse(fs.readFileSync(path.resolve('src/data/blogs.json'), 'utf-8'));
+import blogs from '../../data/blogs.json';
 const blog = blogs.find((b: any) => b.id === id);
 
 if (!blog) {
