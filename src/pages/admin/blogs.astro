@@ -317,6 +317,9 @@ const blogs = JSON.parse(fs.readFileSync(path.resolve('src/data/blogs.json'), 'u
           maxHeight: "150px"
         });
       }
+
+      // Prevent EasyMDE toolbar buttons from submitting the form
+      document.querySelectorAll('.editor-toolbar button').forEach(btn => btn.setAttribute('type', 'button'));
     }
     function showModal(isEdit = false, blog: any = null) {
       if (!modal) return;
