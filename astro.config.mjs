@@ -10,7 +10,9 @@ export default defineConfig({
     port: 4322,
     host: true
   },
-  adapter: vercel(),
+  adapter: vercel({
+    includeFiles: ['./src/data/**/*.json']
+  }),
   vite: {
     plugins: [tailwindcss()]
   }
