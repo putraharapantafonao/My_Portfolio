@@ -6,7 +6,6 @@ import vercel from '@astrojs/vercel';
 // https://astro.build/config
 export default defineConfig({
   output: 'server',
-  outDir: './my_server_build',
   server: {
     port: 4322,
     host: true
