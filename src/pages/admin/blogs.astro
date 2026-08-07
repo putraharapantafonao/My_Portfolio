@@ -259,6 +259,13 @@ const blogs = JSON.parse(fs.readFileSync(path.resolve('src/data/blogs.json'), 'u
     function initEditors() {
       const imageUploadConfig = {
         uploadImage: true,
+        toolbar: [
+          "bold", "italic", "heading", "|",
+          "quote", "unordered-list", "ordered-list", "|",
+          "link", "upload-image", "|",
+          "preview", "side-by-side", "fullscreen", "|",
+          "guide"
+        ],
         imageUploadFunction: async (file: any, onSuccess: (url: string) => void, onError: (err: string) => void) => {
           const formData = new FormData();
           formData.append('editorImage', file);
