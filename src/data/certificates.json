@@ -310,18 +310,5 @@
     "verifyUrl": "https://www.dicoding.com/certificates/GRX5W56MRZ0M",
     "icon": "fas fa-code",
     "image": "/certificate-image-1785940602343.png"
-  },
-  {
-    "id": "1786041176896",
-    "title": "Belajar Membuat Aplikasi Web dengan React",
-    "title_en": "Belajar Membuat Aplikasi Web dengan React",
-    "issuer": "Dicoding Indonesia",
-    "issueDate": "2026-08-07",
-    "expirationDate": "2029-08-07",
-    "expirationDate_en": "2029-08-07",
-    "credentialId": "QLZ99JJ4DZ5D",
-    "verifyUrl": "https://www.dicoding.com/certificates/QLZ99JJ4DZ5D",
-    "icon": "fas fa-code",
-    "image": "/certificate-image-1786041224149.png"
   }
 ]

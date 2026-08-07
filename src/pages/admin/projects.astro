@@ -10,7 +10,7 @@ import path from 'node:path';
 import AdminLayout from '../../layouts/AdminLayout.astro';
 
 // Load projects server-side
-import projects from '../../data/projects.json';
+const projects = JSON.parse(fs.readFileSync(path.resolve('src/data/projects.json'), 'utf-8'));
 ---
 
 <AdminLayout title="Kelola Proyek Utama" activeTab="projects">

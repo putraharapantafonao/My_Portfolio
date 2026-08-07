@@ -11,7 +11,7 @@ import AdminLayout from '../../layouts/AdminLayout.astro';
 import { parseSummary } from '../../utils/markdown';
 
 // Load blogs server-side
-import blogs from '../../data/blogs.json';
+const blogs = JSON.parse(fs.readFileSync(path.resolve('src/data/blogs.json'), 'utf-8'));
 ---
 
 <AdminLayout title="Kelola Artikel & Blog" activeTab="blog">
@@ -87,7 +87,7 @@ import blogs from '../../data/blogs.json';
         Tulis Artikel Blog Baru
       </h3>
 
-      <form id="modal-form" class="space-y-5" onsubmit="return false;">
+      <form id="modal-form" class="space-y-5">
         <input type="hidden" id="modal-blog-id" />
         
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -211,8 +211,7 @@ import blogs from '../../data/blogs.json';
             Batal
           </button>
           <button
-            id="submit-blog-btn"
-            type="button"
+            type="submit"
             class="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition-all cursor-pointer"
           >
             Simpan & Publikasikan
@@ -258,70 +257,18 @@ import blogs from '../../data/blogs.json';
     let easyMdeSummaryEn: any = null;
 
     function initEditors() {
-      const imageUploadConfig = {
-        toolbar: [
-          "bold", "italic", "heading", "|",
-          "quote", "unordered-list", "ordered-list", "|",
-          "link",
-          {
-            name: "custom-image",
-            action: function customImageAction(editor: any) {
-              const input = document.createElement('input');
-              input.type = 'file';
-              input.accept = 'image/*';
-              input.onchange = async (e: any) => {
-                const file = e.target.files[0];
-                if (!file) return;
-                
-                const cm = editor.codemirror;
-                const doc = cm.getDoc();
-                const cursor = doc.getCursor();
-                doc.replaceRange('![Mengunggah gambar...]()\n', cursor);
-                
-                const formData = new FormData();
-                formData.append('editorImage', file);
-                try {
-                  const res = await fetch('/api/upload-assets', { method: 'POST', body: formData });
-                  if (res.ok) {
-                     const data = await res.json();
-                     if (data.editorImageUrl) {
-                        const content = doc.getValue();
-                        doc.setValue(content.replace('![Mengunggah gambar...]()', `![Gambar](${data.editorImageUrl})`));
-                     } else {
-                        (window as any).showToast('Gagal mengunggah gambar.', 'error');
-                     }
-                  } else {
-                     (window as any).showToast('Gagal mengunggah gambar.', 'error');
-                  }
-                } catch(err) {
-                  (window as any).showToast('Terjadi kesalahan.', 'error');
-                }
-              };
-              input.click();
-            },
-            className: "fa fa-picture-o",
-            title: "Upload Image",
-          },
-          "|",
-          "preview", "side-by-side", "fullscreen", "|",
-          "guide"
-        ]
-      };
-
       if (!easyMdeId) {
         easyMdeId = new (window as any).EasyMDE({ 
           element: document.getElementById('modal-blog-content'),
           spellChecker: false,
-          maxHeight: "300px",
-          ...imageUploadConfig
+          maxHeight: "300px"
         });
       }
       if (!easyMdeEn) {
         easyMdeEn = new (window as any).EasyMDE({ 
           element: document.getElementById('modal-blog-content-en'),
           spellChecker: false,
-          maxHeight: "300px",
-          ...imageUploadConfig
+          maxHeight: "300px"
         });
       }
       if (!easyMdeSummaryId) {
@@ -338,17 +285,6 @@ import blogs from '../../data/blogs.json';
           maxHeight: "150px"
         });
       }
-
-      // Prevent EasyMDE toolbar buttons from submitting the form
-      document.querySelectorAll('.editor-toolbar button').forEach(btn => {
-        btn.setAttribute('type', 'button');
-        btn.addEventListener('click', (e) => {
-          // Hanya prevent default form submission, jangan stop propagation agar EasyMDE tetap bekerja
-          if (btn.getAttribute('type') !== 'button') {
-            e.preventDefault();
-          }
-        });
-      });
     }
     function showModal(isEdit = false, blog: any = null) {
       if (!modal) return;
@@ -434,8 +370,7 @@ import blogs from '../../data/blogs.json';
       }
     });
 
-    const submitBlogBtn = document.getElementById('submit-blog-btn');
-    submitBlogBtn?.addEventListener('click', async (e) => {
+    modalForm?.addEventListener('submit', async (e) => {
       e.preventDefault();
       
       const id = modalBlogId.value;
@@ -502,12 +437,14 @@ import blogs from '../../data/blogs.json';
     blogImageFileInput?.addEventListener('change', async () => {
       const file = blogImageFileInput.files?.[0];
       if (!file) return;
-      
       const id = modalBlogId.value;
+      if (!id) {
+        (window as any).showToast('Simpan artikel terlebih dahulu sebelum mengunggah gambar!', 'error');
+        return;
+      }
       const form = new FormData();
       form.append('blogImage', file);
-      if (id) form.append('blogId', id);
-      
+      form.append('blogId', id);
       try {
         const res = await fetch('/api/upload-assets', { method: 'POST', body: form });
         const data = await res.json();

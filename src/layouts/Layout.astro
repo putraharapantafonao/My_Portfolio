@@ -10,7 +10,8 @@ export interface Props {
 
 const { title, activePage = 'home' } = Astro.props;
 
-import profile from '../data/profile.json';
+// Read profile dynamically server-side
+const profile = JSON.parse(fs.readFileSync(path.resolve('src/data/profile.json'), 'utf-8'));
 
 // Get language setting from cookie (default 'id')
 const lang = Astro.cookies.get('lang')?.value === 'en' ? 'en' : 'id';

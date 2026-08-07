@@ -4,7 +4,7 @@ import path from 'node:path';
 import Layout from '../layouts/Layout.astro';
 import { parseSummary } from '../utils/markdown';
 
-import blogs from '../data/blogs.json';
+const blogs = JSON.parse(fs.readFileSync(path.resolve('src/data/blogs.json'), 'utf-8'));
 const lang = Astro.cookies.get('lang')?.value === 'en' ? 'en' : 'id';
 
 function getField(item: any, field: string) {
