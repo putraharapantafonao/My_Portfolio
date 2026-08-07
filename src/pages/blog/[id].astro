@@ -2,7 +2,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import '../../styles/global.css';
-import { parseContent } from '../../utils/markdown';
 
 const { id } = Astro.params;
 
@@ -31,6 +30,72 @@ function getField(item: any, field: string) {
 const contentBody = getField(blog, 'content');
 const words = contentBody.split(/\s+/).length;
 const readTime = Math.ceil(words / 200);
+
+// Basic Markdown/Text to HTML parser for premium formatting
+function parseContent(content: string) {
+  let html = content;
+  
+  // Handle markdown images: ![alt](url)
+  html = html.replace(/!\[(.*?)\]\((.*?)\)/g, '<img src="$2" alt="$1" class="rounded-2xl border border-slate-200 dark:border-slate-800 shadow-md my-8 max-h-96 object-cover mx-auto" />');
+  
+  // Handle headers
+  html = html.replace(/^###\s+(.+)$/gm, '<h3 class="text-xl font-bold text-slate-900 dark:text-white mt-8 mb-4">$1</h3>');
+  html = html.replace(/^##\s+(.+)$/gm, '<h2 class="text-2xl font-bold text-slate-900 dark:text-white mt-10 mb-5 pb-2 border-b border-slate-200 dark:border-slate-800">$1</h2>');
+  
+  // Handle bold text
+  html = html.replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-slate-900 dark:text-white">$1</strong>');
+  
+  // Handle lists
+  const lines = html.split('\n');
+  let inList = false;
+  let listType = ''; // 'ul' or 'ol'
+  
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i].trim();
+    if (line.startsWith('- ') || line.startsWith('* ')) {
+      const text = line.substring(2);
+      if (!inList) {
+        lines[i] = '<ul class="list-disc pl-6 my-5 space-y-2">\n<li>' + text + '</li>';
+        inList = true;
+        listType = 'ul';
+      } else {
+        lines[i] = '<li>' + text + '</li>';
+      }
+    } else if (/^\d+\.\s+/.test(line)) {
+      const match = line.match(/^\d+\.\s+(.+)$/);
+      const text = match ? match[1] : '';
+      if (!inList) {
+        lines[i] = '<ol class="list-decimal pl-6 my-5 space-y-2">\n<li>' + text + '</li>';
+        inList = true;
+        listType = 'ol';
+      } else {
+        lines[i] = '<li>' + text + '</li>';
+      }
+    } else {
+      if (inList) {
+        lines[i-1] = lines[i-1] + `\n</${listType}>`;
+        inList = false;
+      }
+    }
+  }
+  if (inList) {
+    lines[lines.length - 1] = lines[lines.length - 1] + `\n</${listType}>`;
+  }
+  html = lines.join('\n');
+  
+  // Paragraph separation
+  const paragraphs = html.split(/\n\s*\n/);
+  const formatted = paragraphs.map(p => {
+    const trimmed = p.trim();
+    if (!trimmed) return '';
+    if (trimmed.startsWith('<h') || trimmed.startsWith('<ul') || trimmed.startsWith('<ol') || trimmed.startsWith('<li') || trimmed.startsWith('<img')) {
+      return trimmed;
+    }
+    return `<p class="mb-6 leading-relaxed">${trimmed.replace(/\n/g, '<br>')}</p>`;
+  });
+  
+  return formatted.join('\n');
+}
 
 const parsedHtml = parseContent(contentBody);
 ---
@@ -125,8 +190,6 @@ const parsedHtml = parseContent(contentBody);
             <time datetime={blog.date}>{blog.date}</time>
             <span class="text-slate-300 dark:text-slate-700">•</span>
             <span><i class="far fa-clock"></i> {readTime} {lang === 'en' ? 'min read' : 'menit baca'}</span>
-            <span class="text-slate-300 dark:text-slate-700">•</span>
-            <span><i class="far fa-eye"></i> <span id="view-count">...</span> {lang === 'en' ? 'views' : 'tayangan'}</span>
           </div>
 
           <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white leading-tight tracking-tight mb-4">
@@ -147,25 +210,6 @@ const parsedHtml = parseContent(contentBody);
         <!-- Article Body -->
         <div class="text-slate-600 dark:text-slate-300 text-base leading-relaxed" set:html={parsedHtml}></div>
       </article>
-
-      <!-- Social Share Buttons -->
-      <div class="mt-12 pt-8 border-t border-slate-200 dark:border-slate-800">
-        <h3 class="text-sm font-bold text-slate-700 dark:text-slate-300 mb-4">{lang === 'en' ? 'Share this article:' : 'Bagikan artikel ini:'}</h3>
-        <div class="flex gap-3">
-          <a href={`https://wa.me/?text=${encodeURIComponent(getField(blog, 'title') + ' ' + Astro.url.href)}`} target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-[#25D366] text-white flex items-center justify-center hover:-translate-y-1 transition-transform shadow-md" aria-label="Share on WhatsApp">
-            <i class="fab fa-whatsapp text-lg"></i>
-          </a>
-          <a href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(Astro.url.href)}&text=${encodeURIComponent(getField(blog, 'title'))}`} target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-slate-900 dark:bg-slate-700 text-white flex items-center justify-center hover:-translate-y-1 transition-transform shadow-md" aria-label="Share on X (Twitter)">
-            <i class="fab fa-x-twitter text-lg"></i>
-          </a>
-          <a href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(Astro.url.href)}`} target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-[#0a66c2] text-white flex items-center justify-center hover:-translate-y-1 transition-transform shadow-md" aria-label="Share on LinkedIn">
-            <i class="fab fa-linkedin-in text-lg"></i>
-          </a>
-          <a href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(Astro.url.href)}`} target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-[#1877F2] text-white flex items-center justify-center hover:-translate-y-1 transition-transform shadow-md" aria-label="Share on Facebook">
-            <i class="fab fa-facebook-f text-lg"></i>
-          </a>
-        </div>
-      </div>
 
       <!-- Back Footer link -->
       <div class="mt-16 pt-8 border-t border-slate-200 dark:border-slate-800">
@@ -205,24 +249,6 @@ const parsedHtml = parseContent(contentBody);
         document.cookie = `lang=${nextLang}; path=/; max-age=31536000; SameSite=Lax`;
         window.location.reload();
       });
-
-      // View Counter
-      const slug = window.location.pathname.split('/').filter(Boolean).pop();
-      if (slug) {
-        fetch('/api/views', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ slug })
-        })
-        .then(res => res.json())
-        .then(data => {
-          if(data.views !== undefined) {
-            const countEl = document.getElementById('view-count');
-            if (countEl) countEl.innerText = data.views;
-          }
-        })
-        .catch(err => console.error('Failed to count views:', err));
-      }
     </script>
   </body>
 </html>
