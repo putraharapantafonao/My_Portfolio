@@ -77,7 +77,7 @@ Mahasiswa Teknik Informatika Universitas Malikussaleh yang berfokus pada Softwar
 - Berperan dalam meningkatkan kapasitas SDM serta menanamkan nilai budaya kepulauan Nias kepada mahasiswa perantauan di Lhokseumawe dan Aceh Utara.
 
 **FORMADIKSI KIP-K Universitas Malikussaleh** | Anggota Divisi Desain & Broadcasting
-*Jan 2025 - Present*
+*2025 - 2026*
 - Merancang materi visual, mengelola publikasi media sosial digital organisasi, dan menerapkan prinsip estetika UI/UX untuk meningkatkan interaksi dan jangkauan informasi publik.
 
 **Sekolah Sukma Bangsa Lhokseumawe** | Relawan Pendidikan (Pasca Banjir Sumut-Aceh)
