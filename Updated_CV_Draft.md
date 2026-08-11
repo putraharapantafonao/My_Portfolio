@@ -27,9 +27,9 @@ Mahasiswa Teknik Informatika berprestasi (Penerima Beasiswa KIP-K) di Universita
 ## WORK EXPERIENCE
 **Laboratorium Komputer Teknik Informatika Universitas Malikussaleh** | *Asisten Laboratorium* 
 *Jan 2025 - Present*
-- Memimpin dan memfasilitasi sesi praktikum intensif bagi mahasiswa, mencakup mata kuliah pemrograman dan rekayasa perangkat lunak.
-- Mengelola dan mengonfigurasi infrastruktur perangkat keras serta jaringan komputer laboratorium guna memastikan *zero downtime* selama kegiatan akademis berlangsung.
-- Melakukan evaluasi teknis terhadap kode pengembangan web mahasiswa dan memberikan pendampingan *troubleshooting* secara sistematis.
+- Melakukan pemeliharaan rutin (*preventive maintenance*) pada infrastruktur perangkat keras dan lunak laboratorium untuk memastikan kesiapan operasional kegiatan akademis.
+- Mengidentifikasi dan menangani *troubleshooting* permasalahan sistem secara komprehensif, termasuk pembersihan *malware/virus* dan optimalisasi kinerja *Operating System* (OS).
+- Memberikan dukungan teknis (*IT Support*) harian untuk menjamin kelancaran penggunaan fasilitas komputer dan konektivitas jaringan oleh mahasiswa.
 
 ## PROJECTS
 **Gunungsitoli Web Portal** | *Frontend Web Developer & UI/UX Designer* | Mar 2026
