@@ -5,81 +5,82 @@ LinkedIn: [putra-harapan-tafonao](https://www.linkedin.com/in/putra-harapan-tafo
 Portofolio: [putraharapantafonao-nine.vercel.app](https://putraharapantafonao-nine.vercel.app/)
 
 ## PROFESSIONAL SUMMARY
-Mahasiswa Teknik Informatika Universitas Malikussaleh yang berfokus pada Software Engineering dengan spesialisasi Full-Stack Web Development dan Mobile Engineering. Memiliki rekam jejak dalam membangun ekosistem aplikasi dinamis menggunakan Laravel, React, Flutter, dan integrasi Gemini API. Menguasai pembuatan RESTful API, manajemen database MySQL, dan manipulasi DOM JavaScript. Aktif meningkatkan kompetensi melalui publikasi riset ilmiah, 20+ sertifikasi industri, serta kepemimpinan organisasi. Siap berkontribusi secara profesional untuk menciptakan solusi teknologi yang efisien dan *scalable* dalam tim pengembangan perangkat lunak.
+Mahasiswa Teknik Informatika berprestasi (Penerima Beasiswa KIP-K) di Universitas Malikussaleh dengan spesialisasi mendalam di bidang **Full-Stack Web Development**. Memiliki rekam jejak solid dalam merancang, mengembangkan, dan men-*deploy* ekosistem aplikasi *web* berskala *enterprise* menggunakan arsitektur modern (Laravel, React.js) dan integrasi *Artificial Intelligence* (Gemini API LLM). Terbukti mampu merancang *database* relasional yang terstruktur (MySQL), mengembangkan *RESTful API* berkinerja tinggi, dan menciptakan antarmuka pengguna (UI/UX) yang responsif dan interaktif. Aktif mengembangkan kompetensi kepemimpinan melalui berbagai peran strategis di organisasi kemahasiswaan dan telah tersertifikasi oleh institusi global terkemuka (IBM, Dicoding, Hacktiv8). Berkomitmen untuk memberikan solusi teknologi berbasis *web* yang *scalable*, aman, dan efisien dalam lingkungan kerja profesional.
 
 ## SKILLS & LANGUAGES
-- **Technical Skills**: PHP, JavaScript, Python, Kotlin, Dart, HTML5, CSS3, C++
-- **Frameworks & Tools**: Laravel, React.js, Tailwind CSS, Bootstrap, Streamlit, Flutter, Chart.js, Vite, Git, GitHub, MySQL, Figma, VS Code
-- **Core Competencies**: Full-Stack Web Development, Mobile Engineering, UI/UX Design, AI API Integration, RESTful API, Object-Oriented Programming (OOP)
-- **Soft Skills**: Leadership, Public Speaking, Team Management, Problem Solving, Analytical Thinking, Cross-functional Collaboration
+- **Technical Skills**: JavaScript, PHP, Python, HTML5, CSS3, C++
+- **Frameworks & Tools**: React.js, Laravel, Tailwind CSS, Bootstrap, Streamlit, Vite, Chart.js, Git, GitHub, MySQL, Figma, VS Code
+- **Core Competencies**: Full-Stack Web Development, Frontend Architecture, Backend System Design, RESTful API Development, Database Management, AI & API Integration, Object-Oriented Programming (OOP)
+- **Soft Skills**: Strategic Leadership, Problem Solving, Analytical Thinking, Project Management, Cross-functional Collaboration, Public Speaking
 - **Languages**: Bahasa Indonesia (Native), English (Professional Working Proficiency)
 
 ## EDUCATION & AWARDS
 **Universitas Malikussaleh** | S1 Teknik Informatika 
 *Undergraduate Student* | 2024 – Present
-- **Fokus Studi**: Web & Mobile Engineering, Algoritma & Struktur Data, Rekayasa Perangkat Lunak.
-- **Penghargaan**: Penerima Beasiswa KIP-Kuliah (Kementerian Pendidikan, Kebudayaan, Riset, dan Teknologi) atas prestasi akademis.
+- **Fokus Studi**: Web Engineering, Algoritma & Struktur Data, Basis Data, Rekayasa Perangkat Lunak.
+- **Pencapaian**: Penerima Beasiswa KIP-Kuliah (Kementerian Pendidikan, Kebudayaan, Riset, dan Teknologi) atas keunggulan prestasi akademik.
 
 ## PUBLICATIONS
 **Analisis Dampak Human Error Terhadap Kebocoran Data Pribadi di Kalangan Pengguna Digital**
 *JIKUM: Jurnal Ilmu Komputer (Vol. 2, No. 2, 2026) | Terindeks Google Scholar*
-- Menganalisis dampak kelalaian pengguna (*human error*) terhadap keamanan data menggunakan pendekatan kualitatif, serta merumuskan urgensi peningkatan literasi keamanan digital bagi pengguna *end-user*.
+- Mempublikasikan riset komprehensif terkait celah keamanan siber (*cybersecurity*) yang diakibatkan oleh *human error*, serta merumuskan strategi mitigasi risiko melalui peningkatan literasi keamanan digital bagi *end-user*.
 
 ## WORK EXPERIENCE
-**Laboratorium Komputer Teknik Informatika Universitas Malikussaleh** | Asisten Laboratorium 
+**Laboratorium Komputer Teknik Informatika Universitas Malikussaleh** | *Asisten Laboratorium* 
 *Jan 2025 - Present*
-- Memandu dan memfasilitasi sesi praktikum untuk lebih dari **50+ mahasiswa** pada mata kuliah pemrograman, algoritma, dan rekayasa perangkat lunak.
-- Mengelola dan mengonfigurasi perangkat keras serta jaringan komputer laboratorium guna memastikan **100% kelancaran** infrastruktur teknis selama kegiatan akademis berlangsung.
-- Mengevaluasi tugas koding mahasiswa, menguji logika program, dan memberikan asistensi teknis *troubleshooting* secara efisien.
+- Memimpin dan memfasilitasi sesi praktikum intensif bagi **50+ mahasiswa**, mencakup mata kuliah pemrograman, algoritma, dan rekayasa perangkat lunak.
+- Mengelola dan mengonfigurasi infrastruktur perangkat keras serta jaringan komputer laboratorium guna memastikan *zero downtime* (100% kelancaran) selama kegiatan akademis berlangsung.
+- Melakukan evaluasi teknis terhadap kode pemrograman web mahasiswa, melakukan uji logika algoritma, dan memberikan pendampingan *troubleshooting* secara sistematis dan efisien.
 
 ## PROJECTS
-**My Personal Notes** | *Frontend Developer* | Agu 2026
-- Mengembangkan aplikasi web pencatatan (SaaS-grade) menggunakan arsitektur React dan Vite dengan desain antarmuka "Vibrant Glassmorphism" yang imersif.
-- Mengintegrasikan penyimpanan *Local Storage* persisten dan dukungan Markdown (GitHub Flavored), memungkinkan akses catatan super cepat tanpa latensi server.
+**SupermarketKu (POS & Retail Management)** | *Full-Stack Web Developer* | Jun 2026
+- Merancang dan men-deploy sistem *Point of Sale* (POS) dan manajemen inventaris *web-based* komprehensif menggunakan *Laravel* dan *Tailwind CSS*.
+- Menyediakan ekosistem digital yang tersentralisasi untuk melacak transaksi kasir, manajemen stok gudang, dan otomatisasi pelaporan keuangan dengan keamanan data yang terjamin.
 
-**Dompet Expense Tracker** | *Frontend Developer* | Agu 2026
-- Membangun aplikasi pelacakan keuangan modern menggunakan HTML5, CSS3, dan Vanilla JS.
-- Mengintegrasikan *Chart.js* untuk visualisasi data interaktif, fitur *sorting*, serta ekspor CSV, memberikan pengalaman pengelolaan keuangan yang *seamless* di sisi *client*.
+**My Personal Notes (SaaS Platform)** | *Frontend Web Developer* | Agu 2026
+- Merancang dan mendevelop aplikasi pencatatan tingkat lanjut berskala SaaS (*Software as a Service*) menggunakan *React.js* dan *Vite*, mengimplementasikan antarmuka *Vibrant Glassmorphism*.
+- Mengintegrasikan sistem *Local Storage* persisten dan *Markdown rendering* (GitHub Flavored) yang meminimalkan *state re-renders* dan mempercepat *load time* secara drastis di sisi *client*.
 
-**SupermarketKu (POS & Retail Management)** | *Full-Stack Developer* | Jun 2026
-- Merancang aplikasi web Point of Sale (POS) dan manajemen inventaris komprehensif berbasis Laravel.
-- Memusatkan sistem manajemen penjualan, stok barang, pembelian, dan pelaporan, secara signifikan meminimalkan selisih stok toko dan mempercepat proses kasir.
+**DLSB-TI FIFO (Digital Inventory System)** | *Backend Web Developer* | Nov 2025
+- Mendigitalisasi seluruh sistem sirkulasi inventaris laboratorium teknik informatika menggunakan *PHP* dan *MySQL*.
+- Merancang arsitektur basis data relasional berbasis logika FIFO (*First-In, First-Out*) yang berhasil meminimalisir anomali data dan meningkatkan akurasi *tracking* barang secara signifikan.
 
-**Website Undangan Pernikahan Tema Anime "Your Name"** | *Frontend Developer* | Mei 2026
-- Menciptakan undangan digital interaktif tanpa *framework* berat untuk memastikan *load time* yang optimal dan sangat ringan di berbagai perangkat.
-- Menyematkan fitur modern seperti *real-time countdown*, galeri foto *lightbox*, pemutar musik otomatis, dan amplop kado digital.
+**DevMate AI (Web-Based Developer Assistant)** | *Full-Stack Developer* | Mei 2026
+- Mengembangkan aplikasi *web* asisten kecerdasan buatan menggunakan *Python* dan *Streamlit*.
+- Menerapkan integrasi *Large Language Model (LLM)* melalui Gemini API untuk memfasilitasi *code debugging* dan otomatisasi *code generation* langsung melalui antarmuka *browser*.
 
-**DevMate AI (Virtual Developer Assistant)** | *AI Engineer* | Mei 2026
-- Membangun *chatbot* asisten produktivitas developer berbasis Python dan Streamlit.
-- Mengintegrasikan LLM via Gemini API untuk mengotomatisasi perbaikan *bug* dan pembuatan dokumentasi, mempercepat alur kerja koding.
+**Dompet Expense Tracker** | *Frontend Web Developer* | Agu 2026
+- Membangun aplikasi manajemen finansial interaktif berbasis *Vanilla JavaScript*.
+- Menanamkan library *Chart.js* untuk visualisasi data analitik secara *real-time* dan memanipulasi *Document Object Model* (DOM) untuk fitur penyortiran dinamis tanpa *page reload*.
 
-**Gunungsitoli Web Portal** | *Frontend Developer & UI/UX Designer* | Mar 2026
-- Membuat aplikasi web portal informatif untuk menyajikan potensi pariwisata Kota Gunungsitoli dengan antarmuka yang sangat responsif.
+**Website Undangan Pernikahan Digital** | *Frontend Web Developer* | Mei 2026
+- Menciptakan platform undangan *web-based* yang sangat ringan dan teroptimasi tanpa *framework* berat (*Vanilla JS, HTML5, CSS3*).
+- Menghasilkan pengalaman pengguna (*User Experience*) yang imersif dengan fitur kalkulasi *countdown*, pemutar media otomatis, dan modul interaktif pengiriman hadiah digital.
 
-**DLSB-TI FIFO (Digital Inventory System)** | *Backend Developer* | Nov 2025
-- Mendigitalisasi sistem peminjaman inventaris Jurusan Teknik Informatika menggunakan PHP & MySQL.
-- Menerapkan logika algoritma First-In, First-Out (FIFO) yang berhasil memastikan akurasi sirkulasi barang secara *real-time*.
+**Gunungsitoli Web Portal** | *Frontend Web Developer & UI/UX Designer* | Mar 2026
+- Membangun portal website statis yang informatif dan estetis untuk mempromosikan pariwisata Kota Gunungsitoli, dengan menerapkan prinsip *Mobile-First Design* (responsivitas 100%).
 
 ## ORGANIZATIONAL & VOLUNTEER EXPERIENCE
 **Ikatan Mahasiswa Nias (IMANIS) Lhokseumawe - Aceh Utara** | *Ketua Divisi Kaderisasi*
 *2026 - Present* | (Sebelumnya: Anggota Divisi Agama, 2025 - 2026)
-- Memimpin strategi perekrutan dan pelatihan anggota baru, berhasil meningkatkan partisipasi aktif mahasiswa perantauan serta memperkuat nilai budaya Nias di lingkungan akademis.
+- Merancang dan mengeksekusi strategi rekrutmen serta pelatihan kepemimpinan, berhasil meningkatkan partisipasi aktif mahasiswa dan memperkuat solidaritas organisasi.
 
 **Himpunan Mahasiswa Kristiani Lhokseumawe (HMKL)** | *Koordinator Wilayah Reulet*
 *2026 - Present* | (Sebelumnya: Anggota Divisi Kaderisasi, 2025 - 2026)
-- Mengelola komunikasi dan membimbing puluhan anggota di wilayah Reulet, serta menginisiasi program kaderisasi untuk menjamin regenerasi organisasi yang berkelanjutan.
+- Mengoordinasikan komunikasi dan mengarahkan puluhan anggota di wilayah operasional Reulet, serta mempelopori program kaderisasi untuk regenerasi pengurus.
 
 **Himpunan Mahasiswa Teknik Informatika (HIMATIF) Unimal** | *Anggota Divisi Agama*
 *2026 - Present*
-- Merancang dan melaksanakan program kerohanian untuk membina solidaritas dan nilai religius bagi ratusan mahasiswa Teknik Informatika.
+- Merumuskan program kerja sosial dan kerohanian untuk menjembatani dan membina solidaritas di antara **500+ mahasiswa** di lingkungan program studi.
 
 **Sekolah Sukma Bangsa Lhokseumawe** | *Relawan Pendidikan (Pasca Banjir Sumut-Aceh)*
 *Jan 2026 - Apr 2026*
-- Mengabdi selama 3 bulan di Desa Babo, Kab. Aceh Tamiang, mengajar dan mendampingi ratusan siswa (TK hingga SMA) di sekolah darurat guna menjamin keberlanjutan pendidikan pasca bencana.
+- Diterjunkan langsung ke wilayah terdampak bencana di Kab. Aceh Tamiang selama 3 bulan.
+- Mengabdi secara intensif dalam memberikan pendidikan darurat kepada ratusan siswa di seluruh jenjang (TK-SMA), memastikan tidak ada penundaan akademik bagi para korban banjir.
 
 **FORMADIKSI KIP-K Universitas Malikussaleh** | *Anggota Divisi Desain & Broadcasting*
 *2025 - 2026*
-- Merancang materi visual untuk media sosial yang berhasil meningkatkan interaksi (*engagement*) dan jangkauan informasi publik.
+- Memproduksi aset kreatif dan desain publikasi digital yang secara konsisten meningkatkan jangkauan organik (*organic reach*) informasi beasiswa dan advokasi mahasiswa.
 
 ## CERTIFICATIONS
 - **Belajar Dasar Pemrograman Web** – Dicoding Indonesia (ID: 0LZ0Y9473X65)
