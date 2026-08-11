@@ -12,7 +12,7 @@ Mahasiswa Teknik Informatika berprestasi (Penerima Beasiswa KIP-K) di Universita
 - **Frameworks & Tools**: Figma, React.js, Tailwind CSS, Bootstrap, Vite, Laravel, Git, GitHub, MySQL, VS Code
 - **Core Competencies**: UI/UX Design, Frontend Web Architecture, User-Centered Design (UCD), Wireframing & Prototyping, Responsive Web Design, Full-Stack Development
 - **Soft Skills**: Strategic Leadership, Problem Solving, Creative Thinking, Project Management, Cross-functional Collaboration, Public Speaking
-- **Languages**: Bahasa Indonesia (Native), English (Professional Working Proficiency)
+- **Languages**: Bahasa Indonesia (Native), English (Elementary Proficiency)
 
 ## EDUCATION & AWARDS
 **Universitas Malikussaleh** | S1 Teknik Informatika 
