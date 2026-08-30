@@ -2,6 +2,7 @@ import type { APIRoute } from 'astro';
 import fs from 'node:fs';
 import path from 'node:path';
 import { isAuthenticated } from '../../utils/auth';
+import { uploadToGithub } from '../../utils/github';
 
 export const POST: APIRoute = async ({ request, cookies }) => {
   if (!isAuthenticated(cookies)) {
@@ -27,14 +28,21 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     const publicDir = path.resolve('public');
     const destPath = path.join(publicDir, 'resume.pdf');
     
-    fs.mkdirSync(publicDir, { recursive: true });
-    fs.writeFileSync(destPath, buffer);
+    try {
+      fs.mkdirSync(publicDir, { recursive: true });
+      fs.writeFileSync(destPath, buffer);
+    } catch (e) {}
+    await uploadToGithub('public/resume.pdf', buffer.toString('base64'), 'Upload resume', true);
 
     // Update profile.json's resumeUrl
     const profilePath = path.resolve('src/data/profile.json');
-    const profile = JSON.parse(fs.readFileSync(profilePath, 'utf-8'));
-    profile.resumeUrl = '/resume.pdf';
-    fs.writeFileSync(profilePath, JSON.stringify(profile, null, 2), 'utf-8');
+    let profile: any = { resumeUrl: '/resume.pdf' };
+    try {
+      profile = JSON.parse(fs.readFileSync(profilePath, 'utf-8'));
+      profile.resumeUrl = '/resume.pdf';
+      fs.writeFileSync(profilePath, JSON.stringify(profile, null, 2), 'utf-8');
+    } catch (e) {}
+    await uploadToGithub('src/data/profile.json', JSON.stringify(profile, null, 2), 'Update resume URL');
 
     return new Response(JSON.stringify({ success: true, url: '/resume.pdf' }), {
       status: 200,

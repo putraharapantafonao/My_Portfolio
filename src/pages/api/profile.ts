@@ -1,6 +1,7 @@
 import type { APIRoute } from 'astro';
 import fs from 'node:fs';
 import path from 'node:path';
+import { uploadToGithub } from '../../utils/github';
 import { isAuthenticated } from '../../utils/auth';
 
 const filePath = path.resolve('src/data/profile.json');
@@ -34,7 +35,8 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     }
     
     const merged = { ...existing, ...body };
-    fs.writeFileSync(filePath, JSON.stringify(merged, null, 2), 'utf-8');
+    try { fs.writeFileSync(filePath, JSON.stringify(merged, null, 2), 'utf-8'); } catch (e) {}
+    await uploadToGithub('src/data/profile.json', JSON.stringify(merged, null, 2), 'Update profile');
     
     return new Response(JSON.stringify({ success: true, data: merged }), {
       status: 200,

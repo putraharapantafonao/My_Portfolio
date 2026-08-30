@@ -1,6 +1,7 @@
 import type { APIRoute } from 'astro';
 import fs from 'node:fs';
 import path from 'node:path';
+import { uploadToGithub } from '../../utils/github';
 import { isAuthenticated } from '../../utils/auth';
 
 const filePath = path.resolve('src/data/blogs.json');
@@ -13,9 +14,10 @@ function readData() {
   return JSON.parse(fs.readFileSync(filePath, 'utf-8'));
 }
 
-function writeData(data: any) {
+async function writeData(data: any) {
   fs.mkdirSync(path.dirname(filePath), { recursive: true });
-  fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf-8');
+  try { fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf-8'); } catch (e) {}
+  await uploadToGithub('src/data/blogs.json', JSON.stringify(data, null, 2), 'Update blogs.json');
 }
 
 export const GET: APIRoute = async () => {
@@ -56,7 +58,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
       content_en: body.content_en || ''
     };
     data.unshift(newItem); // New blog posts appear first
-    writeData(data);
+    await writeData(data);
     return new Response(JSON.stringify(newItem), {
       status: 201,
       headers: { 'Content-Type': 'application/json' }
@@ -93,7 +95,7 @@ export const PUT: APIRoute = async ({ request, cookies }) => {
       content: body.content !== undefined ? body.content : data[index].content,
       content_en: body.content_en !== undefined ? body.content_en : data[index].content_en
     };
-    writeData(data);
+    await writeData(data);
     return new Response(JSON.stringify(data[index]), {
       status: 200,
       headers: { 'Content-Type': 'application/json' }
