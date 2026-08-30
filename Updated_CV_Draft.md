@@ -30,6 +30,7 @@ Mahasiswa Teknik Informatika berprestasi (Penerima Beasiswa KIP-K) di Universita
 - Melakukan pemeliharaan rutin (*preventive maintenance*) pada infrastruktur perangkat keras dan lunak laboratorium untuk memastikan kesiapan operasional kegiatan akademis.
 - Mengidentifikasi dan menangani *troubleshooting* permasalahan sistem secara komprehensif, termasuk pembersihan *malware/virus* dan optimalisasi kinerja *Operating System* (OS).
 - Memberikan dukungan teknis (*IT Support*) harian untuk menjamin kelancaran penggunaan fasilitas komputer dan konektivitas jaringan oleh mahasiswa.
+- Membantu operasional teknis dosen pengampu dan memberikan asistensi selama sesi praktikum berjalan sesuai instruksi, guna menjamin efektivitas kegiatan belajar mengajar.
 
 ## PROJECTS
 **Gunungsitoli Web Portal** | *Frontend Web Developer & UI/UX Designer* | Mar 2026
