@@ -109,5 +109,25 @@
     "link": "https://github.com/putraharapantafonao/undangan-taki-mitsuha",
     "demoUrl": "https://wedding-taki-mitsuha.netlify.app/",
     "date": "2026-05-19"
+  },
+  {
+    "id": "1786128523787",
+    "title": "My Personal Notes",
+    "title_en": "My Personal Notes",
+    "description": "Sebuah aplikasi web pencatatan tingkat lanjut (SaaS-grade) yang dibangun menggunakan arsitektur React dan Vite. Proyek ini tidak hanya berfokus pada fungsionalitas CRUD, tetapi juga mengusung desain antarmuka \"Vibrant Glassmorphism\" yang sangat imersif. Fitur unggulannya meliputi sistem penyimpanan lokal persisten (Local Storage), dukungan pemformatan Markdown (GitHub Flavored), sistem Tagging terintegrasi, fitur Edit real-time, pencarian dinamis, serta transisi mulus antara Mode Gelap (Dark) dan Terang (Light).",
+    "description_en": "An advanced, SaaS-grade note-taking web application built with React and Vite architecture. This project goes beyond standard CRUD functionality by featuring a highly immersive \"Vibrant Glassmorphism\" user interface. Key features include persistent local storage, GitHub Flavored Markdown support, an integrated tagging system, real-time in-line editing, dynamic search, and seamless transitions between Dark and Light modes.",
+    "image": "/project-image-1786128546107.png",
+    "fallbackImg": "https://placehold.co/600x400/020617/818cf8?text=Project",
+    "tags": [
+      "React.js",
+      "Vite",
+      "Vanilla CSS",
+      "Glassmorphism UI",
+      "Local Storage",
+      "Markdown (remark-gfm)"
+    ],
+    "link": "https://github.com/putraharapantafonao/my-personal-notes",
+    "demoUrl": "https://myy-personal-notes.netlify.app/",
+    "date": "2026-08-07"
   }
 ]
