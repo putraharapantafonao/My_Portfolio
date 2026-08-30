@@ -17,7 +17,6 @@ Mahasiswa Teknik Informatika berprestasi (Penerima Beasiswa KIP-K) di Universita
 ## EDUCATION & AWARDS
 **Universitas Malikussaleh** | S1 Teknik Informatika 
 *Undergraduate Student* | 2024 – Present
-- **Mata Kuliah Relevan**: Web Engineering, Rekayasa Perangkat Lunak, Interaksi Manusia & Komputer (HCI), Algoritma.
 - **Pencapaian**: Penerima Beasiswa KIP-Kuliah (Kementerian Pendidikan, Kebudayaan, Riset, dan Teknologi) atas keunggulan prestasi akademik.
 
 ## PUBLICATIONS
