@@ -1,0 +1,51 @@
+[
+  {
+    "id": "1",
+    "title": "Belajar Dasar Pemrograman Web",
+    "title_en": "Learn Basic Web Programming",
+    "issuer": "Dicoding Indonesia",
+    "issueDate": "2026",
+    "expirationDate": "13 Maret 2029",
+    "expirationDate_en": "March 13, 2029",
+    "credentialId": "0LZ0Y9473X65",
+    "verifyUrl": "https://www.dicoding.com/certificates/0LZ0Y9473X65",
+    "icon": "fas fa-code",
+    "image": "/certificate-image-1785174901586.png"
+  },
+  {
+    "id": "2",
+    "title": "Belajar Dasar AI",
+    "title_en": "Learn Basic AI",
+    "issuer": "Dicoding Indonesia",
+    "issueDate": "2026",
+    "expirationDate": "Tidak Ada Kedaluwarsa",
+    "expirationDate_en": "No Expiration Date",
+    "credentialId": "ERZRLGY32ZYV",
+    "verifyUrl": "",
+    "icon": "fas fa-robot"
+  },
+  {
+    "id": "3",
+    "title": "Memulai Pemrograman dengan Kotlin",
+    "title_en": "Starting Programming with Kotlin",
+    "issuer": "Dicoding Indonesia",
+    "issueDate": "2026",
+    "expirationDate": "Tidak Ada Kedaluwarsa",
+    "expirationDate_en": "No Expiration Date",
+    "credentialId": "MRZMWQJ1RPYQ",
+    "verifyUrl": "https://www.dicoding.com/certificates/MRZMWQJ1RPYQ",
+    "icon": "fas fa-mobile-alt"
+  },
+  {
+    "id": "4",
+    "title": "Introduction to Financial Literacy",
+    "title_en": "Introduction to Financial Literacy",
+    "issuer": "Dicoding Indonesia",
+    "issueDate": "2026",
+    "expirationDate": "Tidak Ada Kedaluwarsa",
+    "expirationDate_en": "No Expiration Date",
+    "credentialId": "JLX1VD2K5Z72",
+    "verifyUrl": "https://www.dicoding.com/certificates/JLX1VD2K5Z72",
+    "icon": "fas fa-chart-line"
+  }
+]

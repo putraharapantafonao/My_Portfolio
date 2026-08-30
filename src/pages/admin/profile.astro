@@ -1,0 +1,628 @@
+---
+import { isAuthenticated } from '../../utils/auth';
+
+if (!isAuthenticated(Astro.cookies)) {
+  return Astro.redirect('/admin/login');
+}
+
+import fs from 'node:fs';
+import path from 'node:path';
+import AdminLayout from '../../layouts/AdminLayout.astro';
+
+// Load existing profile server-side
+const profile = JSON.parse(fs.readFileSync(path.resolve('src/data/profile.json'), 'utf-8'));
+---
+
+<AdminLayout title="Edit Profil Utama" activeTab="profile">
+  <div class="max-w-4xl mx-auto">
+    
+    <form id="profile-form" class="space-y-8">
+      
+      <!-- Section 1: Personal Info -->
+      <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm dark:shadow-xl">
+        <h3 class="text-md font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2 pb-3 border-b border-slate-200 dark:border-slate-800/80">
+          <i class="fas fa-id-card text-indigo-650 dark:text-indigo-400"></i>
+          Informasi Utama & Akademik
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div class="md:col-span-2">
+            <label for="name" class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-2">Nama Lengkap</label>
+            <input
+              id="name"
+              type="text"
+              required
+              value={profile.name}
+              class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors shadow-sm"
+            />
+          </div>
+          <div>
+            <label for="role" class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-2">Peran Utama / Role (ID)</label>
+            <input
+              id="role"
+              type="text"
+              required
+              value={profile.role}
+              class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors shadow-sm"
+            />
+          </div>
+          <div>
+            <label for="role_en" class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-2">Peran Utama / Role (EN)</label>
+            <input
+              id="role_en"
+              type="text"
+              required
+              value={profile.role_en || ''}
+              class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors shadow-sm"
+            />
+          </div>
+          <div>
+            <label for="university" class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-2">Universitas (ID)</label>
+            <input
+              id="university"
+              type="text"
+              required
+              value={profile.university}
+              class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors shadow-sm"
+            />
+          </div>
+          <div>
+            <label for="university_en" class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-2">Universitas (EN)</label>
+            <input
+              id="university_en"
+              type="text"
+              required
+              value={profile.university_en || ''}
+              class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors shadow-sm"
+            />
+          </div>
+          <div>
+            <label for="major" class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-2">Program Studi / Jurusan (ID)</label>
+            <input
+              id="major"
+              type="text"
+              required
+              value={profile.major}
+              class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors shadow-sm"
+            />
+          </div>
+          <div>
+            <label for="major_en" class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-2">Program Studi / Jurusan (EN)</label>
+            <input
+              id="major_en"
+              type="text"
+              required
+              value={profile.major_en || ''}
+              class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors shadow-sm"
+            />
+          </div>
+
+          <div>
+            <label for="location" class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-2">Lokasi Terkini (ID)</label>
+            <input
+              id="location"
+              type="text"
+              required
+              value={profile.location}
+              class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors shadow-sm"
+            />
+          </div>
+          <div>
+            <label for="location_en" class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-2">Lokasi Terkini (EN)</label>
+            <input
+              id="location_en"
+              type="text"
+              required
+              value={profile.location_en || ''}
+              class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors shadow-sm"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 2: Narrative bio -->
+      <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm dark:shadow-xl">
+        <h3 class="text-md font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2 pb-3 border-b border-slate-200 dark:border-slate-800/80">
+          <i class="fas fa-quote-left text-indigo-650 dark:text-indigo-400"></i>
+          Deskripsi & Bio Narasi
+        </h3>
+        <div class="space-y-5">
+          <div>
+            <label for="description" class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-2">Tentang Saya / Biografi (ID)</label>
+            <textarea
+              id="description"
+              required
+              rows="5"
+              class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-sm resize-none focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors shadow-sm"
+            >{profile.description}</textarea>
+          </div>
+          <div>
+            <label for="description_en" class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-2">Tentang Saya / Biografi (EN)</label>
+            <textarea
+              id="description_en"
+              required
+              rows="5"
+              class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-sm resize-none focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors shadow-sm"
+            >{profile.description_en || ''}</textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 3: Media & CV Upload -->
+      <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm dark:shadow-xl">
+        <h3 class="text-md font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2 pb-3 border-b border-slate-200 dark:border-slate-800/80">
+          <i class="fas fa-file-image text-indigo-650 dark:text-indigo-400"></i>
+          Media & Berkas CV
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div>
+            <label for="profileImage" class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-2">Foto Profil (Lokal/Url)</label>
+            <div class="flex gap-3 mb-2">
+              <input
+                id="profileImage"
+                type="text"
+                required
+                value={profile.profileImage}
+                class="flex-1 px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors shadow-sm"
+              />
+              <div class="w-12 h-12 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden shrink-0 bg-white dark:bg-slate-900 flex items-center justify-center">
+                <img id="profile-img-preview" src={profile.profileImage} alt="Preview Foto" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/100x100?text=Profile';" />
+              </div>
+            </div>
+            <div class="flex items-center gap-2 mt-2">
+              <input
+                id="profile-image-file-input"
+                type="file"
+                accept=".png,.jpg,.jpeg,.webp,.gif"
+                class="block w-full text-[10px] text-slate-500 dark:text-slate-450 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-[10px] file:font-bold file:bg-indigo-50 dark:file:bg-indigo-950 file:text-indigo-600 dark:file:text-indigo-400 hover:file:bg-indigo-100 transition-all cursor-pointer"
+              />
+              <button
+                type="button"
+                id="upload-profile-image-btn"
+                class="px-3.5 py-1.5 rounded-lg bg-slate-200 dark:bg-slate-800 hover:bg-indigo-600 hover:text-white dark:hover:bg-indigo-600 text-slate-700 dark:text-slate-300 text-[10px] font-bold transition-all cursor-pointer shrink-0"
+              >
+                Unggah Foto
+              </button>
+            </div>
+          </div>
+          <div>
+            <label for="resumeUrl" class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-2">Tautan Resume/CV PDF (Lokal/Url)</label>
+            <input
+              id="resumeUrl"
+              type="text"
+              required
+              value={profile.resumeUrl}
+              class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors shadow-sm"
+            />
+          </div>
+
+          <!-- Dynamic CV Uploader Component -->
+          <div class="md:col-span-2 p-5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-2xl">
+            <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-3">Unggah / Ganti Berkas CV (PDF)</label>
+            <div class="flex flex-col sm:flex-row items-center gap-4">
+              <input
+                id="cv-file-input"
+                type="file"
+                accept=".pdf"
+                class="block w-full text-xs text-slate-500 dark:text-slate-450 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-indigo-50 dark:file:bg-indigo-950 file:text-indigo-600 dark:file:text-indigo-400 hover:file:bg-indigo-100 dark:hover:file:bg-indigo-900 transition-all cursor-pointer"
+              />
+              <button
+                type="button"
+                id="upload-cv-btn"
+                class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-slate-200 dark:bg-slate-800 hover:bg-indigo-600 hover:text-white dark:hover:bg-indigo-600 text-slate-700 dark:text-slate-300 text-xs font-bold transition-all cursor-pointer shrink-0"
+              >
+                Unggah CV
+              </button>
+            </div>
+            <p class="text-[10px] text-slate-400 dark:text-slate-500 mt-2">
+              * Hanya menerima berkas berekstensi .pdf. Mengunggah CV baru akan secara otomatis menimpa berkas CV lama Anda di server dan menyetel tautan resume ke "/resume.pdf".
+            </p>
+          </div>
+
+          <!-- Website Icon (Favicon) & Social Sharing Image (OG Image) Uploader Component -->
+          <div class="md:col-span-2 p-5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-2xl grid grid-cols-1 md:grid-cols-2 gap-6 mt-2">
+            <!-- Favicon Uploader -->
+            <div>
+              <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-3">Unggah / Ganti Icon Web (Favicon)</label>
+              
+              <!-- Current Favicon Preview -->
+              <div class="flex items-center gap-3 mb-3">
+                <span class="text-[10px] font-bold text-slate-400">Icon Saat Ini:</span>
+                <div class="w-8 h-8 rounded border border-slate-200 dark:border-slate-800 flex items-center justify-center p-1 bg-white dark:bg-slate-900">
+                  <img id="favicon-preview" src={profile.faviconUrl || "/favicon.ico"} alt="Favicon" class="max-w-full max-h-full object-contain" />
+                </div>
+              </div>
+              
+              <div class="flex items-center gap-2">
+                <input
+                  id="favicon-file-input"
+                  type="file"
+                  accept=".ico,.png,.jpg,.jpeg,.svg,.gif"
+                  class="block w-full text-[10px] text-slate-500 dark:text-slate-450 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-[10px] file:font-bold file:bg-indigo-50 dark:file:bg-indigo-950 file:text-indigo-600 dark:file:text-indigo-400 hover:file:bg-indigo-100 transition-all cursor-pointer"
+                />
+                <button
+                  type="button"
+                  id="upload-favicon-btn"
+                  class="px-4 py-2 rounded-lg bg-slate-200 dark:bg-slate-800 hover:bg-indigo-600 hover:text-white dark:hover:bg-indigo-600 text-slate-700 dark:text-slate-300 text-[10px] font-bold transition-all cursor-pointer shrink-0"
+                >
+                  Unggah Icon
+                </button>
+              </div>
+              <p class="text-[9px] text-slate-400 dark:text-slate-500 mt-2">
+                * Format diterima: .ico, .png, .jpg, .jpeg, .svg, .gif.
+              </p>
+            </div>
+
+            <!-- OG Image Uploader -->
+            <div>
+              <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-3">Unggah / Ganti Gambar Pratinjau Sosial (OG Image)</label>
+              
+              <!-- Current OG Image Preview -->
+              <div class="flex items-center gap-3 mb-3">
+                <span class="text-[10px] font-bold text-slate-400">Gambar Saat Ini:</span>
+                <div class="h-10 w-20 rounded border border-slate-200 dark:border-slate-800 overflow-hidden bg-white dark:bg-slate-900 flex items-center justify-center">
+                  <img id="og-preview" src={profile.ogImageUrl || "/assets/img/foto-putra.jpeg"} alt="OG Image Preview" class="w-full h-full object-cover" />
+                </div>
+              </div>
+              
+              <div class="flex items-center gap-2">
+                <input
+                  id="og-file-input"
+                  type="file"
+                  accept=".png,.jpg,.jpeg,.webp"
+                  class="block w-full text-[10px] text-slate-500 dark:text-slate-450 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-[10px] file:font-bold file:bg-indigo-50 dark:file:bg-indigo-950 file:text-indigo-600 dark:file:text-indigo-400 hover:file:bg-indigo-100 transition-all cursor-pointer"
+                />
+                <button
+                  type="button"
+                  id="upload-og-btn"
+                  class="px-4 py-2 rounded-lg bg-slate-200 dark:bg-slate-800 hover:bg-indigo-600 hover:text-white dark:hover:bg-indigo-600 text-slate-700 dark:text-slate-300 text-[10px] font-bold transition-all cursor-pointer shrink-0"
+                >
+                  Unggah Gambar
+                </button>
+              </div>
+              <p class="text-[9px] text-slate-400 dark:text-slate-500 mt-2">
+                * Format diterima: .png, .jpg, .jpeg, .webp. Gambar ini akan muncul sebagai preview saat link web dibagikan di WhatsApp/Facebook.
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Section 4: Contact & Socials -->
+      <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm dark:shadow-xl">
+        <h3 class="text-md font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2 pb-3 border-b border-slate-200 dark:border-slate-800/80">
+          <i class="fas fa-share-alt text-indigo-650 dark:text-indigo-400"></i>
+          Kontak & Jejaring Sosial
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div>
+            <label for="email" class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-2">Email</label>
+            <input
+              id="email"
+              type="email"
+              required
+              value={profile.email}
+              class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors shadow-sm"
+            />
+          </div>
+          <div>
+            <label for="phone" class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-2">Nomor HP/WA (Tanpa '+', Ex: 62812...)</label>
+            <input
+              id="phone"
+              type="text"
+              required
+              value={profile.phone}
+              class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors shadow-sm"
+            />
+          </div>
+          <div>
+            <label for="linkedin" class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-2">Tautan LinkedIn</label>
+            <input
+              id="linkedin"
+              type="url"
+              required
+              value={profile.socialLinks.linkedin}
+              class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors shadow-sm"
+            />
+          </div>
+          <div>
+            <label for="github" class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-2">Tautan GitHub</label>
+            <input
+              id="github"
+              type="url"
+              required
+              value={profile.socialLinks.github}
+              class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors shadow-sm"
+            />
+          </div>
+          <div>
+            <label for="dicoding" class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-2">Tautan Profil Dicoding</label>
+            <input
+              id="dicoding"
+              type="url"
+              value={profile.socialLinks?.dicoding || ''}
+              class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors shadow-sm"
+            />
+          </div>
+          <div>
+            <label for="instagram" class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-2">Tautan Instagram</label>
+            <input
+              id="instagram"
+              type="url"
+              value={profile.socialLinks?.instagram || ''}
+              class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors shadow-sm"
+            />
+          </div>
+          <div>
+            <label for="threads" class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-2">Tautan Threads</label>
+            <input
+              id="threads"
+              type="url"
+              value={profile.socialLinks?.threads || ''}
+              class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors shadow-sm"
+            />
+          </div>
+          <div>
+            <label for="twitter" class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-2">Tautan Twitter/X</label>
+            <input
+              id="twitter"
+              type="url"
+              value={profile.socialLinks?.twitter || ''}
+              class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors shadow-sm"
+            />
+          </div>
+          <div>
+            <label for="youtube" class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-2">Tautan YouTube</label>
+            <input
+              id="youtube"
+              type="url"
+              value={profile.socialLinks?.youtube || ''}
+              class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors shadow-sm"
+            />
+          </div>
+          <div>
+            <label for="tiktok" class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-2">Tautan TikTok</label>
+            <input
+              id="tiktok"
+              type="url"
+              value={profile.socialLinks?.tiktok || ''}
+              class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors shadow-sm"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- Action panel -->
+      <div class="flex justify-end gap-4">
+        <button
+          type="button"
+          id="cancel-btn"
+          class="px-6 py-3.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 text-sm font-bold transition-all cursor-pointer shadow-sm"
+        >
+          Batal
+        </button>
+        <button
+          type="submit"
+          class="px-6 py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-bold transition-all shadow-lg shadow-indigo-600/30 cursor-pointer"
+        >
+          Simpan Perubahan
+        </button>
+      </div>
+
+    </form>
+  </div>
+
+  <script>
+    const form = document.getElementById('profile-form');
+    
+    document.getElementById('cancel-btn')?.addEventListener('click', () => {
+      if (confirm('Apakah Anda ingin membatalkan perubahan dan memuat ulang?')) {
+        window.location.reload();
+      }
+    });
+
+    // Handle CV PDF File Upload
+    const uploadCvBtn = document.getElementById('upload-cv-btn');
+    const cvFileInput = document.getElementById('cv-file-input') as HTMLInputElement;
+
+    uploadCvBtn?.addEventListener('click', async () => {
+      const file = cvFileInput.files?.[0];
+      if (!file) {
+        (window as any).showToast('Pilih file PDF terlebih dahulu!', 'warning');
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append('cv', file);
+
+      try {
+        (window as any).showToast('Sedang mengunggah berkas CV...', 'info');
+        const res = await fetch('/api/upload-cv', {
+          method: 'POST',
+          body: formData
+        });
+
+        const data = await res.json();
+        if (res.ok) {
+          (window as any).showToast('CV berhasil diunggah!', 'success');
+          const resumeInput = document.getElementById('resumeUrl') as HTMLInputElement;
+          if (resumeInput) {
+            resumeInput.value = data.url;
+          }
+        } else {
+          (window as any).showToast(data.error || 'Gagal mengunggah CV!', 'error');
+        }
+      } catch (err) {
+        console.error(err);
+        (window as any).showToast('Terjadi kesalahan koneksi!', 'error');
+      }
+    });
+
+    // Handle Profile Photo Upload
+    const uploadProfileImageBtn = document.getElementById('upload-profile-image-btn');
+    const profileImageFileInput = document.getElementById('profile-image-file-input') as HTMLInputElement;
+    const profileImgPreview = document.getElementById('profile-img-preview') as HTMLImageElement;
+    const profileImageInput = document.getElementById('profileImage') as HTMLInputElement;
+
+    uploadProfileImageBtn?.addEventListener('click', async () => {
+      const file = profileImageFileInput.files?.[0];
+      if (!file) {
+        (window as any).showToast('Pilih file foto profil terlebih dahulu!', 'warning');
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append('profileImage', file);
+
+      try {
+        (window as any).showToast('Sedang mengunggah foto profil...', 'info');
+        const res = await fetch('/api/upload-assets', {
+          method: 'POST',
+          body: formData
+        });
+
+        const data = await res.json();
+        if (res.ok) {
+          (window as any).showToast('Foto profil berhasil diunggah!', 'success');
+          if (profileImageInput) {
+            profileImageInput.value = data.profileImage;
+          }
+          if (profileImgPreview) {
+            profileImgPreview.src = data.profileImage + '?t=' + Date.now();
+          }
+        } else {
+          (window as any).showToast(data.error || 'Gagal mengunggah foto profil!', 'error');
+        }
+      } catch (err) {
+        console.error(err);
+        (window as any).showToast('Terjadi kesalahan koneksi!', 'error');
+      }
+    });
+
+    // Handle Favicon Upload
+    const uploadFaviconBtn = document.getElementById('upload-favicon-btn');
+    const faviconFileInput = document.getElementById('favicon-file-input') as HTMLInputElement;
+    const faviconPreview = document.getElementById('favicon-preview') as HTMLImageElement;
+
+    uploadFaviconBtn?.addEventListener('click', async () => {
+      const file = faviconFileInput.files?.[0];
+      if (!file) {
+        (window as any).showToast('Pilih file icon terlebih dahulu!', 'warning');
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append('favicon', file);
+
+      try {
+        (window as any).showToast('Sedang mengunggah icon web...', 'info');
+        const res = await fetch('/api/upload-assets', {
+          method: 'POST',
+          body: formData
+        });
+
+        const data = await res.json();
+        if (res.ok) {
+          (window as any).showToast('Icon web berhasil diperbarui!', 'success');
+          if (faviconPreview) {
+            faviconPreview.src = data.faviconUrl + '?t=' + Date.now();
+          }
+        } else {
+          (window as any).showToast(data.error || 'Gagal mengunggah icon web!', 'error');
+        }
+      } catch (err) {
+        console.error(err);
+        (window as any).showToast('Terjadi kesalahan koneksi!', 'error');
+      }
+    });
+
+    // Handle OG Image Upload
+    const uploadOgBtn = document.getElementById('upload-og-btn');
+    const ogFileInput = document.getElementById('og-file-input') as HTMLInputElement;
+    const ogPreview = document.getElementById('og-preview') as HTMLImageElement;
+
+    uploadOgBtn?.addEventListener('click', async () => {
+      const file = ogFileInput.files?.[0];
+      if (!file) {
+        (window as any).showToast('Pilih gambar pratinjau terlebih dahulu!', 'warning');
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append('ogImage', file);
+
+      try {
+        (window as any).showToast('Sedang mengunggah gambar pratinjau...', 'info');
+        const res = await fetch('/api/upload-assets', {
+          method: 'POST',
+          body: formData
+        });
+
+        const data = await res.json();
+        if (res.ok) {
+          (window as any).showToast('Gambar pratinjau berhasil diperbarui!', 'success');
+          if (ogPreview) {
+            ogPreview.src = data.ogImageUrl + '?t=' + Date.now();
+          }
+        } else {
+          (window as any).showToast(data.error || 'Gagal mengunggah gambar pratinjau!', 'error');
+        }
+      } catch (err) {
+        console.error(err);
+        (window as any).showToast('Terjadi kesalahan koneksi!', 'error');
+      }
+    });
+
+    form?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const payload = {
+        name: (document.getElementById('name') as HTMLInputElement).value,
+        role: (document.getElementById('role') as HTMLInputElement).value,
+        role_en: (document.getElementById('role_en') as HTMLInputElement).value,
+        description: (document.getElementById('description') as HTMLTextAreaElement).value,
+        description_en: (document.getElementById('description_en') as HTMLTextAreaElement).value,
+        bio: (document.getElementById('description') as HTMLTextAreaElement).value,
+        bio_en: (document.getElementById('description_en') as HTMLTextAreaElement).value,
+        university: (document.getElementById('university') as HTMLInputElement).value,
+        university_en: (document.getElementById('university_en') as HTMLInputElement).value,
+        major: (document.getElementById('major') as HTMLInputElement).value,
+        major_en: (document.getElementById('major_en') as HTMLInputElement).value,
+
+        profileImage: (document.getElementById('profileImage') as HTMLInputElement).value,
+        resumeUrl: (document.getElementById('resumeUrl') as HTMLInputElement).value,
+        email: (document.getElementById('email') as HTMLInputElement).value,
+        phone: (document.getElementById('phone') as HTMLInputElement).value,
+        location: (document.getElementById('location') as HTMLInputElement).value,
+        location_en: (document.getElementById('location_en') as HTMLInputElement).value,
+        socialLinks: {
+          linkedin: (document.getElementById('linkedin') as HTMLInputElement).value,
+          github: (document.getElementById('github') as HTMLInputElement).value,
+          dicoding: (document.getElementById('dicoding') as HTMLInputElement).value,
+          instagram: (document.getElementById('instagram') as HTMLInputElement).value,
+          threads: (document.getElementById('threads') as HTMLInputElement).value,
+          twitter: (document.getElementById('twitter') as HTMLInputElement).value,
+          youtube: (document.getElementById('youtube') as HTMLInputElement).value,
+          tiktok: (document.getElementById('tiktok') as HTMLInputElement).value
+        }
+      };
+
+      try {
+        const res = await fetch('/api/profile', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        if (res.ok) {
+          (window as any).showToast('Profil berhasil disimpan!', 'success');
+        } else {
+          (window as any).showToast('Gagal menyimpan profil!', 'error');
+        }
+      } catch (err) {
+        console.error(err);
+        (window as any).showToast('Terjadi kesalahan koneksi!', 'error');
+      }
+    });
+  </script>
+</AdminLayout>

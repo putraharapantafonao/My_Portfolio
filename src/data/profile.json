@@ -1,0 +1,33 @@
+{
+  "name": "Putra Harapan Tafonao",
+  "faviconUrl": "/favicon-1785169619850.png",
+  "ogImageUrl": "/assets/img/foto-putra.jpeg",
+  "role": "Web Engineer",
+  "role_en": "Web Engineer",
+  "description": "Saya adalah mahasiswa Teknik Informatika yang memiliki passion mendalam di bidang rekayasa perangkat lunak. Saya berpengalaman membangun aplikasi full-stack web menggunakan ekosistem PHP (Laravel) & JavaScript, serta pengembang mobile menggunakan Flutter.\n\nSaya aktif mengeksplorasi integrasi AI (seperti LLM API), keamanan sistem informasi, serta arsitektur kode berbasis Object-Oriented Programming (OOP) & RESTful API.",
+  "description_en": "I am an Informatics Engineering student with a deep passion for software engineering. I have experience building full-stack web applications using the PHP (Laravel) & JavaScript ecosystem, as well as mobile development using Flutter.\n\nI am actively exploring AI integration (such as LLM APIs), information systems security, and code architectures based on Object-Oriented Programming (OOP) & RESTful APIs.",
+  "bio": "Saya adalah mahasiswa Teknik Informatika yang memiliki passion mendalam di bidang rekayasa perangkat lunak. Saya berpengalaman membangun aplikasi full-stack web menggunakan ekosistem PHP (Laravel) & JavaScript, serta pengembang mobile menggunakan Flutter.\n\nSaya aktif mengeksplorasi integrasi AI (seperti LLM API), keamanan sistem informasi, serta arsitektur kode berbasis Object-Oriented Programming (OOP) & RESTful API.",
+  "bio_en": "I am an Informatics Engineering student with a deep passion for software engineering. I have experience building full-stack web applications using the PHP (Laravel) & JavaScript ecosystem, as well as mobile development using Flutter.\n\nI am actively exploring AI integration (such as LLM APIs), information systems security, and code architectures based on Object-Oriented Programming (OOP) & RESTful APIs.",
+  "university": "Universitas Malikussaleh",
+  "university_en": "Malikussaleh University",
+  "major": "Teknik Informatika",
+  "major_en": "Informatics Engineering",
+  "focus": "Web & Mobile Engineer",
+  "focus_en": "Web & Mobile Development",
+  "profileImage": "/profile-photo-1785183644373.png",
+  "resumeUrl": "/resume.pdf",
+  "email": "putraharapantafonao199@gmail.com",
+  "phone": "6281270857189",
+  "location": "Lhokseumawe, Aceh, Indonesia",
+  "location_en": "Lhokseumawe, Aceh, Indonesia",
+  "socialLinks": {
+    "linkedin": "https://www.linkedin.com/in/putra-harapan-tafonao-83b3b332b",
+    "github": "https://github.com/putraharapantafonao",
+    "dicoding": "https://www.dicoding.com/users/putraharapantafonao/academies",
+    "instagram": "https://www.instagram.com/putraharapantafonao714/profilecard/",
+    "threads": "",
+    "twitter": "",
+    "youtube": "https://www.youtube.com/@putraharapantafonao",
+    "tiktok": "https://www.tiktok.com/@putraharapantafonao714"
+  }
+}
