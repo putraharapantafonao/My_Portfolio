@@ -5,10 +5,10 @@
   "engines": {
     "node": ">=22.12.0"
   },
-  "scripts": {
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
+    "start": "node ./dist/server/entry.mjs",
     "astro": "astro"
   },
   "dependencies": {
