@@ -87,7 +87,7 @@ const blogs = JSON.parse(fs.readFileSync(path.resolve('src/data/blogs.json'), 'u
         Tulis Artikel Blog Baru
       </h3>
 
-      <form id="modal-form" class="space-y-5">
+      <form id="modal-form" class="space-y-5" onsubmit="return false;">
         <input type="hidden" id="modal-blog-id" />
         
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -212,7 +212,7 @@ const blogs = JSON.parse(fs.readFileSync(path.resolve('src/data/blogs.json'), 'u
           </button>
           <button
             id="submit-blog-btn"
-            type="submit"
+            type="button"
             class="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition-all cursor-pointer"
           >
             Simpan & Publikasikan
@@ -320,7 +320,15 @@ const blogs = JSON.parse(fs.readFileSync(path.resolve('src/data/blogs.json'), 'u
       }
 
       // Prevent EasyMDE toolbar buttons from submitting the form
-      document.querySelectorAll('.editor-toolbar button').forEach(btn => btn.setAttribute('type', 'button'));
+      document.querySelectorAll('.editor-toolbar button').forEach(btn => {
+        btn.setAttribute('type', 'button');
+        btn.addEventListener('click', (e) => {
+          // Hanya prevent default form submission, jangan stop propagation agar EasyMDE tetap bekerja
+          if (btn.getAttribute('type') !== 'button') {
+            e.preventDefault();
+          }
+        });
+      });
     }
     function showModal(isEdit = false, blog: any = null) {
       if (!modal) return;
@@ -404,18 +412,9 @@ const blogs = JSON.parse(fs.readFileSync(path.resolve('src/data/blogs.json'), 'u
         }
         return;
       }
-    });
-
-    let isSubmitting = false;
-    document.getElementById('submit-blog-btn')?.addEventListener('click', () => {
-      isSubmitting = true;
-    });
-
-    modalForm?.addEventListener('submit', async (e) => {
+    const submitBlogBtn = document.getElementById('submit-blog-btn');
+    submitBlogBtn?.addEventListener('click', async (e) => {
       e.preventDefault();
-      
-      if (!isSubmitting) return; // Prevent accidental submissions from EasyMDE buttons
-      isSubmitting = false;
       
       const id = modalBlogId.value;
       const title = modalBlogTitle.value.trim();
