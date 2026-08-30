@@ -18,7 +18,7 @@ async function saveFile(file: File, allowedExts: string[], prefix: string): Prom
   const destPath = path.join(publicDir, fileName);
   const buffer = Buffer.from(await file.arrayBuffer());
   
-  try { fs.writeFileSync(destPath, buffer); } catch (e) {}
+  try { try { fs.writeFileSync(destPath, buffer); } catch (e) {} } catch (e) {}
   await uploadToGithub(`public/${fileName}`, buffer.toString('base64'), `Upload ${fileName}`, true);
   
   return `/${fileName}`;
