@@ -50,7 +50,8 @@ export const POST: APIRoute = async ({ request, cookies }) => {
       fallbackImg: body.fallbackImg || 'https://placehold.co/600x400/020617/818cf8?text=Project',
       tags: Array.isArray(body.tags) ? body.tags : [],
       link: body.link || '#',
-      demoUrl: body.demoUrl || '#'
+      demoUrl: body.demoUrl || '#',
+      date: body.date || ''
     };
     data.push(newItem);
     await writeData(data);
@@ -88,7 +89,8 @@ export const PUT: APIRoute = async ({ request, cookies }) => {
       fallbackImg: body.fallbackImg !== undefined ? body.fallbackImg : data[index].fallbackImg,
       tags: Array.isArray(body.tags) ? body.tags : data[index].tags,
       link: body.link !== undefined ? body.link : data[index].link,
-      demoUrl: body.demoUrl !== undefined ? body.demoUrl : data[index].demoUrl
+      demoUrl: body.demoUrl !== undefined ? body.demoUrl : data[index].demoUrl,
+      date: body.date !== undefined ? body.date : data[index].date
     };
     await writeData(data);
     return new Response(JSON.stringify(data[index]), {

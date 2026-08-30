@@ -118,6 +118,16 @@ const projects = JSON.parse(fs.readFileSync(path.resolve('src/data/projects.json
             />
           </div>
         </div>
+        
+        <div>
+          <label for="modal-project-date" class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-2">Bulan & Tahun Pembuatan <span class="font-normal">(Opsional)</span></label>
+          <input
+            id="modal-project-date"
+            type="text"
+            placeholder="Misal: Januari 2026, atau biarkan kosong"
+            class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors shadow-sm"
+          />
+        </div>
 
 
         <div>
@@ -249,6 +259,7 @@ const projects = JSON.parse(fs.readFileSync(path.resolve('src/data/projects.json
     const modalProjectTags = document.getElementById('modal-project-tags') as HTMLInputElement;
     const modalProjectLink = document.getElementById('modal-project-link') as HTMLInputElement;
     const modalProjectDemo = document.getElementById('modal-project-demo') as HTMLInputElement;
+    const modalProjectDate = document.getElementById('modal-project-date') as HTMLInputElement;
 
     function showModal(isEdit = false, proj: any = null) {
       if (!modal) return;
@@ -263,8 +274,9 @@ const projects = JSON.parse(fs.readFileSync(path.resolve('src/data/projects.json
         modalProjectImage.value = proj.image || '';
         modalProjectFallback.value = proj.fallbackImg || '';
         modalProjectTags.value = proj.tags ? proj.tags.join(', ') : '';
-        modalProjectLink.value = proj.link || '#';
+        modalProjectLink.value = proj.link || '';
         modalProjectDemo.value = proj.demoUrl || '';
+        modalProjectDate.value = proj.date || '';
       } else {
         if (modalTitle) modalTitle.innerHTML = '<i class="fas fa-plus text-indigo-500"></i> Tambah Proyek Baru';
         modalProjectId.value = '';
@@ -275,8 +287,9 @@ const projects = JSON.parse(fs.readFileSync(path.resolve('src/data/projects.json
         modalProjectImage.value = '';
         modalProjectFallback.value = 'https://placehold.co/600x400/020617/818cf8?text=Project';
         modalProjectTags.value = '';
-        modalProjectLink.value = '#';
+        modalProjectLink.value = '';
         modalProjectDemo.value = '';
+        modalProjectDate.value = '';
       }
 
       modal.classList.remove('hidden');
@@ -337,8 +350,9 @@ const projects = JSON.parse(fs.readFileSync(path.resolve('src/data/projects.json
       const tags = modalProjectTags.value.split(',').map(t => t.trim()).filter(t => t.length > 0);
       const link = modalProjectLink.value.trim();
       const demoUrl = modalProjectDemo.value.trim();
+      const date = modalProjectDate.value.trim();
 
-      const payload = { id, title, title_en, description, description_en, image, fallbackImg, tags, link, demoUrl };
+      const payload = { id, title, title_en, description, description_en, image, fallbackImg, tags, link, demoUrl, date };
 
       try {
         const method = id ? 'PUT' : 'POST';
