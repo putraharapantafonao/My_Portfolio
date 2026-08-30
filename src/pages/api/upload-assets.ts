@@ -69,7 +69,9 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     const educationImageFile = formData.get('educationImage') as File | null;
     const educationId = formData.get('educationId') as string | null;
 
-    if (!faviconFile && !ogImageFile && !profileImageFile && !projectImageFile && !blogImageFile && !certificateImageFile && !publicationImageFile && !skillImageFile && !educationImageFile) {
+    const editorImageFile = formData.get('editorImage') as File | null;
+
+    if (!faviconFile && !ogImageFile && !profileImageFile && !projectImageFile && !blogImageFile && !certificateImageFile && !publicationImageFile && !skillImageFile && !educationImageFile && !editorImageFile) {
       return new Response(JSON.stringify({ error: 'Tidak ada berkas yang diunggah' }), { status: 400 });
     }
 
