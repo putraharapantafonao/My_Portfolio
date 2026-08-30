@@ -112,7 +112,7 @@ function formatDate(dateStr: string) {
                     </div>
                   )}
                   <p class="text-[10px] text-slate-400 dark:text-slate-500 mt-1">
-                    {lang === 'en' ? 'Issued' : 'Terbit'}: {formatDate(cert.issueDate)} &nbsp;•&nbsp; {lang === 'en' ? 'Expires' : 'Kedaluwarsa'}: {getField(cert, 'expirationDate')}
+                    {lang === 'en' ? 'Issued' : 'Terbit'}: {formatDate(cert.issueDate)} &nbsp;•&nbsp; {lang === 'en' ? 'Expires' : 'Kedaluwarsa'}: {cert.expirationDate ? formatDate(cert.expirationDate) : (lang === 'en' ? 'No Expiration Date' : 'Tidak Ada Kedaluwarsa')}
                   </p>
                 </div>
 
