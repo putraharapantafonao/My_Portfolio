@@ -22,7 +22,7 @@ Mahasiswa Teknik Informatika berprestasi (Penerima Beasiswa KIP-K) di Universita
 
 ## PUBLICATIONS
 **Analisis Dampak Human Error Terhadap Kebocoran Data Pribadi di Kalangan Pengguna Digital**
-*JIKUM: Jurnal Ilmu Komputer (Vol. 2, No. 2, 2026) | Terindeks Google Scholar*
+*JIKUM: Jurnal Ilmu Komputer (Vol. 2, No. 2, 2026)*
 - Mempublikasikan riset komprehensif terkait celah keamanan siber (*cybersecurity*) yang diakibatkan oleh *human error*, menyoroti pentingnya desain antarmuka (*UI*) yang intuitif untuk mencegah kesalahan fatal pengguna (*end-user*).
 
 ## WORK EXPERIENCE
