@@ -259,33 +259,53 @@ const blogs = JSON.parse(fs.readFileSync(path.resolve('src/data/blogs.json'), 'u
 
     function initEditors() {
       const imageUploadConfig = {
-        uploadImage: true,
         toolbar: [
           "bold", "italic", "heading", "|",
           "quote", "unordered-list", "ordered-list", "|",
-          "link", "upload-image", "|",
+          "link",
+          {
+            name: "custom-image",
+            action: function customImageAction(editor: any) {
+              const input = document.createElement('input');
+              input.type = 'file';
+              input.accept = 'image/*';
+              input.onchange = async (e: any) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                
+                const cm = editor.codemirror;
+                const doc = cm.getDoc();
+                const cursor = doc.getCursor();
+                doc.replaceRange('![Mengunggah gambar...]()\n', cursor);
+                
+                const formData = new FormData();
+                formData.append('editorImage', file);
+                try {
+                  const res = await fetch('/api/upload-assets', { method: 'POST', body: formData });
+                  if (res.ok) {
+                     const data = await res.json();
+                     if (data.editorImageUrl) {
+                        const content = doc.getValue();
+                        doc.setValue(content.replace('![Mengunggah gambar...]()', `![Gambar](${data.editorImageUrl})`));
+                     } else {
+                        (window as any).showToast('Gagal mengunggah gambar.', 'error');
+                     }
+                  } else {
+                     (window as any).showToast('Gagal mengunggah gambar.', 'error');
+                  }
+                } catch(err) {
+                  (window as any).showToast('Terjadi kesalahan.', 'error');
+                }
+              };
+              input.click();
+            },
+            className: "fa fa-picture-o",
+            title: "Upload Image",
+          },
+          "|",
           "preview", "side-by-side", "fullscreen", "|",
           "guide"
-        ],
-        imageUploadFunction: async (file: any, onSuccess: (url: string) => void, onError: (err: string) => void) => {
-          const formData = new FormData();
-          formData.append('editorImage', file);
-          try {
-            const res = await fetch('/api/upload-assets', {
-              method: 'POST',
-              body: formData
-            });
-            if (res.ok) {
-              const data = await res.json();
-              if (data.editorImageUrl) onSuccess(data.editorImageUrl);
-              else onError('Upload gagal.');
-            } else {
-              onError('Gagal mengunggah gambar.');
-            }
-          } catch (e) {
-            onError('Terjadi kesalahan.');
-          }
-        }
+        ]
       };
 
       if (!easyMdeId) {
@@ -482,14 +502,12 @@ const blogs = JSON.parse(fs.readFileSync(path.resolve('src/data/blogs.json'), 'u
     blogImageFileInput?.addEventListener('change', async () => {
       const file = blogImageFileInput.files?.[0];
       if (!file) return;
+      
       const id = modalBlogId.value;
-      if (!id) {
-        (window as any).showToast('Simpan artikel terlebih dahulu sebelum mengunggah gambar!', 'error');
-        return;
-      }
       const form = new FormData();
       form.append('blogImage', file);
-      form.append('blogId', id);
+      if (id) form.append('blogId', id);
+      
       try {
         const res = await fetch('/api/upload-assets', { method: 'POST', body: form });
         const data = await res.json();

@@ -130,10 +130,14 @@ export const POST: APIRoute = async ({ request, cookies }) => {
       await updateJsonArray(projectsPath, projectId, url, 'project-image', 'projectImageUrl');
     }
 
-    if (blogImageFile && blogId) {
-      const blogsPath = path.resolve('src/data/blogs.json');
+    if (blogImageFile) {
       const url = await saveFile(blogImageFile, ['.png', '.jpg', '.jpeg', '.webp', '.gif'], 'blog-image');
-      await updateJsonArray(blogsPath, blogId, url, 'blog-image', 'blogImageUrl');
+      if (blogId) {
+        const blogsPath = path.resolve('src/data/blogs.json');
+        await updateJsonArray(blogsPath, blogId, url, 'blog-image', 'blogImageUrl');
+      } else {
+        responseData.blogImageUrl = url;
+      }
     }
 
     if (certificateImageFile && certificateId) {
