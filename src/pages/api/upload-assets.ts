@@ -69,7 +69,9 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     const educationImageFile = formData.get('educationImage') as File | null;
     const educationId = formData.get('educationId') as string | null;
 
-    if (!faviconFile && !ogImageFile && !profileImageFile && !projectImageFile && !blogImageFile && !certificateImageFile && !publicationImageFile && !skillImageFile && !educationImageFile) {
+    const editorImageFile = formData.get('editorImage') as File | null;
+
+    if (!faviconFile && !ogImageFile && !profileImageFile && !projectImageFile && !blogImageFile && !certificateImageFile && !publicationImageFile && !skillImageFile && !educationImageFile && !editorImageFile) {
       return new Response(JSON.stringify({ error: 'Tidak ada berkas yang diunggah' }), { status: 400 });
     }
 
@@ -128,10 +130,14 @@ export const POST: APIRoute = async ({ request, cookies }) => {
       await updateJsonArray(projectsPath, projectId, url, 'project-image', 'projectImageUrl');
     }
 
-    if (blogImageFile && blogId) {
-      const blogsPath = path.resolve('src/data/blogs.json');
+    if (blogImageFile) {
       const url = await saveFile(blogImageFile, ['.png', '.jpg', '.jpeg', '.webp', '.gif'], 'blog-image');
-      await updateJsonArray(blogsPath, blogId, url, 'blog-image', 'blogImageUrl');
+      if (blogId) {
+        const blogsPath = path.resolve('src/data/blogs.json');
+        await updateJsonArray(blogsPath, blogId, url, 'blog-image', 'blogImageUrl');
+      } else {
+        responseData.blogImageUrl = url;
+      }
     }
 
     if (certificateImageFile && certificateId) {
@@ -166,6 +172,11 @@ export const POST: APIRoute = async ({ request, cookies }) => {
         await uploadToGithub('src/data/education.json', JSON.stringify(data, null, 2), 'Update education logo');
         responseData.educationImageUrl = url;
       }
+    }
+
+    if (editorImageFile) {
+      const url = await saveFile(editorImageFile, ['.png', '.jpg', '.jpeg', '.webp', '.gif'], 'blog-content-image');
+      responseData.editorImageUrl = url;
     }
 
     // Persist profile changes
