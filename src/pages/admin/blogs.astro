@@ -412,6 +412,8 @@ const blogs = JSON.parse(fs.readFileSync(path.resolve('src/data/blogs.json'), 'u
         }
         return;
       }
+    });
+
     const submitBlogBtn = document.getElementById('submit-blog-btn');
     submitBlogBtn?.addEventListener('click', async (e) => {
       e.preventDefault();
