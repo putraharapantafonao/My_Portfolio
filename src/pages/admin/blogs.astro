@@ -11,7 +11,7 @@ import AdminLayout from '../../layouts/AdminLayout.astro';
 import { parseSummary } from '../../utils/markdown';
 
 // Load blogs server-side
-const blogs = JSON.parse(fs.readFileSync(path.resolve('src/data/blogs.json'), 'utf-8'));
+import blogs from '../../data/blogs.json';
 ---
 
 <AdminLayout title="Kelola Artikel & Blog" activeTab="blog">

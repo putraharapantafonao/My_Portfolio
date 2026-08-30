@@ -10,7 +10,7 @@ import path from 'node:path';
 import AdminLayout from '../../layouts/AdminLayout.astro';
 
 // Load certificates server-side
-const certificates = JSON.parse(fs.readFileSync(path.resolve('src/data/certificates.json'), 'utf-8'));
+import certificates from '../../data/certificates.json';
 ---
 
 <AdminLayout title="Kelola Sertifikasi & Kredensial" activeTab="certificates">
