@@ -10,8 +10,11 @@ import path from 'node:path';
 import AdminLayout from '../../layouts/AdminLayout.astro';
 
 // Load education server-side
-import educationData from '../../data/education.json';
-const education = educationData || [];
+const educationPath = path.resolve('src/data/education.json');
+let education = [];
+if (fs.existsSync(educationPath)) {
+  education = JSON.parse(fs.readFileSync(educationPath, 'utf-8'));
+}
 ---
 
 <AdminLayout title="Kelola Pendidikan" activeTab="education">

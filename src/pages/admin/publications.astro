@@ -10,7 +10,7 @@ import path from 'node:path';
 import AdminLayout from '../../layouts/AdminLayout.astro';
 
 // Load publications server-side
-import publications from '../../data/publications.json';
+const publications = JSON.parse(fs.readFileSync(path.resolve('src/data/publications.json'), 'utf-8'));
 ---
 
 <AdminLayout title="Kelola Publikasi Ilmiah" activeTab="publications">

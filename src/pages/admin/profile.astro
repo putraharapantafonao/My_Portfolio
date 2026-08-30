@@ -10,7 +10,7 @@ import path from 'node:path';
 import AdminLayout from '../../layouts/AdminLayout.astro';
 
 // Load existing profile server-side
-import profile from '../../data/profile.json';
+const profile = JSON.parse(fs.readFileSync(path.resolve('src/data/profile.json'), 'utf-8'));
 ---
 
 <AdminLayout title="Edit Profil Utama" activeTab="profile">

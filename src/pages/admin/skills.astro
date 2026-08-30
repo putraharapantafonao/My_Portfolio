@@ -10,7 +10,7 @@ import path from 'node:path';
 import AdminLayout from '../../layouts/AdminLayout.astro';
 
 // Load skills categories server-side
-import skills from '../../data/skills.json';
+const skills = JSON.parse(fs.readFileSync(path.resolve('src/data/skills.json'), 'utf-8'));
 ---
 
 <AdminLayout title="Kelola Keterampilan" activeTab="skills">
