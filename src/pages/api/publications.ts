@@ -51,7 +51,8 @@ export const POST: APIRoute = async ({ request, cookies }) => {
       status_en: body.status_en || '',
       abstract: body.abstract || '',
       abstract_en: body.abstract_en || '',
-      link: body.link || '#'
+      link: body.link || '#',
+      date: body.date || ''
     };
     data.push(newItem);
     await writeData(data);
@@ -90,7 +91,8 @@ export const PUT: APIRoute = async ({ request, cookies }) => {
       status_en: body.status_en !== undefined ? body.status_en : data[index].status_en,
       abstract: body.abstract !== undefined ? body.abstract : data[index].abstract,
       abstract_en: body.abstract_en !== undefined ? body.abstract_en : data[index].abstract_en,
-      link: body.link !== undefined ? body.link : data[index].link
+      link: body.link !== undefined ? body.link : data[index].link,
+      date: body.date !== undefined ? body.date : data[index].date
     };
     await writeData(data);
     return new Response(JSON.stringify(data[index]), {
