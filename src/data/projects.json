@@ -72,5 +72,24 @@
     "link": "https://github.com/putraharapantafonao/Gunungsitoli",
     "demoUrl": "https://putraharapantafonao.github.io/Gunungsitoli/",
     "date": "2026-03-13"
+  },
+  {
+    "id": "1785944415316",
+    "title": "Dompet Expense Tracker",
+    "title_en": "Personal Finance & Expense Tracker App",
+    "description": "Sebuah aplikasi web modern untuk melacak keuangan pribadi (pemasukan dan pengeluaran). Aplikasi ini dilengkapi dengan fitur-fitur tingkat lanjut seperti integrasi Chart.js untuk visualisasi data interaktif, mode gelap (Dark Mode), pengelompokan berdasarkan kategori spesifik, fitur pencarian dan pengurutan (Sorting), serta kemampuan mengekspor riwayat transaksi ke dalam format CSV. Seluruh data pengguna disimpan secara aman di dalam Local Storage browser (Web Storage API).",
+    "description_en": "A modern web application for tracking personal finances (income and expenses). This application is equipped with advanced features such as Chart.js integration for interactive data visualization, a seamless Dark Mode toggle, specific category grouping, robust search and sorting capabilities, and the ability to export transaction history to a CSV format. All user data is securely persisted using the browser's Local Storage (Web Storage API).",
+    "image": "/project-image-1785944639750.png",
+    "fallbackImg": "https://placehold.co/600x400/020617/818cf8?text=Project",
+    "tags": [
+      "HTML5",
+      "CSS3",
+      "Vanilla JavaScript",
+      "Chart.js",
+      "Web Storage API"
+    ],
+    "link": "https://github.com/putraharapantafonao/expense-tracker-app",
+    "demoUrl": "https://dompet-expense-tracker.netlify.app/",
+    "date": "2026-08-05"
   }
 ]
