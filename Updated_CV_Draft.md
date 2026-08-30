@@ -28,7 +28,7 @@ Mahasiswa Teknik Informatika berprestasi (Penerima Beasiswa KIP-K) di Universita
 ## WORK EXPERIENCE
 **Laboratorium Komputer Teknik Informatika Universitas Malikussaleh** | *Asisten Laboratorium* 
 *Jan 2025 - Present*
-- Memimpin dan memfasilitasi sesi praktikum intensif bagi **50+ mahasiswa**, mencakup mata kuliah pemrograman dan rekayasa perangkat lunak.
+- Memimpin dan memfasilitasi sesi praktikum intensif bagi mahasiswa, mencakup mata kuliah pemrograman dan rekayasa perangkat lunak.
 - Mengelola dan mengonfigurasi infrastruktur perangkat keras serta jaringan komputer laboratorium guna memastikan *zero downtime* selama kegiatan akademis berlangsung.
 - Melakukan evaluasi teknis terhadap kode pengembangan web mahasiswa dan memberikan pendampingan *troubleshooting* secara sistematis.
 
@@ -67,11 +67,11 @@ Mahasiswa Teknik Informatika berprestasi (Penerima Beasiswa KIP-K) di Universita
 
 **Himpunan Mahasiswa Kristiani Lhokseumawe (HMKL)** | *Koordinator Wilayah Reulet*
 *2026 - Present* | (Sebelumnya: Anggota Divisi Kaderisasi, 2025 - 2026)
-- Mengoordinasikan komunikasi dan mengarahkan puluhan anggota di wilayah operasional Reulet, serta mempelopori program kaderisasi untuk regenerasi pengurus.
+- Mengoordinasikan komunikasi dan mengarahkan anggota di wilayah operasional Reulet, serta mempelopori program kaderisasi untuk regenerasi pengurus.
 
 **Himpunan Mahasiswa Teknik Informatika (HIMATIF) Unimal** | *Anggota Divisi Agama*
 *2026 - Present*
-- Merumuskan program kerja sosial dan kerohanian untuk menjembatani dan membina solidaritas di antara **500+ mahasiswa** di lingkungan program studi.
+- Merumuskan program kerja sosial dan kerohanian untuk menjembatani dan membina solidaritas di antara mahasiswa di lingkungan program studi.
 
 **Sekolah Sukma Bangsa Lhokseumawe** | *Relawan Pendidikan (Pasca Banjir Sumut-Aceh)*
 *Jan 2026 - Apr 2026*
