@@ -3,15 +3,15 @@ import fs from 'node:fs';
 import path from 'node:path';
 import Layout from '../layouts/Layout.astro';
 
-// Read all data dynamically server-side
-const profile = JSON.parse(fs.readFileSync(path.resolve('src/data/profile.json'), 'utf-8'));
-const skills = JSON.parse(fs.readFileSync(path.resolve('src/data/skills.json'), 'utf-8'));
-const projects = JSON.parse(fs.readFileSync(path.resolve('src/data/projects.json'), 'utf-8'));
-const publications = JSON.parse(fs.readFileSync(path.resolve('src/data/publications.json'), 'utf-8'));
-const certificates = JSON.parse(fs.readFileSync(path.resolve('src/data/certificates.json'), 'utf-8'));
-const blogs = JSON.parse(fs.readFileSync(path.resolve('src/data/blogs.json'), 'utf-8'));
-let education = [];
-try { education = JSON.parse(fs.readFileSync(path.resolve('src/data/education.json'), 'utf-8')); } catch(e) {}
+import profile from '../data/profile.json';
+import skills from '../data/skills.json';
+import projects from '../data/projects.json';
+import publications from '../data/publications.json';
+import certificates from '../data/certificates.json';
+import blogs from '../data/blogs.json';
+import educationData from '../data/education.json';
+
+const education = educationData || [];
 
 // Get language setting from cookie (default 'id')
 const lang = Astro.cookies.get('lang')?.value === 'en' ? 'en' : 'id';
