@@ -129,5 +129,25 @@
     "link": "https://github.com/putraharapantafonao/my-personal-notes",
     "demoUrl": "https://myy-personal-notes.netlify.app/",
     "date": "2026-08-07"
+  },
+  {
+    "id": "1795026367044",
+    "title": "Website Resmi LP3M Universitas Malikussaleh",
+    "title_en": "LP3M Universitas Malikussaleh Official Website",
+    "description": "Pengembangan ulang website resmi Lembaga Pengembangan Pembelajaran dan Penjaminan Mutu (LP3M) Universitas Malikussaleh sebagai luaran utama program Kerja Praktek (KP). Berdasarkan prototipe antarmuka HTML dan spesifikasi kebutuhan dari pihak lembaga, proyek ini berfokus pada konversi desain statis menjadi custom template CMS yang dinamis, responsif (mobile-first), mendukung mode terang/gelap otomatis, serta dilengkapi fitur pencarian dan penyaringan ribuan dokumen penjaminan mutu maupun direktori akreditasi program studi secara real-time menggunakan Vanilla JavaScript.",
+    "description_en": "Redevelopment of the official website for the Institute for Learning Development and Quality Assurance (LP3M) at Universitas Malikussaleh as the main deliverable of an internship program. Based on HTML interface prototypes and specifications provided by the institution, this project focused on converting static layouts into a dynamic, mobile-first custom CMS template featuring automatic light/dark mode, real-time client-side search and filtering for thousands of quality assurance documents, and an interactive study program accreditation directory built with Vanilla JavaScript.",
+    "image": "-",
+    "fallbackImg": "https://placehold.co/600x400/020617/818cf8?text=Project",
+    "tags": [
+      "HTML5",
+      "CSS3",
+      "Vanilla JavaScript",
+      "PHP",
+      "Custom CMS Template",
+      "Responsive Design"
+    ],
+    "link": "https://github.com/putraharapantafonao/lp3m-unimal",
+    "demoUrl": "https://lp3m.unimal.ac.id/",
+    "date": "2026-11-05"
   }
 ]
